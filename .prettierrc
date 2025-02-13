@@ -1,0 +1,26 @@
+{
+    "printWidth": 80,
+    "useTabs": false,
+    "tabWidth": 2,
+    "trailingComma": "es5",
+    "semi": true,
+    "singleQuote": true,
+    "bracketSpacing": true,
+    "arrowParens": "always",
+    "jsxSingleQuote": false,
+    "bracketSameLine": false,
+    "endOfLine": "lf",
+    "plugins": [
+        "@trivago/prettier-plugin-sort-imports"
+    ],
+    "importOrder": [
+        "^react$",
+        "^react/(.*)$",
+        "<THIRD_PARTY_MODULES>",
+        "^@mui/(.*)$",
+        "^@/store/(.*)$",
+        "^[./]"
+    ],
+    "importOrderSeparation": true,
+    "importOrderSortSpecifiers": true
+}
