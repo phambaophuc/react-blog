@@ -3,7 +3,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { styled } from '@mui/material/styles';
 
-export const SyledCard = styled(Card)(({ theme }) => ({
+const SyledCard = styled(Card)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   padding: 0,
@@ -20,7 +20,7 @@ export const SyledCard = styled(Card)(({ theme }) => ({
   },
 }));
 
-export const SyledCardContent = styled(CardContent)({
+const SyledCardContent = styled(CardContent)({
   display: 'flex',
   flexDirection: 'column',
   gap: 4,
@@ -31,10 +31,12 @@ export const SyledCardContent = styled(CardContent)({
   },
 });
 
-export const StyledTypography = styled(Typography)({
+const StyledTypography = styled(Typography)({
   display: '-webkit-box',
   WebkitBoxOrient: 'vertical',
   WebkitLineClamp: 2,
   overflow: 'hidden',
   textOverflow: 'ellipsis',
 });
+
+export { SyledCard, SyledCardContent, StyledTypography };

@@ -1,7 +1,8 @@
+import { CreatePostType } from '../models/Post';
 import { api } from './api';
 
 export const postService = {
-  getAllPosts: async (page: number = 1, limit: number = 10) => {
+  getAllPosts: async (page: number, limit: number) => {
     const response = await api.get(`/posts?page=${page}&limit=${limit}`);
     return response.data;
   },
@@ -9,8 +10,8 @@ export const postService = {
     const response = await api.get(`/posts/${id}`);
     return response.data;
   },
-  createPost: async (title: string, content: string) => {
-    const response = await api.post('/posts', { title, content });
+  createPost: async (post: CreatePostType) => {
+    const response = await api.post('/posts', post);
     return response.data;
   },
 };

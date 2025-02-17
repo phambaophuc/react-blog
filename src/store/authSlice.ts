@@ -23,12 +23,10 @@ export const signIn = createAsyncThunk(
 
 type AuthState = {
   user: UserType | null;
-  status: 'idle' | 'loading' | 'succeeded' | 'failed';
 };
 
 const initialState: AuthState = {
   user: null,
-  status: 'idle',
 };
 
 const authSlice = createSlice({
@@ -36,17 +34,9 @@ const authSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder
-      .addCase(signIn.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(signIn.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.user = action.payload;
-      })
-      .addCase(signIn.rejected, (state) => {
-        state.status = 'failed';
-      });
+    builder.addCase(signIn.fulfilled, (state, action) => {
+      state.user = action.payload;
+    });
   },
 });
 

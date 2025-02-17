@@ -1,18 +1,25 @@
-import { CommentType } from './Comment';
+import { Tag } from './Tag';
 import { UserType } from './User';
 
 type PostType = {
-  ID: number;
+  id: string;
+  title: string;
+  description: string;
+  content: string;
+  imageUrl?: string;
+  tag: Tag;
+  user: UserType;
+  createdAt: string;
+  updatedAt: string;
+};
+
+type CreatePostType = {
   title: string;
   tag: string;
   description: string;
   content: string;
   imageUrl?: string;
-  user: UserType;
-  comments: CommentType[];
-  CreatedAt: string;
-  UpdatedAt: string;
-};
+}
 
 type PostResponse = {
   data: PostType[];
@@ -21,4 +28,4 @@ type PostResponse = {
   totalPages: number;
 };
 
-export type { PostType, PostResponse };
+export type { PostType, CreatePostType, PostResponse };
