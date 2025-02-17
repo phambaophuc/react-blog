@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
 import RssFeedRoundedIcon from '@mui/icons-material/RssFeedRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import { CircularProgress } from '@mui/material';
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import FormControl from '@mui/material/FormControl';
@@ -11,7 +12,6 @@ import Grid from '@mui/material/Grid2';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import OutlinedInput from '@mui/material/OutlinedInput';
-import Pagination from '@mui/material/Pagination';
 import Typography from '@mui/material/Typography';
 
 import { getPosts } from '../../store/postSlice';
@@ -41,17 +41,32 @@ const Search = () => {
 
 const MainContent = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { data, totalPages } = useSelector((state: RootState) => state.posts);
+  const { data, loading, hasMore } = useSelector(
+    (state: RootState) => state.posts
+  );
 
-  const [currentPage, setCurrentPage] = useState(1);
+  const [page, setPage] = useState(1);
+
+  const handleScroll = useCallback(() => {
+    if (loading || !hasMore) return;
+
+    const scrollPosition =
+      window.innerHeight + document.documentElement.scrollTop;
+    const pageHeight = document.documentElement.offsetHeight;
+
+    if (scrollPosition >= pageHeight - 100) {
+      setPage((prevPage) => prevPage + 1);
+    }
+  }, [loading, hasMore]);
 
   useEffect(() => {
-    dispatch(getPosts({ page: currentPage }));
-  }, [currentPage, dispatch]);
+    dispatch(getPosts({ page: page }));
+  }, [page, dispatch]);
 
-  const handlePageChange = (_: React.ChangeEvent<unknown>, page: number) => {
-    setCurrentPage(page);
-  };
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [handleScroll]);
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
@@ -147,27 +162,20 @@ const MainContent = () => {
       </Box>
       <Grid container spacing={2} columns={12}>
         {data.slice(0, 2).map((post) => (
-          <Grid size={{ xs: 12, md: 6 }} key={post.ID}>
+          <Grid size={{ xs: 12, md: 6 }} key={post.id}>
             <CardItem data={post} />
           </Grid>
         ))}
         {data.slice(2, data.length).map((post) => (
-          <Grid size={{ xs: 12, md: 4 }} key={post.ID}>
+          <Grid size={{ xs: 12, md: 4 }} key={post.id}>
             <CardItem data={post} />
           </Grid>
         ))}
       </Grid>
 
-      {totalPages > 1 && (
-        <Box sx={{ display: 'flex', flexDirection: 'row', pt: 4 }}>
-          <Pagination
-            color="primary"
-            hidePrevButton
-            hideNextButton
-            page={currentPage}
-            count={totalPages}
-            onChange={handlePageChange}
-          />
+      {loading && (
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <CircularProgress />
         </Box>
       )}
     </Box>

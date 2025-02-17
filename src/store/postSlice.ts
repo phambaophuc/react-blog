@@ -1,25 +1,29 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { PostResponse } from '../models/Post';
+import { CreatePostType, PostResponse, PostType } from '../models/Post';
 import { postService } from '../services/postService';
 
 export const getPosts = createAsyncThunk(
   'posts/getPosts',
-  async ({ page = 1, limit = 10 }: { page?: number; limit?: number }) => {
+  async ({ page = 1, limit = 8 }: { page?: number; limit?: number }) => {
     return await postService.getAllPosts(page, limit);
   }
 );
 
-type PostState = PostResponse & {
-  status: 'idle' | 'loading' | 'succeeded' | 'failed';
-};
+export const createPost = createAsyncThunk(
+  'posts/createPost',
+  async (postData: CreatePostType) => {
+    return await postService.createPost(postData);
+  }
+);
 
-const initialState: PostState = {
+const initialState: PostResponse & { loading: boolean; hasMore: boolean } = {
   data: [],
   page: 1,
   limit: 10,
   totalPages: 1,
-  status: 'idle',
+  loading: false,
+  hasMore: true,
 };
 
 const postSlice = createSlice({
@@ -29,14 +33,24 @@ const postSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getPosts.pending, (state) => {
-        state.status = 'loading';
+        state.loading = true;
       })
       .addCase(getPosts.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        Object.assign(state, action.payload);
+        state.loading = false;
+
+        const dataMap = new Map(state.data.map((post) => [post.id, post]));
+        action.payload.data.forEach((post: PostType) =>
+          dataMap.set(post.id, post)
+        );
+
+        state.data = Array.from(dataMap.values());
+        state.hasMore = action.payload.page < action.payload.totalPages;
       })
       .addCase(getPosts.rejected, (state) => {
-        state.status = 'failed';
+        state.loading = false;
+      })
+      .addCase(createPost.fulfilled, (state, action) => {
+        state.data.unshift(action.payload);
       });
   },
 });

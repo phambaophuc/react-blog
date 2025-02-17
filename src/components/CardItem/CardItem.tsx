@@ -22,7 +22,7 @@ const CardItem = ({ data, sx }: { data: PostType; sx?: SxProps<Theme> }) => {
       )}
       <SyledCardContent>
         <Typography gutterBottom variant="caption">
-          {data.tag}
+          {data.tag.name}
         </Typography>
         <Typography gutterBottom variant="h6">
           {data.title}
@@ -31,7 +31,7 @@ const CardItem = ({ data, sx }: { data: PostType; sx?: SxProps<Theme> }) => {
           {data.description}
         </StyledTypography>
       </SyledCardContent>
-      <Author author={data.user} createdAt={data.CreatedAt} />
+      <Author author={data.user} createdAt={data.createdAt} />
     </SyledCard>
   );
 };
