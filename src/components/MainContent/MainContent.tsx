@@ -6,7 +6,6 @@ import RssFeedRoundedIcon from '@mui/icons-material/RssFeedRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import { CircularProgress } from '@mui/material';
 import Box from '@mui/material/Box';
-import Chip from '@mui/material/Chip';
 import FormControl from '@mui/material/FormControl';
 import Grid from '@mui/material/Grid2';
 import IconButton from '@mui/material/IconButton';
@@ -17,6 +16,7 @@ import Typography from '@mui/material/Typography';
 import { getPosts } from '../../store/postSlice';
 import { AppDispatch, RootState } from '../../store/store';
 import CardItem from '../CardItem/CardItem';
+import TagList from './TagList/TagList';
 
 const Search = () => {
   return (
@@ -103,48 +103,7 @@ const MainContent = () => {
           overflow: 'auto',
         }}
       >
-        <Box
-          sx={{
-            display: 'inline-flex',
-            flexDirection: 'row',
-            gap: 3,
-            overflow: 'auto',
-          }}
-        >
-          <Chip size="medium" label="All categories" />
-          <Chip
-            size="medium"
-            label="Company"
-            sx={{
-              backgroundColor: 'transparent',
-              border: 'none',
-            }}
-          />
-          <Chip
-            size="medium"
-            label="Product"
-            sx={{
-              backgroundColor: 'transparent',
-              border: 'none',
-            }}
-          />
-          <Chip
-            size="medium"
-            label="Design"
-            sx={{
-              backgroundColor: 'transparent',
-              border: 'none',
-            }}
-          />
-          <Chip
-            size="medium"
-            label="Engineering"
-            sx={{
-              backgroundColor: 'transparent',
-              border: 'none',
-            }}
-          />
-        </Box>
+        <TagList />
         <Box
           sx={{
             display: { xs: 'none', sm: 'flex' },

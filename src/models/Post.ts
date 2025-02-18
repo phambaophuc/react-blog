@@ -1,4 +1,4 @@
-import { Tag } from './Tag';
+import { TagType } from './Tag';
 import { UserType } from './User';
 
 type PostType = {
@@ -7,7 +7,7 @@ type PostType = {
   description: string;
   content: string;
   imageUrl?: string;
-  tag: Tag;
+  tag: TagType;
   user: UserType;
   createdAt: string;
   updatedAt: string;
