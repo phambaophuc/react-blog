@@ -1,4 +1,5 @@
 import { Theme } from '@emotion/react';
+import { useNavigate } from 'react-router-dom';
 
 import { CardMedia, SxProps, Typography } from '@mui/material';
 
@@ -7,8 +8,15 @@ import Author from '../Author/Author';
 import { StyledTypography, SyledCard, SyledCardContent } from './styles';
 
 const CardItem = ({ data, sx }: { data: PostType; sx?: SxProps<Theme> }) => {
+  const navigate = useNavigate();
+
   return (
-    <SyledCard variant="outlined" tabIndex={0} sx={{ height: '100%', ...sx }}>
+    <SyledCard
+      variant="outlined"
+      tabIndex={0}
+      sx={{ height: '100%', ...sx }}
+      onClick={() => navigate(`/posts/${data.id}`)}
+    >
       {data.imageUrl && (
         <CardMedia
           component="img"

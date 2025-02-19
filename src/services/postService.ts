@@ -12,7 +12,7 @@ export const postService = {
     });
     return response.data;
   },
-  getPostByID: async (id: number) => {
+  getPostByID: async (id: string) => {
     const response = await api.get(`/posts/${id}`);
     return response.data;
   },

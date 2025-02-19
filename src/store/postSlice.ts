@@ -1,11 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import {
-  CreatePostType,
-  PostResponseType,
-  PostType,
-  QueryPostType,
-} from '../models/Post';
+import { PostResponseType, PostType, QueryPostType } from '../models/Post';
 import { postService } from '../services/postService';
 
 export const getPosts = createAsyncThunk(
@@ -15,22 +10,28 @@ export const getPosts = createAsyncThunk(
   }
 );
 
-export const createPost = createAsyncThunk(
-  'posts/createPost',
-  async (postData: CreatePostType) => {
-    return await postService.createPost(postData);
+export const getPostByID = createAsyncThunk(
+  'posts/getPostByID',
+  async (id: string) => {
+    return await postService.getPostByID(id);
   }
 );
 
-const initialState: PostResponseType & { loading: boolean; hasMore: boolean } =
-  {
-    data: [],
-    page: 1,
-    limit: 10,
-    totalPages: 1,
-    loading: false,
-    hasMore: true,
-  };
+type InitType = PostResponseType & {
+  loading: boolean;
+  hasMore: boolean;
+  currentPost: PostType | null;
+};
+
+const initialState: InitType = {
+  data: [],
+  page: 1,
+  limit: 10,
+  totalPages: 1,
+  loading: false,
+  hasMore: true,
+  currentPost: null,
+};
 
 const postSlice = createSlice({
   name: 'posts',
@@ -59,8 +60,8 @@ const postSlice = createSlice({
       .addCase(getPosts.rejected, (state) => {
         state.loading = false;
       })
-      .addCase(createPost.fulfilled, (state, action) => {
-        state.data.unshift(action.payload);
+      .addCase(getPostByID.fulfilled, (state, action) => {
+        state.currentPost = action.payload;
       });
   },
 });

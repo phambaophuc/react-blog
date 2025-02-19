@@ -1,12 +1,15 @@
+import { useNavigate } from 'react-router-dom';
+
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 
-import useHideOnScroll from '../../hooks/useHideOnScroll';
+import useHideOnScroll from '../../../hooks/useHideOnScroll';
 import { StyledToolbar } from './styles';
 
 const Header = () => {
+  const navigate = useNavigate();
   const headerRef = useHideOnScroll();
 
   return (
@@ -46,6 +49,7 @@ const Header = () => {
                 variant="text"
                 color="info"
                 size="small"
+                onClick={() => navigate('/')}
                 sx={{ minWidth: 0 }}
               >
                 Blog

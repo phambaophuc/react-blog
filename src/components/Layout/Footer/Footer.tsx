@@ -15,8 +15,8 @@ const Copyright = () => {
   return (
     <Typography variant="body2" sx={{ color: 'text.secondary', mt: 1 }}>
       {'Copyright © '}
-      <Link color="text.secondary" href="https://mui.com/">
-        Sitemark
+      <Link color="text.secondary" href="#">
+        Phuc Bao Pham
       </Link>
       &nbsp;
       {new Date().getFullYear()}
@@ -66,7 +66,7 @@ const Footer = () => {
             <IconButton
               color="inherit"
               size="small"
-              href="https://github.com/mui"
+              href="https://github.com/phambaophuc"
               aria-label="GitHub"
               sx={{ alignSelf: 'center' }}
             >
@@ -75,7 +75,7 @@ const Footer = () => {
             <IconButton
               color="inherit"
               size="small"
-              href="https://x.com/MaterialUI"
+              href="https://x.com"
               aria-label="X"
               sx={{ alignSelf: 'center' }}
             >
@@ -84,7 +84,7 @@ const Footer = () => {
             <IconButton
               color="inherit"
               size="small"
-              href="https://www.linkedin.com/company/mui/"
+              href="https://linkedin.com/in/phucbaopham"
               aria-label="LinkedIn"
               sx={{ alignSelf: 'center' }}
             >
