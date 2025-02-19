@@ -13,19 +13,25 @@ type PostType = {
   updatedAt: string;
 };
 
+type QueryPostType = {
+  page?: number;
+  limit?: number;
+  tagName?: string;
+};
+
 type CreatePostType = {
   title: string;
-  tag: string;
   description: string;
   content: string;
   imageUrl?: string;
-}
+  tagName: string;
+};
 
-type PostResponse = {
+type PostResponseType = {
   data: PostType[];
   page: number;
   limit: number;
   totalPages: number;
 };
 
-export type { PostType, CreatePostType, PostResponse };
+export type { PostType, QueryPostType, CreatePostType, PostResponseType };

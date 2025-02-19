@@ -1,9 +1,15 @@
-import { CreatePostType } from '../models/Post';
+import { CreatePostType, QueryPostType } from '../models/Post';
 import { api } from './api';
 
 export const postService = {
-  getAllPosts: async (page: number, limit: number) => {
-    const response = await api.get(`/posts?page=${page}&limit=${limit}`);
+  getAllPosts: async (query: QueryPostType) => {
+    const response = await api.get('/posts', {
+      params: {
+        page: query.page ?? 1,
+        limit: query.limit ?? 8,
+        tagName: query.tagName,
+      },
+    });
     return response.data;
   },
   getPostByID: async (id: number) => {

@@ -72,53 +72,41 @@ const MainContent = () => {
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
       <div>
         <Typography variant="h1" gutterBottom>
-          Blog
+          Welcome
         </Typography>
-        <Typography>
-          Discover the latest news, updates, and insights about our products.
-        </Typography>
-      </div>
-      <Box
-        sx={{
-          display: { xs: 'flex', sm: 'none' },
-          flexDirection: 'row',
-          gap: 1,
-          width: { xs: '100%', md: 'fit-content' },
-          overflow: 'auto',
-        }}
-      >
-        <Search />
-        <IconButton size="small" aria-label="RSS feed">
-          <RssFeedRoundedIcon />
-        </IconButton>
-      </Box>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: { xs: 'column-reverse', md: 'row' },
-          width: '100%',
-          justifyContent: 'space-between',
-          alignItems: { xs: 'start', md: 'center' },
-          gap: 4,
-          overflow: 'auto',
-        }}
-      >
-        <TagList />
         <Box
           sx={{
-            display: { xs: 'none', sm: 'flex' },
-            flexDirection: 'row',
-            gap: 1,
-            width: { xs: '100%', md: 'fit-content' },
-            overflow: 'auto',
+            display: 'flex',
+            flexDirection: { xs: 'column', md: 'row' },
+            width: '100%',
+            justifyContent: 'space-between',
+            alignItems: { xs: 'start', md: 'center' },
+            gap: 4,
+            overflow: 'hidden',
           }}
         >
-          <Search />
-          <IconButton size="small" aria-label="RSS feed">
-            <RssFeedRoundedIcon />
-          </IconButton>
+          <Typography>
+            Discover the latest news, updates, and insights about our products.
+          </Typography>
+          <Box
+            sx={{
+              display: { xs: 'none', sm: 'flex' },
+              flexDirection: 'row',
+              gap: 1,
+              width: { xs: '100%', md: 'fit-content' },
+              overflow: 'auto',
+            }}
+          >
+            <Search />
+            <IconButton size="small" aria-label="RSS feed">
+              <RssFeedRoundedIcon />
+            </IconButton>
+          </Box>
         </Box>
-      </Box>
+      </div>
+
+      <TagList />
+
       <Grid container spacing={2} columns={12}>
         {data.slice(0, 2).map((post) => (
           <Grid size={{ xs: 12, md: 6 }} key={post.id}>

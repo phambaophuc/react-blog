@@ -1,12 +1,17 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { CreatePostType, PostResponse, PostType } from '../models/Post';
+import {
+  CreatePostType,
+  PostResponseType,
+  PostType,
+  QueryPostType,
+} from '../models/Post';
 import { postService } from '../services/postService';
 
 export const getPosts = createAsyncThunk(
   'posts/getPosts',
-  async ({ page = 1, limit = 8 }: { page?: number; limit?: number }) => {
-    return await postService.getAllPosts(page, limit);
+  async (query: QueryPostType) => {
+    return await postService.getAllPosts(query);
   }
 );
 
@@ -17,14 +22,15 @@ export const createPost = createAsyncThunk(
   }
 );
 
-const initialState: PostResponse & { loading: boolean; hasMore: boolean } = {
-  data: [],
-  page: 1,
-  limit: 10,
-  totalPages: 1,
-  loading: false,
-  hasMore: true,
-};
+const initialState: PostResponseType & { loading: boolean; hasMore: boolean } =
+  {
+    data: [],
+    page: 1,
+    limit: 10,
+    totalPages: 1,
+    loading: false,
+    hasMore: true,
+  };
 
 const postSlice = createSlice({
   name: 'posts',
@@ -38,12 +44,16 @@ const postSlice = createSlice({
       .addCase(getPosts.fulfilled, (state, action) => {
         state.loading = false;
 
-        const dataMap = new Map(state.data.map((post) => [post.id, post]));
-        action.payload.data.forEach((post: PostType) =>
-          dataMap.set(post.id, post)
-        );
+        if (action.meta.arg.tagName) {
+          state.data = action.payload.data;
+        } else {
+          const dataMap = new Map(state.data.map((post) => [post.id, post]));
+          action.payload.data.forEach((post: PostType) =>
+            dataMap.set(post.id, post)
+          );
+          state.data = Array.from(dataMap.values());
+        }
 
-        state.data = Array.from(dataMap.values());
         state.hasMore = action.payload.page < action.payload.totalPages;
       })
       .addCase(getPosts.rejected, (state) => {
