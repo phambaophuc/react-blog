@@ -16,7 +16,7 @@ type PostType = {
 type QueryPostType = {
   page?: number;
   limit?: number;
-  tagName?: string;
+  tag?: string | null;
 };
 
 type CreatePostType = {

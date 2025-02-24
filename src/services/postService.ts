@@ -7,7 +7,7 @@ export const postService = {
       params: {
         page: query.page ?? 1,
         limit: query.limit ?? 8,
-        tagName: query.tagName,
+        tag: query.tag,
       },
     });
     return response.data;

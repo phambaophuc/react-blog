@@ -1,20 +1,18 @@
 import { useEffect, useState } from 'react';
 import React from 'react';
 
-import { useDispatch } from 'react-redux';
-
 import { Box, Chip } from '@mui/material';
 
 import { TagType } from '../../../models/Tag';
 import { tagService } from '../../../services/tagService';
-import { getPosts } from '../../../store/postSlice';
-import { AppDispatch } from '../../../store/store';
 
-const TagList: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
+interface TagListProps {
+  onTagSelect: (tag: string | null) => void;
+}
 
+const TagList: React.FC<TagListProps> = ({ onTagSelect }) => {
   const [tags, setTags] = useState<TagType[]>([]);
-  const [selectedTag, setSelectedTag] = useState<string>();
+  const [selectedTag, setSelectedTag] = useState<string | null>();
 
   const fetchTags = async () => {
     try {
@@ -30,8 +28,13 @@ const TagList: React.FC = () => {
   }, []);
 
   const handleTagClick = (tagName: string) => {
-    setSelectedTag(tagName);
-    dispatch(getPosts({ tagName }));
+    if (selectedTag === tagName) {
+      setSelectedTag(null);
+      onTagSelect(null);
+    } else {
+      setSelectedTag(tagName);
+      onTagSelect(tagName);
+    }
   };
 
   return (
@@ -48,6 +51,7 @@ const TagList: React.FC = () => {
       <Chip
         size="medium"
         label="All categories"
+        onClick={() => handleTagClick('')}
         sx={{ backgroundColor: selectedTag && 'transparent' }}
       />
       {tags.map((tag) => (

@@ -36,7 +36,13 @@ const initialState: InitType = {
 const postSlice = createSlice({
   name: 'posts',
   initialState,
-  reducers: {},
+  reducers: {
+    resetPosts: (state) => {
+      state.data = [];
+      state.page = 1;
+      state.hasMore = true;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getPosts.pending, (state) => {
@@ -45,16 +51,21 @@ const postSlice = createSlice({
       .addCase(getPosts.fulfilled, (state, action) => {
         state.loading = false;
 
-        if (action.meta.arg.tagName) {
+        if (action.meta.arg.page === 1) {
           state.data = action.payload.data;
         } else {
-          const dataMap = new Map(state.data.map((post) => [post.id, post]));
-          action.payload.data.forEach((post: PostType) =>
-            dataMap.set(post.id, post)
-          );
-          state.data = Array.from(dataMap.values());
+          state.data = [
+            ...new Map(
+              [...state.data, ...action.payload.data].map((post) => [
+                post.id,
+                post,
+              ])
+            ).values(),
+          ];
         }
 
+        state.page = action.payload.page;
+        state.totalPages = action.payload.totalPages;
         state.hasMore = action.payload.page < action.payload.totalPages;
       })
       .addCase(getPosts.rejected, (state) => {
@@ -66,4 +77,5 @@ const postSlice = createSlice({
   },
 });
 
+export const { resetPosts } = postSlice.actions;
 export default postSlice.reducer;

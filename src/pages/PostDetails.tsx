@@ -23,7 +23,7 @@ const PostDetails = () => {
   if (!currentPost) {
     return <div>Post not found</div>;
   }
-
+  console.log(currentPost.imageUrl);
   return (
     <Layout maxWidth="md">
       <Paper elevation={3} sx={{ overflow: 'hidden' }}>
@@ -43,7 +43,7 @@ const PostDetails = () => {
             {currentPost.title}
           </Typography>
           <Typography variant="subtitle1" color="textSecondary" gutterBottom>
-            {currentPost.user.name} |{' '}
+            {currentPost.user.fullName} |{' '}
             {new Date(currentPost.createdAt).toLocaleDateString()}
           </Typography>
           <MarkdownRenderer content={currentPost.content} />

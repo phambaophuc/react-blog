@@ -13,7 +13,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Typography from '@mui/material/Typography';
 
-import { getPosts } from '../../store/postSlice';
+import { getPosts, resetPosts } from '../../store/postSlice';
 import { AppDispatch, RootState } from '../../store/store';
 import CardItem from '../CardItem/CardItem';
 import TagList from './TagList/TagList';
@@ -46,6 +46,7 @@ const MainContent = () => {
   );
 
   const [page, setPage] = useState(1);
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
   const handleScroll = useCallback(() => {
     if (loading || !hasMore) return;
@@ -60,8 +61,13 @@ const MainContent = () => {
   }, [loading, hasMore]);
 
   useEffect(() => {
-    dispatch(getPosts({ page: page }));
-  }, [page, dispatch]);
+    dispatch(resetPosts());
+    setPage(1);
+  }, [selectedTag, dispatch]);
+
+  useEffect(() => {
+    dispatch(getPosts({ page: page, tag: selectedTag }));
+  }, [page, selectedTag, dispatch]);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
@@ -105,7 +111,7 @@ const MainContent = () => {
         </Box>
       </div>
 
-      <TagList />
+      <TagList onTagSelect={setSelectedTag} />
 
       <Grid container spacing={2} columns={12}>
         {data.slice(0, 2).map((post) => (

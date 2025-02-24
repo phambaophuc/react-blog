@@ -31,12 +31,12 @@ const Author = ({
       >
         <AvatarGroup max={3}>
           <Avatar
-            alt={author.name}
+            alt={author.fullName}
             src={author.imageUrl}
             sx={{ width: 24, height: 24 }}
           />
         </AvatarGroup>
-        <Typography variant="caption">{author.name}</Typography>
+        <Typography variant="caption">{author.fullName}</Typography>
       </Box>
       <Typography variant="caption">{formatDate(createdAt)}</Typography>
     </Box>
