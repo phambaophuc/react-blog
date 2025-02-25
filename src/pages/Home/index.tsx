@@ -1,7 +1,7 @@
-import Layout from '../components/Layout/Layout';
-import { MainContent } from '../components/MainContent/MainContent';
+import Layout from '../../components/Layout';
+import { MainContent } from '../../components/MainContent';
 
-const Blog = () => {
+const HomePage = () => {
   return (
     <Layout
       maxWidth="lg"
@@ -13,4 +13,4 @@ const Blog = () => {
   );
 };
 
-export default Blog;
+export default HomePage;

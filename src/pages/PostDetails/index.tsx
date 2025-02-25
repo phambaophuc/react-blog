@@ -5,10 +5,10 @@ import { useParams } from 'react-router-dom';
 
 import { Box, Paper, Typography } from '@mui/material';
 
-import Layout from '../components/Layout/Layout';
-import MarkdownRenderer from '../components/MarkdownRenderer/MarkdownRenderer';
-import { getPostByID } from '../store/postSlice';
-import { AppDispatch, RootState } from '../store/store';
+import Layout from '../../components/Layout';
+import MarkdownRenderer from '../../components/MarkdownRenderer';
+import { getPostByID } from '../../store/postSlice';
+import { AppDispatch, RootState } from '../../store/store';
 
 const PostDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -23,9 +23,9 @@ const PostDetails = () => {
   if (!currentPost) {
     return <div>Post not found</div>;
   }
-  console.log(currentPost.imageUrl);
+
   return (
-    <Layout maxWidth="md">
+    <Layout maxWidth="lg">
       <Paper elevation={3} sx={{ overflow: 'hidden' }}>
         <Box
           component="img"
@@ -39,7 +39,7 @@ const PostDetails = () => {
         />
 
         <Box sx={{ p: 4 }}>
-          <Typography variant="h3" component="h1" gutterBottom>
+          <Typography variant="h3" component="h2" gutterBottom>
             {currentPost.title}
           </Typography>
           <Typography variant="subtitle1" color="textSecondary" gutterBottom>

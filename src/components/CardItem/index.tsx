@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { CardMedia, SxProps, Typography } from '@mui/material';
 
 import { PostType } from '../../models/Post';
-import Author from '../Author/Author';
+import Author from '../Author';
 import { StyledTypography, SyledCard, SyledCardContent } from './styles';
 
 const CardItem = ({ data, sx }: { data: PostType; sx?: SxProps<Theme> }) => {

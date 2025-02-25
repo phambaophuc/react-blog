@@ -15,8 +15,8 @@ import Typography from '@mui/material/Typography';
 
 import { getPosts, resetPosts } from '../../store/postSlice';
 import { AppDispatch, RootState } from '../../store/store';
-import CardItem from '../CardItem/CardItem';
-import TagList from './TagList/TagList';
+import CardItem from '../CardItem';
+import TagList from './TagList';
 
 const Search = () => {
   return (

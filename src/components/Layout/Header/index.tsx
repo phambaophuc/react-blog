@@ -6,9 +6,10 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 
 import useHideOnScroll from '../../../hooks/useHideOnScroll';
+import UserAvatar from '../../UserAvatar';
 import { StyledToolbar } from './styles';
 
-const Header = () => {
+const AppHeader = () => {
   const navigate = useNavigate();
   const headerRef = useHideOnScroll();
 
@@ -56,24 +57,11 @@ const Header = () => {
               </Button>
             </Box>
           </Box>
-          <Box
-            sx={{
-              display: { xs: 'none', md: 'flex' },
-              gap: 1,
-              alignItems: 'center',
-            }}
-          >
-            <Button color="primary" variant="text" size="small">
-              Sign in
-            </Button>
-            <Button color="primary" variant="contained" size="small">
-              Sign up
-            </Button>
-          </Box>
+          <UserAvatar />
         </StyledToolbar>
       </Container>
     </AppBar>
   );
 };
 
-export default Header;
+export default AppHeader;

@@ -46,6 +46,22 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content }) => {
           />
         ),
         li: (props) => <Typography component="li" variant="body1" {...props} />,
+        pre: ({ children }) => (
+          <Box
+            component="pre"
+            sx={{
+              backgroundColor: '#272822',
+              color: '#fff',
+              padding: 2,
+              borderRadius: 2,
+              overflowX: 'auto',
+              fontFamily: 'monospace',
+              my: 2,
+            }}
+          >
+            {children}
+          </Box>
+        ),
         code: (props) => (
           <Box
             component="code"
