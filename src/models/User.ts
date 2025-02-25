@@ -5,4 +5,15 @@ type UserType = {
   imageUrl: string;
 };
 
-export type { UserType };
+type SignUpType = {
+  fullName: string;
+  email: string;
+  password: string;
+};
+
+type SignInType = {
+  email: string;
+  password: string;
+};
+
+export type { UserType, SignInType, SignUpType };
