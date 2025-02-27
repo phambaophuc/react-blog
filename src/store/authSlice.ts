@@ -1,14 +1,13 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { User } from '@supabase/supabase-js';
 
-import { SignInType, SignUpType } from '../models/User';
+import { SignInType, SignUpType } from '../models/Auth';
 import { authService } from '../services/authService';
 
 export const signUp = createAsyncThunk(
   'auth/signup',
   (credentials: SignUpType) => {
     return authService.signUp(
-      credentials.fullName,
+      credentials.displayName,
       credentials.email,
       credentials.password
     );
@@ -17,8 +16,13 @@ export const signUp = createAsyncThunk(
 
 export const signIn = createAsyncThunk(
   'auth/signin',
-  (credentials: SignInType) => {
-    return authService.signIn(credentials.email, credentials.password);
+  async (credentials: SignInType) => {
+    const token = await authService.signIn(
+      credentials.email,
+      credentials.password
+    );
+    const userInfo = await authService.getUser();
+    return { token, userInfo };
   }
 );
 
@@ -27,7 +31,7 @@ export const fetchUser = createAsyncThunk('auth/fetchUser', () => {
 });
 
 interface AuthState {
-  user: User | null;
+  user: any | null;
   token: string | null;
   loading: boolean;
   error: string | null;
@@ -35,7 +39,7 @@ interface AuthState {
 
 const initialState: AuthState = {
   user: null,
-  token: localStorage.getItem('token'),
+  token: localStorage.getItem('access_token'),
   loading: false,
   error: null,
 };
@@ -45,9 +49,9 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
+      localStorage.removeItem('access_token');
       state.token = null;
       state.user = null;
-      authService.signOut();
     },
   },
   extraReducers: (builder) => {
@@ -57,8 +61,8 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(signIn.fulfilled, (state, action) => {
-        state.token = action.payload.access_token;
-        state.user = action.payload.user;
+        state.token = action.payload.token;
+        state.user = action.payload.userInfo;
         state.error = null;
         state.loading = false;
       })

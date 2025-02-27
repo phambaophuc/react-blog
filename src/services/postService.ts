@@ -3,21 +3,20 @@ import { api } from './api';
 
 export const postService = {
   getAllPosts: async (query: QueryPostType) => {
-    const response = await api.get('/posts', {
-      params: {
-        page: query.page ?? 1,
-        limit: query.limit ?? 8,
-        tag: query.tag,
-      },
-    });
-    return response.data;
+    return (
+      await api.get('/posts', {
+        params: {
+          page: query.page ?? 1,
+          limit: query.limit ?? 8,
+          tag: query.tag,
+        },
+      })
+    ).data;
   },
   getPostByID: async (id: string) => {
-    const response = await api.get(`/posts/${id}`);
-    return response.data;
+    return (await api.get(`/posts/${id}`)).data;
   },
   createPost: async (post: CreatePostType) => {
-    const response = await api.post('/posts', post);
-    return response.data;
+    return (await api.post('/posts', post)).data;
   },
 };

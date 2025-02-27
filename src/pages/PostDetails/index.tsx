@@ -6,7 +6,6 @@ import { useParams } from 'react-router-dom';
 import { Box, Paper, Typography } from '@mui/material';
 
 import Layout from '../../components/Layout';
-import MarkdownRenderer from '../../components/MarkdownRenderer';
 import { getPostByID } from '../../store/postSlice';
 import { AppDispatch, RootState } from '../../store/store';
 
@@ -43,10 +42,12 @@ const PostDetails = () => {
             {currentPost.title}
           </Typography>
           <Typography variant="subtitle1" color="textSecondary" gutterBottom>
-            {currentPost.user.fullName} |{' '}
+            {currentPost.author.displayName} |{' '}
             {new Date(currentPost.createdAt).toLocaleDateString()}
           </Typography>
-          <MarkdownRenderer content={currentPost.content} />
+          <Typography
+            dangerouslySetInnerHTML={{ __html: currentPost.content }}
+          />
         </Box>
       </Paper>
     </Layout>

@@ -30,8 +30,6 @@ const UserAvatar: React.FC = () => {
     handleMenuClose();
   };
 
-  console.log(user);
-
   return (
     <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
       {user ? (

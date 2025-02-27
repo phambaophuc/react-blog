@@ -1,14 +1,14 @@
 import { TagType } from './Tag';
-import { UserType } from './User';
+import { AuthorType } from './Author';
 
 type PostType = {
   id: string;
   title: string;
   description: string;
   content: string;
-  imageUrl?: string;
+  imageUrl: string;
   tag: TagType;
-  user: UserType;
+  author: AuthorType;
   createdAt: string;
   updatedAt: string;
 };
@@ -23,8 +23,8 @@ type CreatePostType = {
   title: string;
   description: string;
   content: string;
-  imageUrl?: string;
-  tagName: string;
+  imageUrl: string;
+  tagId: string;
 };
 
 type PostResponseType = {
