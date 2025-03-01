@@ -7,7 +7,7 @@ import Container from '@mui/material/Container';
 
 import useHideOnScroll from '../../../hooks/useHideOnScroll';
 import UserAvatar from '../../UserAvatar';
-import { StyledToolbar } from './styles';
+import { StyledToolbar } from './index.styled';
 
 const AppHeader = () => {
   const navigate = useNavigate();

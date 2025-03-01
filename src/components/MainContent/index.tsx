@@ -3,41 +3,18 @@ import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import RssFeedRoundedIcon from '@mui/icons-material/RssFeedRounded';
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import { CircularProgress } from '@mui/material';
 import Box from '@mui/material/Box';
-import FormControl from '@mui/material/FormControl';
 import Grid from '@mui/material/Grid2';
 import IconButton from '@mui/material/IconButton';
-import InputAdornment from '@mui/material/InputAdornment';
-import OutlinedInput from '@mui/material/OutlinedInput';
 import Typography from '@mui/material/Typography';
 
 import { getPosts, resetPosts } from '../../store/postSlice';
 import { AppDispatch, RootState } from '../../store/store';
 import CardItem from '../CardItem';
+import { Search } from '../Search';
+import WriteBlogButton from '../WriteBlogButton';
 import TagList from './TagList';
-
-const Search = () => {
-  return (
-    <FormControl sx={{ width: { xs: '100%', md: '25ch' } }} variant="outlined">
-      <OutlinedInput
-        size="small"
-        id="search"
-        placeholder="Search…"
-        sx={{ flexGrow: 1 }}
-        startAdornment={
-          <InputAdornment position="start" sx={{ color: 'text.primary' }}>
-            <SearchRoundedIcon fontSize="small" />
-          </InputAdornment>
-        }
-        inputProps={{
-          'aria-label': 'search',
-        }}
-      />
-    </FormControl>
-  );
-};
 
 const MainContent = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -88,12 +65,11 @@ const MainContent = () => {
             justifyContent: 'space-between',
             alignItems: { xs: 'start', md: 'center' },
             gap: 4,
+            padding: '0px 4px',
             overflow: 'hidden',
           }}
         >
-          <Typography>
-            Discover the latest news, updates, and insights about our products.
-          </Typography>
+          <WriteBlogButton />
           <Box
             sx={{
               display: { xs: 'none', sm: 'flex' },

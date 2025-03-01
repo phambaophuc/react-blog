@@ -5,12 +5,12 @@ import { useParams } from 'react-router-dom';
 
 import { Box, Paper, Typography } from '@mui/material';
 
+import FormattedContent from '../../components/FormattedContent';
 import Layout from '../../components/Layout';
-import MarkdownRenderer from '../../components/MarkdownRenderer';
 import { getPostByID } from '../../store/postSlice';
 import { AppDispatch, RootState } from '../../store/store';
 
-const PostDetails = () => {
+const BlogDetail = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useDispatch<AppDispatch>();
   const { currentPost } = useSelector((state: RootState) => state.posts);
@@ -21,11 +21,11 @@ const PostDetails = () => {
   }, [id, dispatch]);
 
   if (!currentPost) {
-    return <div>Post not found</div>;
+    return <Typography>Post not found</Typography>;
   }
 
   return (
-    <Layout maxWidth="lg">
+    <Layout maxWidth="md">
       <Paper elevation={3} sx={{ overflow: 'hidden' }}>
         <Box
           component="img"
@@ -43,14 +43,14 @@ const PostDetails = () => {
             {currentPost.title}
           </Typography>
           <Typography variant="subtitle1" color="textSecondary" gutterBottom>
-            {currentPost.user.fullName} |{' '}
+            {currentPost.author.displayName} |{' '}
             {new Date(currentPost.createdAt).toLocaleDateString()}
           </Typography>
-          <MarkdownRenderer content={currentPost.content} />
+          <FormattedContent content={currentPost.content} />
         </Box>
       </Paper>
     </Layout>
   );
 };
 
-export default PostDetails;
+export default BlogDetail;

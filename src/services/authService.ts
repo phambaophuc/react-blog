@@ -1,29 +1,23 @@
-import { supabase } from '../config/supabaseClient';
 import { api } from './api';
 
 export const authService = {
   signUp: async (fullName: string, email: string, password: string) => {
-    const response = await api.post('/auth/signup', {
-      fullName,
-      email,
-      password,
-    });
-    return response.data;
+    return (
+      await api.post('/auth/signup', {
+        fullName,
+        email,
+        password,
+      })
+    ).data;
   },
   signIn: async (email: string, password: string) => {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    if (error) throw error;
-    return data.session;
+    const {
+      data: { token },
+    } = await api.post('auth/signin', { email, password });
+    localStorage.setItem('access_token', token);
+    return token;
   },
   getUser: async () => {
-    const { data, error } = await supabase.auth.getUser();
-    if (error) throw error;
-    return data.user;
-  },
-  signOut: async () => {
-    await supabase.auth.signOut();
+    return (await api.get('auth/users/me')).data;
   },
 };

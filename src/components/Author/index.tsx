@@ -1,13 +1,13 @@
 import { Avatar, AvatarGroup, Box, Typography } from '@mui/material';
 
-import { UserType } from '../../models/User';
+import { AuthorType } from '../../models/Author';
 import { formatDate } from '../../utils/formatDate';
 
 const Author = ({
   author,
   createdAt,
 }: {
-  author: UserType;
+  author: AuthorType;
   createdAt: string;
 }) => {
   return (
@@ -31,12 +31,12 @@ const Author = ({
       >
         <AvatarGroup max={3}>
           <Avatar
-            alt={author.fullName}
+            alt={author.displayName}
             src={author.imageUrl}
             sx={{ width: 24, height: 24 }}
           />
         </AvatarGroup>
-        <Typography variant="caption">{author.fullName}</Typography>
+        <Typography variant="caption">{author.displayName}</Typography>
       </Box>
       <Typography variant="caption">{formatDate(createdAt)}</Typography>
     </Box>

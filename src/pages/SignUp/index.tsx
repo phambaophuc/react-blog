@@ -9,7 +9,7 @@ import {
   StyledContainer,
   StyledPaper,
   StyledTextField,
-} from './styles';
+} from './index.styled';
 
 interface FormData {
   fullname: string;
