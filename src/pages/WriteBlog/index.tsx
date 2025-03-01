@@ -7,9 +7,11 @@ import {
   Box,
   Button,
   FormControl,
+  FormControlLabel,
   InputLabel,
   MenuItem,
   Select,
+  Switch,
   TextField,
   Typography,
 } from '@mui/material';
@@ -22,7 +24,12 @@ import { TagType } from '../../models/Tag';
 import { postService } from '../../services/postService';
 import { storageService } from '../../services/storageService';
 import { tagService } from '../../services/tagService';
-import { ButtonGroup, StyledPaper, VisuallyHiddenInput } from './index.styled';
+import {
+  ButtonGroup,
+  StyledPaper,
+  UploadBox,
+  VisuallyHiddenInput,
+} from './index.styled';
 
 const WriteBlogPage = () => {
   const navigate = useNavigate();
@@ -37,6 +44,7 @@ const WriteBlogPage = () => {
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [useLink, setUseLink] = useState(false);
 
   useEffect(() => {
     tagService.getAllTags().then((val) => setTags(val));
@@ -71,13 +79,13 @@ const WriteBlogPage = () => {
 
   return (
     <Layout maxWidth="lg">
-      <StyledPaper elevation={3}>
-        <Typography variant="h4" fontWeight="bold" gutterBottom>
+      <StyledPaper>
+        <Typography sx={{ mb: 4 }} variant="h4" fontWeight="bold" gutterBottom>
           Write a Blog
         </Typography>
 
         <Grid container spacing={2}>
-          <Grid size={6}>
+          <Grid size={4}>
             <TextField
               label="Title"
               name="title"
@@ -85,11 +93,9 @@ const WriteBlogPage = () => {
               fullWidth
               value={post.title}
               onChange={handleChange}
-              sx={{ marginBottom: 2 }}
             />
-          </Grid>
-          <Grid size={6}>
-            <FormControl fullWidth>
+
+            <FormControl fullWidth sx={{ mt: 2 }}>
               <InputLabel>Tag</InputLabel>
               <Select
                 value={post.tagId}
@@ -103,68 +109,88 @@ const WriteBlogPage = () => {
                 ))}
               </Select>
             </FormControl>
+
+            <TextField
+              label="Short Description"
+              name="description"
+              variant="outlined"
+              fullWidth
+              multiline
+              rows={2}
+              value={post.description}
+              onChange={handleChange}
+              sx={{ marginTop: 3 }}
+            />
+
+            <Box sx={{ mt: 2 }}>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={useLink}
+                    onChange={() => setUseLink(!useLink)}
+                  />
+                }
+                label="Use Image URL"
+              />
+
+              {useLink ? (
+                <TextField
+                  label="Image URL"
+                  name="imageUrl"
+                  variant="outlined"
+                  fullWidth
+                  value={post.imageUrl}
+                  onChange={handleChange}
+                  placeholder="Paste image URL here..."
+                />
+              ) : (
+                <UploadBox as="label" sx={{ marginTop: 1 }}>
+                  {imagePreview ? (
+                    <img
+                      src={imagePreview}
+                      alt="Preview"
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        borderRadius: '8px',
+                      }}
+                    />
+                  ) : (
+                    <>
+                      <CloudUploadIcon sx={{ fontSize: 48, color: 'gray' }} />
+                      <Typography variant="body2" color="textSecondary">
+                        Click to upload or drag & drop an image
+                      </Typography>
+                    </>
+                  )}
+                  <VisuallyHiddenInput
+                    type="file"
+                    onChange={handleFileChange}
+                  />
+                </UploadBox>
+              )}
+            </Box>
+          </Grid>
+
+          <Grid size={8}>
+            <RichTextEditor
+              content={post.content}
+              setContent={(c) => setPost({ ...post, content: c })}
+            />
           </Grid>
         </Grid>
 
-        <TextField
-          label="Short Description"
-          name="description"
-          variant="outlined"
-          fullWidth
-          multiline
-          rows={2}
-          value={post.description}
-          onChange={handleChange}
-          sx={{ marginBottom: 2 }}
-        />
-
-        <Box
-          sx={{
-            border: '2px dashed #ccc',
-            mb: '8px',
-            borderRadius: '8px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: '200px',
-            cursor: 'pointer',
-            transition: '0.3s',
-            '&:hover': { borderColor: '#1976d2' },
-          }}
-          component="label"
-        >
-          {imagePreview ? (
-            <img
-              src={imagePreview}
-              alt="Preview"
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                borderRadius: '8px',
-              }}
-            />
-          ) : (
-            <>
-              <CloudUploadIcon sx={{ fontSize: 40, color: '#888' }} />
-              <Typography variant="body2" color="textSecondary">
-                Click to upload or drag and drop
-              </Typography>
-            </>
-          )}
-          <VisuallyHiddenInput type="file" onChange={handleFileChange} />
-        </Box>
-
-        <RichTextEditor
-          content={post.content}
-          setContent={(c) => setPost({ ...post, content: c })}
-          sx={{ mt: 2 }}
-        />
-
         <ButtonGroup>
-          <Button variant="outlined">Save Draft</Button>
-          <Button variant="contained" color="primary" onClick={handlePublish}>
+          <Button variant="outlined" size="large">
+            Save Draft
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
+            onClick={handlePublish}
+          >
             Publish
           </Button>
         </ButtonGroup>

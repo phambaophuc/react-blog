@@ -13,5 +13,13 @@ export const EditorWrapper = styled(Paper)(({ theme }) => ({
     minHeight: '180px',
     fontSize: '16px',
     fontFamily: theme.typography.fontFamily,
+    '& img': {
+      width: '100%',
+      height: '400px', 
+      objectFit: 'fill',
+      borderRadius: '8px',
+      display: 'block',
+      margin: 'auto',
+    },
   },
 }));

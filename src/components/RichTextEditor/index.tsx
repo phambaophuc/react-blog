@@ -194,7 +194,7 @@ const RichTextEditor = ({
       </Box>
 
       <EditorWrapper>
-        <EditorContent editor={editor} />
+        <EditorContent editor={editor} style={{ minHeight: 300 }} />
       </EditorWrapper>
     </Box>
   );

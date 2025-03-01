@@ -3,8 +3,8 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 
+import PostDetails from '../pages/BlogDetail';
 import HomePage from '../pages/Home';
-import PostDetails from '../pages/PostDetails';
 import SigninPage from '../pages/SignIn';
 import SignupPage from '../pages/SignUp';
 import WriteBlogPage from '../pages/WriteBlog';
