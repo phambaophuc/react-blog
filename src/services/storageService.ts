@@ -1,4 +1,4 @@
-import { api } from './api';
+import { apiClient } from './apiClient';
 
 export const storageService = {
   uploadFile: async (file: File) => {
@@ -6,7 +6,7 @@ export const storageService = {
     formData.append('file', file);
 
     try {
-      const response = await api.post('/storage/upload', formData, {
+      const response = await apiClient.post('/storage/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -15,7 +15,6 @@ export const storageService = {
       return response.data.url;
     } catch (error) {
       console.error(error);
-      throw new Error('File upload failed');
     }
   },
 };

@@ -8,6 +8,7 @@ import Container from '@mui/material/Container';
 import useHideOnScroll from '../../../hooks/useHideOnScroll';
 import UserAvatar from '../../UserAvatar';
 import { StyledToolbar } from './index.styled';
+import ROUTES from '../../../constant/routes';
 
 const AppHeader = () => {
   const navigate = useNavigate();
@@ -50,7 +51,7 @@ const AppHeader = () => {
                 variant="text"
                 color="info"
                 size="small"
-                onClick={() => navigate('/')}
+                onClick={() => navigate(ROUTES.BLOGS)}
                 sx={{ minWidth: 0 }}
               >
                 Blog

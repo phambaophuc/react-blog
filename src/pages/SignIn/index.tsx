@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
@@ -13,20 +13,13 @@ import {
   StyledPaper,
   StyledTextField,
 } from './index.styled';
+import ROUTES from '../../constant/routes';
 
 const SigninPage: React.FC = () => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch<AppDispatch>();
-  const { token, loading, error } = useSelector(
-    (state: RootState) => state.auth
-  );
-
-  useEffect(() => {
-    if (token) {
-      navigate('/');
-    }
-  }, [token, navigate]);
+  const { loading, error } = useSelector((state: RootState) => state.auth);
 
   const handleSignIn = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -35,7 +28,9 @@ const SigninPage: React.FC = () => {
     const email = form.email.value;
     const password = form.password.value;
 
-    dispatch(signIn({ email, password })).unwrap();
+    dispatch(signIn({ email, password }))
+      .unwrap()
+      .then(() => navigate(ROUTES.BLOGS));
   };
 
   return (

@@ -2,7 +2,7 @@ type AuthorType = {
   id: string;
   displayName: string;
   email: string;
-  imageUrl: string;
+  avatarUrl: string;
 };
 
 export type { AuthorType };

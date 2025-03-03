@@ -72,6 +72,11 @@ const authSlice = createSlice({
       })
       .addCase(fetchUser.fulfilled, (state, action) => {
         state.user = action.payload;
+        if (!action.payload) {
+          state.token = null;
+          state.user = null;
+          localStorage.removeItem('access_token');
+        }
       });
   },
 });

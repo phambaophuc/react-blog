@@ -3,8 +3,8 @@ import React from 'react';
 
 import { Box, Chip } from '@mui/material';
 
-import { TagType } from '../../../models/Tag';
-import { tagService } from '../../../services/tagService';
+import { TagType } from '../../models/Tag';
+import { tagService } from '../../services/tagService';
 
 interface TagListProps {
   onTagSelect: (tag: string | null) => void;
@@ -40,19 +40,18 @@ const TagList: React.FC<TagListProps> = ({ onTagSelect }) => {
   return (
     <Box
       sx={{
-        display: 'inline-flex',
-        flexDirection: 'row',
-        columnGap: 3,
-        rowGap: 2,
+        display: 'flex',
         flexWrap: 'wrap',
-        overflow: 'hidden',
+        gap: 1,
+        mb: 3,
       }}
     >
       <Chip
         size="medium"
         label="All categories"
         onClick={() => handleTagClick('')}
-        sx={{ backgroundColor: selectedTag && 'transparent' }}
+        color={selectedTag ? 'default' : 'primary'}
+        sx={{ m: 0.5 }}
       />
       {tags.map((tag) => (
         <Chip
@@ -60,10 +59,8 @@ const TagList: React.FC<TagListProps> = ({ onTagSelect }) => {
           size="medium"
           label={tag.name}
           onClick={() => handleTagClick(tag.name)}
-          sx={{
-            backgroundColor: selectedTag === tag.name ? '' : 'transparent',
-            border: 'none',
-          }}
+          color={selectedTag === tag.name ? 'primary' : 'default'}
+          sx={{ m: 0.5 }}
         />
       ))}
     </Box>

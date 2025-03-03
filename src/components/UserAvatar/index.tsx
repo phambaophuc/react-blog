@@ -7,6 +7,7 @@ import { Avatar, Box, Button, Menu, MenuItem, Typography } from '@mui/material';
 
 import { logout } from '../../store/authSlice';
 import { AppDispatch, RootState } from '../../store/store';
+import ROUTES from '../../constant/routes';
 
 const UserAvatar: React.FC = () => {
   const navigate = useNavigate();
@@ -62,7 +63,7 @@ const UserAvatar: React.FC = () => {
             color="primary"
             variant="text"
             size="small"
-            onClick={() => navigate('/signin')}
+            onClick={() => navigate(ROUTES.SIGNIN)}
           >
             Sign in
           </Button>
@@ -70,7 +71,7 @@ const UserAvatar: React.FC = () => {
             color="primary"
             variant="contained"
             size="small"
-            onClick={() => navigate('/signup')}
+            onClick={() => navigate(ROUTES.SIGNUP)}
           >
             Sign up
           </Button>
