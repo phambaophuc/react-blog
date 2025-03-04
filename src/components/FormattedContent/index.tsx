@@ -13,7 +13,11 @@ const FormattedContent = ({ content }: { content: string }) => {
     }
   };
 
-  return <Typography>{parse(content, { replace: transform })}</Typography>;
+  return (
+    <Typography variant="body1" sx={{ whiteSpace: 'pre-line', mb: 4 }}>
+      {parse(content, { replace: transform })}
+    </Typography>
+  );
 };
 
 export default FormattedContent;

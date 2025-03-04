@@ -1,7 +1,12 @@
-import { api } from './api';
+import { apiClient } from './apiClient';
 
 export const tagService = {
   getAllTags: async () => {
-    return (await api.get('/tags')).data;
+    try {
+      const response = await apiClient.get('/tags');
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
   },
 };

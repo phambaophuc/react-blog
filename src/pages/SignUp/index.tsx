@@ -36,7 +36,6 @@ const SignupPage: React.FC = () => {
       return;
     }
     setError('');
-    console.log('Signup successful', formData);
   };
 
   return (

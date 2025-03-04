@@ -1,33 +1,42 @@
-import React, { useEffect } from 'react';
+import React, { Suspense, lazy } from 'react';
 
-import { useDispatch } from 'react-redux';
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
-import PostDetails from '../pages/BlogDetail';
-import HomePage from '../pages/Home';
-import SigninPage from '../pages/SignIn';
-import SignupPage from '../pages/SignUp';
-import WriteBlogPage from '../pages/WriteBlog';
-import { fetchUser } from '../store/authSlice';
-import { AppDispatch } from '../store/store';
+import { Box, CircularProgress } from '@mui/material';
+
+const Loading = () => (
+  <Box
+    sx={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100vh',
+    }}
+  >
+    <CircularProgress />
+  </Box>
+);
+
+const BlogDetailPage = lazy(() => import('../pages/Blogs/BlogDetail'));
+const BlogsPage = lazy(() => import('../pages/Blogs'));
+const SigninPage = lazy(() => import('../pages/SignIn'));
+const SignupPage = lazy(() => import('../pages/SignUp'));
+const WriteBlogPage = lazy(() => import('../pages/Blogs/WriteBlog'));
 
 const AppRoutes: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
-
-  useEffect(() => {
-    dispatch(fetchUser());
-  }, [dispatch]);
-
   return (
-    <Router>
+    <Suspense fallback={<Loading />}>
       <Routes>
-        <Route path="/" element={<HomePage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/signin" element={<SigninPage />} />
-        <Route path="/posts/:id" element={<PostDetails />} />
-        <Route path="/posts/write" element={<WriteBlogPage />} />
+
+        <Route path="/blogs">
+          <Route index element={<BlogsPage />} />
+          <Route path=":id" element={<BlogDetailPage />} />
+          <Route path="write" element={<WriteBlogPage />} />
+        </Route>
       </Routes>
-    </Router>
+    </Suspense>
   );
 };
 

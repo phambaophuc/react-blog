@@ -20,7 +20,7 @@ export const getPostByID = createAsyncThunk(
 type InitType = PostResponseType & {
   loading: boolean;
   hasMore: boolean;
-  currentPost: PostType | null;
+  postData: PostType | null;
 };
 
 const initialState: InitType = {
@@ -30,7 +30,7 @@ const initialState: InitType = {
   totalPages: 1,
   loading: false,
   hasMore: true,
-  currentPost: null,
+  postData: null,
 };
 
 const postSlice = createSlice({
@@ -72,7 +72,7 @@ const postSlice = createSlice({
         state.loading = false;
       })
       .addCase(getPostByID.fulfilled, (state, action) => {
-        state.currentPost = action.payload;
+        state.postData = action.payload;
       });
   },
 });

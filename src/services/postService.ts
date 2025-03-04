@@ -1,22 +1,43 @@
 import { CreatePostType, QueryPostType } from '../models/Post';
-import { api } from './api';
+import { apiClient } from './apiClient';
 
 export const postService = {
   getAllPosts: async (query: QueryPostType) => {
-    return (
-      await api.get('/posts', {
+    try {
+      const response = await apiClient.get('/posts', {
         params: {
           page: query.page ?? 1,
           limit: query.limit ?? 8,
           tag: query.tag,
         },
-      })
-    ).data;
+      });
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  },
+  getRelatedPosts: async (id: string) => {
+    try {
+      const response = await apiClient.get(`/posts/${id}/related`);
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
   },
   getPostByID: async (id: string) => {
-    return (await api.get(`/posts/${id}`)).data;
+    try {
+      const response = await apiClient.get(`/posts/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
   },
   createPost: async (post: CreatePostType) => {
-    return (await api.post('/posts', post)).data;
+    try {
+      const response = await apiClient.post('/posts', post);
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
   },
 };

@@ -1,4 +1,4 @@
-import { Toolbar } from '@mui/material';
+import { Box, Toolbar } from '@mui/material';
 import { alpha, styled } from '@mui/material/styles';
 
 export const StyledToolbar = styled(Toolbar)(({ theme }) => ({
@@ -14,3 +14,12 @@ export const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   boxShadow: theme.shadows[1],
   padding: '8px 12px',
 }));
+
+export const LogoWrapper = styled(Box)({
+  display: 'flex',
+  alignItems: 'center',
+  cursor: 'pointer',
+  '&:hover': {
+    opacity: 0.8,
+  },
+});

@@ -17,19 +17,20 @@ import {
 } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 
-import Layout from '../../components/Layout';
-import RichTextEditor from '../../components/RichTextEditor';
-import { CreatePostType } from '../../models/Post';
-import { TagType } from '../../models/Tag';
-import { postService } from '../../services/postService';
-import { storageService } from '../../services/storageService';
-import { tagService } from '../../services/tagService';
+import Layout from '../../../components/Layout';
+import RichTextEditor from '../../../components/RichTextEditor';
+import { CreatePostType } from '../../../models/Post';
+import { TagType } from '../../../models/Tag';
+import { postService } from '../../../services/postService';
+import { storageService } from '../../../services/storageService';
+import { tagService } from '../../../services/tagService';
 import {
   ButtonGroup,
   StyledPaper,
   UploadBox,
   VisuallyHiddenInput,
 } from './index.styled';
+import ROUTES from '../../../constant/routes';
 
 const WriteBlogPage = () => {
   const navigate = useNavigate();
@@ -46,9 +47,18 @@ const WriteBlogPage = () => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [useLink, setUseLink] = useState(false);
 
+  const fetchTags = async () => {
+    try {
+      const tagList = await tagService.getAllTags();
+      setTags(tagList);
+    } catch (error) {
+      console.error('Error fetching tags:', error);
+    }
+  };
+
   useEffect(() => {
-    tagService.getAllTags().then((val) => setTags(val));
-  }, [tags]);
+    fetchTags();
+  }, []);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -71,7 +81,7 @@ const WriteBlogPage = () => {
         uploadedImageUrl = await storageService.uploadFile(imageFile);
       }
       await postService.createPost({ ...post, imageUrl: uploadedImageUrl });
-      navigate('/');
+      navigate(ROUTES.BLOGS, { replace: true });
     } catch (error) {
       console.error('Error publishing post:', error);
     }
