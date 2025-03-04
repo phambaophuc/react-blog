@@ -1,14 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 
+import { Typography } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 
+import ROUTES from '../../../constant/routes';
 import useHideOnScroll from '../../../hooks/useHideOnScroll';
 import UserAvatar from '../../UserAvatar';
-import { StyledToolbar } from './index.styled';
-import ROUTES from '../../../constant/routes';
+import { LogoWrapper, StyledToolbar } from './index.styled';
 
 const AppHeader = () => {
   const navigate = useNavigate();
@@ -29,35 +28,20 @@ const AppHeader = () => {
     >
       <Container maxWidth="lg">
         <StyledToolbar variant="dense" disableGutters>
-          <Box
-            sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}
-          >
-            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-              <Button variant="text" color="info" size="small">
-                Features
-              </Button>
-              <Button variant="text" color="info" size="small">
-                Pricing
-              </Button>
-              <Button
-                variant="text"
-                color="info"
-                size="small"
-                sx={{ minWidth: 0 }}
-              >
-                FAQ
-              </Button>
-              <Button
-                variant="text"
-                color="info"
-                size="small"
-                onClick={() => navigate(ROUTES.BLOGS)}
-                sx={{ minWidth: 0 }}
-              >
-                Blog
-              </Button>
-            </Box>
-          </Box>
+          <LogoWrapper>
+            <Typography
+              component="div"
+              variant="h6"
+              sx={{
+                color: 'primary.main',
+                fontWeight: 700,
+                letterSpacing: 1,
+              }}
+              onClick={() => navigate(ROUTES.BLOGS)}
+            >
+              WELCOME TO BLOG
+            </Typography>
+          </LogoWrapper>
           <UserAvatar />
         </StyledToolbar>
       </Container>
