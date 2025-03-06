@@ -1,5 +1,13 @@
 import { useEffect, useState } from 'react';
 
+import Layout from '@components/Layout';
+import RichTextEditor from '@components/RichTextEditor';
+import ROUTES from '@constant/routes';
+import { CreatePostType } from '@models/Post';
+import { TagType } from '@models/Tag';
+import { postService } from '@services/postService';
+import { storageService } from '@services/storageService';
+import { tagService } from '@services/tagService';
 import { useNavigate } from 'react-router-dom';
 
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
@@ -17,20 +25,12 @@ import {
 } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 
-import Layout from '../../../components/Layout';
-import RichTextEditor from '../../../components/RichTextEditor';
-import { CreatePostType } from '../../../models/Post';
-import { TagType } from '../../../models/Tag';
-import { postService } from '../../../services/postService';
-import { storageService } from '../../../services/storageService';
-import { tagService } from '../../../services/tagService';
 import {
   ButtonGroup,
   StyledPaper,
   UploadBox,
   VisuallyHiddenInput,
 } from './index.styled';
-import ROUTES from '../../../constant/routes';
 
 const WriteBlogPage = () => {
   const navigate = useNavigate();

@@ -1,5 +1,8 @@
 import { useCallback, useState } from 'react';
 
+import ROUTES from '@constant/routes';
+import { logout } from '@store/authSlice';
+import { AppDispatch, RootState } from '@store/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -15,10 +18,6 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-
-import ROUTES from '../../constant/routes';
-import { logout } from '../../store/authSlice';
-import { AppDispatch, RootState } from '../../store/store';
 
 const UserAvatar: React.FC = () => {
   const navigate = useNavigate();

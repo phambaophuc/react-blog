@@ -1,5 +1,6 @@
-import { TagType } from './Tag';
 import { AuthorType } from './Author';
+import { CommentType } from './Comment';
+import { TagType } from './Tag';
 
 type PostType = {
   id: string;
@@ -9,6 +10,7 @@ type PostType = {
   imageUrl: string;
   tag: TagType;
   author: AuthorType;
+  comments: CommentType[];
   createdAt: string;
   updatedAt: string;
 };

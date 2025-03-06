@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import React from 'react';
 
-import { Box, Chip } from '@mui/material';
+import { TagType } from '@models/Tag';
+import { tagService } from '@services/tagService';
 
-import { TagType } from '../../models/Tag';
-import { tagService } from '../../services/tagService';
+import { Box, Chip } from '@mui/material';
 
 interface TagListProps {
   onTagSelect: (tag: string | null) => void;

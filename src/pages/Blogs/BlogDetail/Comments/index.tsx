@@ -1,52 +1,27 @@
 import React, { useState } from 'react';
 
+import { CommentType } from '@models/Comment';
+import { timeAgo } from '@utils/dateUtils';
+
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ReplyIcon from '@mui/icons-material/Reply';
 import {
   Avatar,
   Box,
   Button,
+  Collapse,
   Divider,
   Paper,
   TextField,
   Typography,
 } from '@mui/material';
 
-const Comments = () => {
-  const [newComment, setNewComment] = useState('');
-  const [comments, setComments] = useState([
-    {
-      id: 1,
-      author: 'John Doe',
-      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e',
-      content: 'Great article! Very insightful.',
-      timestamp: '2 hours ago',
-      likes: 5,
-    },
-    {
-      id: 2,
-      author: 'Jane Smith',
-      avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80',
-      content: 'Thanks for sharing this valuable information.',
-      timestamp: '5 hours ago',
-      likes: 3,
-    },
-  ]);
+const Comments: React.FC<{ comments: CommentType[] }> = ({ comments }) => {
+  const [newComment, setNewComment] = useState<string>('');
+  const [replyForm, setReplyForm] = useState<boolean>(false);
 
-  const handleCommentSubmit = (e: any) => {
-    e.preventDefault();
-    if (newComment.trim()) {
-      const comment = {
-        id: comments.length + 1,
-        author: 'Guest User',
-        avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde',
-        content: newComment,
-        timestamp: 'Just now',
-        likes: 0,
-      };
-      setComments([...comments, comment]);
-      setNewComment('');
-    }
+  const toggleReplyForm = () => {
+    setReplyForm(!replyForm);
   };
 
   return (
@@ -54,7 +29,7 @@ const Comments = () => {
       <Typography variant="h5" gutterBottom>
         Comments
       </Typography>
-      <Box component="form" onSubmit={handleCommentSubmit} sx={{ mb: 4 }}>
+      <Box component="form" sx={{ mb: 4 }}>
         <TextField
           fullWidth
           multiline
@@ -73,21 +48,82 @@ const Comments = () => {
         {comments.map((comment) => (
           <Box key={comment.id} sx={{ mb: 3 }}>
             <Box sx={{ display: 'flex', alignItems: 'flex-start', mb: 1 }}>
-              <Avatar src={comment.avatar} sx={{ mr: 2 }} />
+              <Avatar src={comment.author.avatarUrl} sx={{ mr: 2 }} />
               <Box sx={{ flex: 1 }}>
-                <Typography variant="subtitle2">{comment.author}</Typography>
+                <Typography variant="subtitle2">
+                  {comment.author.displayName}
+                </Typography>
                 <Typography variant="body2" color="text.secondary" gutterBottom>
-                  {comment.timestamp}
+                  {timeAgo(comment.createdAt)}
                 </Typography>
                 <Typography variant="body1">{comment.content}</Typography>
                 <Box sx={{ display: 'flex', gap: 2, mt: 1 }}>
                   <Button startIcon={<FavoriteIcon />} size="small">
-                    {comment.likes}
+                    0
                   </Button>
-                  <Button startIcon={<ReplyIcon />} size="small">
+                  <Button
+                    startIcon={<ReplyIcon />}
+                    size="small"
+                    onClick={() => toggleReplyForm()}
+                  >
                     Reply
                   </Button>
                 </Box>
+
+                <Collapse in={replyForm}>
+                  <Box sx={{ mt: 2, ml: 2 }}>
+                    <TextField
+                      fullWidth
+                      size="small"
+                      placeholder="Write a reply..."
+                      multiline
+                      rows={2}
+                      sx={{ mb: 1 }}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                          e.preventDefault();
+                        }
+                      }}
+                    />
+                    <Button variant="contained" size="small">
+                      Reply
+                    </Button>
+                  </Box>
+                </Collapse>
+
+                {comment.replies &&
+                  comment.replies.map((reply) => (
+                    <Box key={reply.id} sx={{ mt: 2, ml: 4 }}>
+                      <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                        <Avatar
+                          src={reply.author.avatarUrl}
+                          sx={{ width: 32, height: 32, mr: 1 }}
+                        />
+                        <Box>
+                          <Typography variant="subtitle2">
+                            {reply.author.displayName}
+                          </Typography>
+                          <Typography
+                            variant="body2"
+                            color="text.secondary"
+                            gutterBottom
+                          >
+                            {timeAgo(reply.createdAt)}
+                          </Typography>
+                          <Typography variant="body2">
+                            {reply.content}
+                          </Typography>
+                          <Button
+                            startIcon={<FavoriteIcon />}
+                            size="small"
+                            sx={{ mt: 1 }}
+                          >
+                            0
+                          </Button>
+                        </Box>
+                      </Box>
+                    </Box>
+                  ))}
               </Box>
             </Box>
             <Divider />

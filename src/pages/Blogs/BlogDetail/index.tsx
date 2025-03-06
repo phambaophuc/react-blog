@@ -11,7 +11,7 @@ import FormattedContent from '../../../components/FormattedContent';
 import Layout from '../../../components/Layout';
 import { getPostByID } from '../../../store/postSlice';
 import { AppDispatch, RootState } from '../../../store/store';
-import { formatDate } from '../../../utils/formatDate';
+import { formatDate } from '../../../utils/dateUtils';
 import Comments from './Comments';
 import RelatedPosts from './RelatedPosts';
 
@@ -70,7 +70,7 @@ const BlogDetailPage = () => {
       </Box>
 
       <RelatedPosts postId={postData.id} />
-      <Comments />
+      <Comments comments={postData.comments} />
     </Layout>
   );
 };

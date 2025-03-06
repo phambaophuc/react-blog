@@ -1,4 +1,3 @@
-// src/routes.ts
 const ROUTES = {
   SIGNUP: '/signup',
   SIGNIN: '/signin',
