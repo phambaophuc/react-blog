@@ -1,7 +1,7 @@
-import { Avatar, AvatarGroup, Box, Typography } from '@mui/material';
+import { AuthorType } from '@models/Author';
+import { formatDate } from '@utils/dateUtils';
 
-import { AuthorType } from '../../models/Author';
-import { formatDate } from '../../utils/formatDate';
+import { Avatar, AvatarGroup, Box, Typography } from '@mui/material';
 
 const Author = ({
   author,
@@ -32,7 +32,7 @@ const Author = ({
         <AvatarGroup max={3}>
           <Avatar
             alt={author.displayName}
-            src={author.imageUrl}
+            src={author.avatarUrl}
             sx={{ width: 24, height: 24 }}
           />
         </AvatarGroup>

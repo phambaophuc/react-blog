@@ -1,7 +1,6 @@
+import { PostResponseType, PostType, QueryPostType } from '@models/Post';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-
-import { PostResponseType, PostType, QueryPostType } from '../models/Post';
-import { postService } from '../services/postService';
+import { postService } from '@services/postService';
 
 export const getPosts = createAsyncThunk(
   'posts/getPosts',

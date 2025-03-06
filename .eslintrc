@@ -1,7 +1,7 @@
 {
   "root": true,
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint", "prettier", "react-hooks"],
+  "plugins": ["@typescript-eslint", "prettier", "react-hooks", "import", "simple-import-sort"],
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
@@ -9,7 +9,7 @@
     "prettier",
     "plugin:react-hooks/recommended"
   ],
-  "ignorePatterns": ["node_modules/*"],
+  "ignorePatterns": ["node_modules/*", "dist/*"],
   "rules": {
     "@typescript-eslint/no-explicit-any": "warn",
     "@typescript-eslint/no-unused-vars": ["warn", { "vars": "all" }],
@@ -32,6 +32,28 @@
         "bracketSameLine": false,
         "endOfLine": "lf"
       }
-    ]
+    ],
+    "import/no-unresolved": "error",
+    "simple-import-sort/imports": "warn",
+    "simple-import-sort/exports": "warn"
+  },
+  "settings": {
+    "import/resolver": {
+      "alias": {
+        "map": [
+          ["@components", "./src/components"],
+          ["@constant", "./src/constant"],
+          ["@hooks", "./src/hooks"],
+          ["@models", "./src/models"],
+          ["@store", "./src/store"],
+          ["@utils", "./src/utils"],
+          ["@services", "./src/services"]
+        ],
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      },
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
   }
 }

@@ -1,4 +1,5 @@
-import { CreatePostType, QueryPostType } from '../models/Post';
+import { CreatePostType, QueryPostType } from '@models/Post';
+
 import { apiClient } from './apiClient';
 
 export const postService = {

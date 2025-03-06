@@ -1,19 +1,19 @@
 import React from 'react';
 
+import ROUTES from '@constant/routes';
+import { signIn } from '@store/authSlice';
+import { AppDispatch, RootState } from '@store/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { Alert, Box, Typography } from '@mui/material';
 
-import { signIn } from '../../store/authSlice';
-import { AppDispatch, RootState } from '../../store/store';
 import {
   StyledButton,
   StyledContainer,
   StyledPaper,
   StyledTextField,
 } from './index.styled';
-import ROUTES from '../../constant/routes';
 
 const SigninPage: React.FC = () => {
   const navigate = useNavigate();

@@ -1,12 +1,12 @@
+import UserAvatar from '@components/UserAvatar';
+import ROUTES from '@constant/routes';
+import useHideOnScroll from '@hooks/useHideOnScroll';
 import { useNavigate } from 'react-router-dom';
 
 import { Typography } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Container from '@mui/material/Container';
 
-import ROUTES from '../../../constant/routes';
-import useHideOnScroll from '../../../hooks/useHideOnScroll';
-import UserAvatar from '../../UserAvatar';
 import { LogoWrapper, StyledToolbar } from './index.styled';
 
 const AppHeader = () => {

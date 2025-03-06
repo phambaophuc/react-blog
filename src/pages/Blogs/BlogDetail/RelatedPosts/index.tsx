@@ -1,15 +1,15 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
+import ROUTES from '@constant/routes';
+import { PostType } from '@models/Post';
+import { postService } from '@services/postService';
+import { formatDate } from '@utils/dateUtils';
 import { useNavigate } from 'react-router-dom';
 
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { Box, CardContent, CardMedia, Chip, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 
-import ROUTES from '../../../../constant/routes';
-import { PostType } from '../../../../models/Post';
-import { postService } from '../../../../services/postService';
-import { formatDate } from '../../../../utils/formatDate';
 import { StyledCard } from './index.styled';
 
 const RelatedPosts = ({ postId }: { postId: string }) => {

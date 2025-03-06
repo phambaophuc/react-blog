@@ -1,9 +1,8 @@
 import { useEffect } from 'react';
 
+import { fetchUser } from '@store/authSlice';
+import { AppDispatch } from '@store/store';
 import { useDispatch } from 'react-redux';
-
-import { fetchUser } from '../store/authSlice';
-import { AppDispatch } from '../store/store';
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useDispatch<AppDispatch>();

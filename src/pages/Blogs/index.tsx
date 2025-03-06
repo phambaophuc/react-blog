@@ -1,8 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
 
+import Layout from '@components/Layout';
+import TagList from '@components/TagList';
+import ROUTES from '@constant/routes';
+import { getPosts, resetPosts } from '@store/postSlice';
+import { AppDispatch, RootState } from '@store/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
+import { Search } from '@mui/icons-material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import ShareIcon from '@mui/icons-material/Share';
 import {
@@ -17,12 +23,6 @@ import {
 } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 
-import Layout from '../../components/Layout';
-import { Search } from '../../components/Search';
-import TagList from '../../components/TagList';
-import ROUTES from '../../constant/routes';
-import { getPosts, resetPosts } from '../../store/postSlice';
-import { AppDispatch, RootState } from '../../store/store';
 import { StyledCard } from './index.styled';
 
 const BlogsPage = () => {
