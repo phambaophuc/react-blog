@@ -16,7 +16,7 @@ const TagList: React.FC<TagListProps> = ({ onTagSelect }) => {
 
   const fetchTags = async () => {
     try {
-      const tagList = await tagService.getAllTags();
+      const tagList = await tagService.findAll();
       setTags(tagList);
     } catch (error) {
       console.error('Error fetching tags:', error);

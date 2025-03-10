@@ -17,7 +17,7 @@ const RelatedPosts = ({ postId }: { postId: string }) => {
   const [relatedPosts, setRelatedPosts] = useState<PostType[]>([]);
 
   const fetchPost = useCallback(async () => {
-    const posts = await postService.getRelatedPosts(postId);
+    const posts = await postService.findAllRelated(postId);
     setRelatedPosts(posts);
   }, [postId]);
 

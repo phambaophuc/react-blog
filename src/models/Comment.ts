@@ -8,4 +8,10 @@ type CommentType = {
   replies: CommentType[];
 };
 
-export type { CommentType };
+type CreateCommentType = {
+  content: string;
+  postId: string;
+  parentId?: string;
+};
+
+export type { CommentType, CreateCommentType };
