@@ -5,14 +5,14 @@ import { postService } from '@services/postService';
 export const getPosts = createAsyncThunk(
   'posts/getPosts',
   async (query: QueryPostType) => {
-    return await postService.getAllPosts(query);
+    return await postService.findAll(query);
   }
 );
 
 export const getPostByID = createAsyncThunk(
   'posts/getPostByID',
   async (id: string) => {
-    return await postService.getPostByID(id);
+    return await postService.findById(id);
   }
 );
 

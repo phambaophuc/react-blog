@@ -3,7 +3,7 @@ import { CreatePostType, QueryPostType } from '@models/Post';
 import { apiClient } from './apiClient';
 
 export const postService = {
-  getAllPosts: async (query: QueryPostType) => {
+  findAll: async (query: QueryPostType) => {
     try {
       const response = await apiClient.get('/posts', {
         params: {
@@ -17,7 +17,7 @@ export const postService = {
       console.error(error);
     }
   },
-  getRelatedPosts: async (id: string) => {
+  findAllRelated: async (id: string) => {
     try {
       const response = await apiClient.get(`/posts/${id}/related`);
       return response.data;
@@ -25,7 +25,7 @@ export const postService = {
       console.error(error);
     }
   },
-  getPostByID: async (id: string) => {
+  findById: async (id: string) => {
     try {
       const response = await apiClient.get(`/posts/${id}`);
       return response.data;
@@ -33,7 +33,7 @@ export const postService = {
       console.error(error);
     }
   },
-  createPost: async (post: CreatePostType) => {
+  create: async (post: CreatePostType) => {
     try {
       const response = await apiClient.post('/posts', post);
       return response.data;

@@ -80,7 +80,7 @@ const WriteBlogPage = () => {
       if (imageFile) {
         uploadedImageUrl = await storageService.uploadFile(imageFile);
       }
-      await postService.createPost({ ...post, imageUrl: uploadedImageUrl });
+      await postService.create({ ...post, imageUrl: uploadedImageUrl });
       navigate(ROUTES.BLOGS, { replace: true });
     } catch (error) {
       console.error('Error publishing post:', error);

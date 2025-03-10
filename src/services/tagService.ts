@@ -1,7 +1,7 @@
 import { apiClient } from './apiClient';
 
 export const tagService = {
-  getAllTags: async () => {
+  findAll: async () => {
     try {
       const response = await apiClient.get('/tags');
       return response.data;
