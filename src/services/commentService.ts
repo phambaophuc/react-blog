@@ -11,4 +11,11 @@ export const commentService = {
       console.error(error);
     }
   },
+  delete: async (id: string) => {
+    try {
+      return await apiClient.delete(`/comments/${id}`);
+    } catch (error) {
+      console.error(error);
+    }
+  },
 };

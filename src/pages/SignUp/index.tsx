@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 
-import { Link } from 'react-router-dom';
+import ROUTES from '@constant/routes';
+import { authService } from '@services/authService';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { Alert, Box, Typography } from '@mui/material';
 
@@ -12,14 +14,16 @@ import {
 } from './index.styled';
 
 interface FormData {
-  fullname: string;
+  displayName: string;
   email: string;
   password: string;
 }
 
 const SignupPage: React.FC = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState<FormData>({
-    fullname: '',
+    displayName: '',
     email: '',
     password: '',
   });
@@ -29,12 +33,15 @@ const SignupPage: React.FC = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const { displayName, email, password } = formData;
     e.preventDefault();
-    if (!formData.fullname || !formData.email || !formData.password) {
+    if (!displayName || !email || !password) {
       setError('All fields are required.');
       return;
     }
+    await authService.signUp({ displayName, email, password });
+    navigate(ROUTES.SIGNIN);
     setError('');
   };
 
@@ -48,18 +55,18 @@ const SignupPage: React.FC = () => {
           Sign up to share your thoughts and connect with like-minded people.
         </Typography>
         {error && (
-          <Alert severity="error" sx={{ mb: 2 }}>
+          <Alert severity="error" sx={{ mt: 2 }}>
             {error}
           </Alert>
         )}
-        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 5 }}>
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <StyledTextField
             fullWidth
             label="Full Name"
-            name="fullname"
+            name="displayName"
             variant="outlined"
             size="small"
-            value={formData.fullname}
+            value={formData.displayName}
             onChange={handleChange}
           />
           <StyledTextField

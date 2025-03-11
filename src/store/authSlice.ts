@@ -1,17 +1,6 @@
-import { SignInType, SignUpType } from '@models/Auth';
+import { SignInType } from '@models/Auth';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { authService } from '@services/authService';
-
-export const signUp = createAsyncThunk(
-  'auth/signup',
-  (credentials: SignUpType) => {
-    return authService.signUp(
-      credentials.displayName,
-      credentials.email,
-      credentials.password
-    );
-  }
-);
 
 export const signIn = createAsyncThunk(
   'auth/signin',

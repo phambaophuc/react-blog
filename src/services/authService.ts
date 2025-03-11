@@ -1,13 +1,11 @@
+import { SignUpType } from '@models/Auth';
+
 import { apiClient } from './apiClient';
 
 export const authService = {
-  signUp: async (fullName: string, email: string, password: string) => {
+  signUp: async (body: SignUpType) => {
     try {
-      const response = await apiClient.post('/auth/signup', {
-        fullName,
-        email,
-        password,
-      });
+      const response = await apiClient.post('/auth/signup', body);
       return response.data;
     } catch (error) {
       console.error(error);
