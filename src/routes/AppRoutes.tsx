@@ -17,11 +17,14 @@ const Loading = () => (
   </Box>
 );
 
-const BlogDetailPage = lazy(() => import('../pages/Blogs/BlogDetail'));
-const BlogsPage = lazy(() => import('../pages/Blogs'));
+const NotFoundPage = lazy(() => import('../pages/NotFound'));
+
+const ArticleDetailPage = lazy(() => import('../pages/Articles/ArticleDetail'));
+const ArticlesPage = lazy(() => import('../pages/Articles'));
+const WriteArticlePage = lazy(() => import('../pages/Articles/WriteArticle'));
+
 const SigninPage = lazy(() => import('../pages/SignIn'));
 const SignupPage = lazy(() => import('../pages/SignUp'));
-const WriteBlogPage = lazy(() => import('../pages/Blogs/WriteBlog'));
 
 const AppRoutes: React.FC = () => {
   return (
@@ -30,11 +33,13 @@ const AppRoutes: React.FC = () => {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/signin" element={<SigninPage />} />
 
-        <Route path="/blogs">
-          <Route index element={<BlogsPage />} />
-          <Route path=":id" element={<BlogDetailPage />} />
-          <Route path="write" element={<WriteBlogPage />} />
+        <Route path="/articles">
+          <Route index element={<ArticlesPage />} />
+          <Route path=":id" element={<ArticleDetailPage />} />
+          <Route path="write" element={<WriteArticlePage />} />
         </Route>
+
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Suspense>
   );

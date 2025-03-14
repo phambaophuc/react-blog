@@ -30,7 +30,7 @@ const SigninPage: React.FC = () => {
 
     dispatch(signIn({ email, password }))
       .unwrap()
-      .then(() => navigate(ROUTES.BLOGS));
+      .then(() => navigate(ROUTES.ARTICLES));
   };
 
   return (

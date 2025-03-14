@@ -37,7 +37,7 @@ const AppHeader = () => {
                 fontWeight: 700,
                 letterSpacing: 1,
               }}
-              onClick={() => navigate(ROUTES.BLOGS)}
+              onClick={() => navigate(ROUTES.ARTICLES)}
             >
               WELCOME TO BLOG
             </Typography>

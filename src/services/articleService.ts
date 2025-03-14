@@ -1,11 +1,11 @@
-import { CreatePostType, QueryPostType } from '@models/Post';
+import { CreateArticleType, QueryArticleType } from '@models/Article';
 
 import { apiClient } from './apiClient';
 
-export const postService = {
-  findAll: async (query: QueryPostType) => {
+export const articleService = {
+  findAll: async (query: QueryArticleType) => {
     try {
-      const response = await apiClient.get('/posts', {
+      const response = await apiClient.get('/articles', {
         params: {
           page: query.page ?? 1,
           limit: query.limit ?? 8,
@@ -19,7 +19,7 @@ export const postService = {
   },
   findAllRelated: async (id: string) => {
     try {
-      const response = await apiClient.get(`/posts/${id}/related`);
+      const response = await apiClient.get(`/articles/${id}/related`);
       return response.data;
     } catch (error) {
       console.error(error);
@@ -27,15 +27,15 @@ export const postService = {
   },
   findById: async (id: string) => {
     try {
-      const response = await apiClient.get(`/posts/${id}`);
+      const response = await apiClient.get(`/articles/${id}`);
       return response.data;
     } catch (error) {
       console.error(error);
     }
   },
-  create: async (post: CreatePostType) => {
+  create: async (article: CreateArticleType) => {
     try {
-      const response = await apiClient.post('/posts', post);
+      const response = await apiClient.post('/articles', article);
       return response.data;
     } catch (error) {
       console.error(error);

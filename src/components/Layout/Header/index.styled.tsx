@@ -6,13 +6,12 @@ export const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'space-between',
   flexShrink: 0,
-  borderRadius: `calc(${theme.shape.borderRadius}px + 8px)`,
+  borderRadius: theme.shape.borderRadius + 8,
   backdropFilter: 'blur(24px)',
-  border: '1px solid',
-  borderColor: theme.palette.divider,
+  border: `1px solid ${theme.palette.divider}`,
   backgroundColor: alpha(theme.palette.background.default, 0.4),
   boxShadow: theme.shadows[1],
-  padding: '8px 12px',
+  padding: theme.spacing(1, 1.5),
 }));
 
 export const LogoWrapper = styled(Box)({

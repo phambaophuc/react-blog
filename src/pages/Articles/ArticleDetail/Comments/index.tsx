@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 import { CommentType } from '@models/Comment';
 import { commentService } from '@services/commentService';
+import { RootState } from '@store/store';
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import { Paper, Typography } from '@mui/material';
@@ -13,25 +15,30 @@ const Comments: React.FC<{ comments: CommentType[] }> = ({
   comments: initialComments,
 }) => {
   const { id } = useParams<{ id: string }>();
+  const { user } = useSelector((state: RootState) => state.auth);
+
   const [comments, setComments] = useState<CommentType[]>(initialComments);
 
   useEffect(() => {
     setComments(initialComments);
   }, [initialComments]);
 
-  const handlePostComment = async (content: string) => {
+  const handleArticleComment = async (content: string) => {
     if (id) {
-      const commentData = await commentService.create({ content, postId: id });
+      const commentData = await commentService.create({
+        content,
+        articleId: id,
+      });
       setComments((prev) => [commentData, ...prev]);
     }
   };
 
-  const handlePostReply = async (commentId: string, content: string) => {
+  const handleArticleReply = async (commentId: string, content: string) => {
     if (id) {
       const replyData = await commentService.create({
         content,
         parentId: commentId,
-        postId: id,
+        articleId: id,
       });
       setComments((prev) =>
         prev.map((comment) =>
@@ -68,10 +75,10 @@ const Comments: React.FC<{ comments: CommentType[] }> = ({
       <Typography variant="h5" gutterBottom>
         Comments
       </Typography>
-      <CommentInput onSubmit={handlePostComment} sx={{ mb: 4 }} />
+      {user && <CommentInput onSubmit={handleArticleComment} sx={{ mb: 4 }} />}
       <CommentList
         comments={comments}
-        onReply={handlePostReply}
+        onReply={handleArticleReply}
         onDelete={handleDeleteComment}
       />
     </Paper>

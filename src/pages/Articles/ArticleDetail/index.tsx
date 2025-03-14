@@ -9,23 +9,23 @@ import { Avatar, Box, IconButton, Typography } from '@mui/material';
 
 import FormattedContent from '../../../components/FormattedContent';
 import Layout from '../../../components/Layout';
-import { getPostByID } from '../../../store/postSlice';
+import { getArticleByID } from '../../../store/articleSlice';
 import { AppDispatch, RootState } from '../../../store/store';
 import { formatDate } from '../../../utils/dateUtils';
 import Comments from './Comments';
-import RelatedPosts from './RelatedPosts';
+import RelatedArticles from './RelatedArticles';
 
 const BlogDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useDispatch<AppDispatch>();
-  const { postData } = useSelector((state: RootState) => state.posts);
+  const { articleData } = useSelector((state: RootState) => state.articles);
 
   useEffect(() => {
-    if (id) dispatch(getPostByID(id));
+    if (id) dispatch(getArticleByID(id));
     window.scroll(0, 0);
   }, [id, dispatch]);
 
-  if (!postData) {
+  if (!articleData) {
     return <Typography>Blog not found</Typography>;
   }
 
@@ -33,23 +33,23 @@ const BlogDetailPage = () => {
     <Layout maxWidth="xl" sx={{ py: 4, minHeight: '100vh' }}>
       <Box component="article" sx={{ mb: 6 }}>
         <Typography variant="h2" gutterBottom>
-          {postData.title}
+          {articleData.title}
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-          <Avatar src={postData.author.avatarUrl} sx={{ mr: 2 }} />
+          <Avatar src={articleData.author.avatarUrl} sx={{ mr: 2 }} />
           <Box>
             <Typography variant="subtitle1">
-              Written by {postData.author.displayName}
+              Written by {articleData.author.displayName}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Published on {formatDate(postData.createdAt)}
+              Published on {formatDate(articleData.createdAt)}
             </Typography>
           </Box>
         </Box>
         <Box
           component="img"
-          src={postData.imageUrl}
-          alt={postData.title}
+          src={articleData.imageUrl}
+          alt={articleData.title}
           sx={{
             width: '100%',
             height: 400,
@@ -58,7 +58,7 @@ const BlogDetailPage = () => {
             mb: 4,
           }}
         />
-        <FormattedContent content={postData.content} />
+        <FormattedContent content={articleData.content} />
         <Box sx={{ display: 'flex', gap: 2, mb: 4 }}>
           <IconButton>
             <ShareIcon />
@@ -69,8 +69,8 @@ const BlogDetailPage = () => {
         </Box>
       </Box>
 
-      <RelatedPosts postId={postData.id} />
-      <Comments comments={postData.comments} />
+      <RelatedArticles articleId={articleData.id} />
+      <Comments comments={articleData.comments} />
     </Layout>
   );
 };

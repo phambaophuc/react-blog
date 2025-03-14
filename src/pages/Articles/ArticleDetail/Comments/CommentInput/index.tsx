@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { Send as SendIcon } from '@mui/icons-material';
 import { Box, Button, SxProps, TextField, Theme } from '@mui/material';
 
 interface CommentInputProps {
@@ -33,8 +34,8 @@ const CommentInput: React.FC<CommentInputProps> = ({
         onChange={(e) => setContent(e.target.value)}
         sx={{ mb: 1 }}
       />
-      <Button variant="contained" type="submit">
-        Post
+      <Button variant="contained" type="submit" startIcon={<SendIcon />}>
+        Comment
       </Button>
     </Box>
   );

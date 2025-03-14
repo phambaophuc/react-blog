@@ -10,7 +10,7 @@ type CommentType = {
 
 type CreateCommentType = {
   content: string;
-  postId: string;
+  articleId: string;
   parentId?: string;
 };
 

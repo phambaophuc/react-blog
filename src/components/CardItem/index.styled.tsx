@@ -1,9 +1,8 @@
-import { Typography } from '@mui/material';
+import { Typography, styled } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import { styled } from '@mui/material/styles';
 
-const SyledCard = styled(Card)(({ theme }) => ({
+export const StyledCard = styled(Card)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   padding: 0,
@@ -14,29 +13,26 @@ const SyledCard = styled(Card)(({ theme }) => ({
     cursor: 'pointer',
   },
   '&:focus-visible': {
-    outline: '3px solid',
-    outlineColor: 'hsla(210, 98%, 48%, 0.5)',
+    outline: `3px solid ${theme.palette.primary.main}80`,
     outlineOffset: '2px',
   },
 }));
 
-const SyledCardContent = styled(CardContent)({
+export const StyledCardContent = styled(CardContent)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
-  gap: 4,
-  padding: 16,
+  gap: theme.spacing(0.5),
+  padding: theme.spacing(2),
   flexGrow: 1,
   '&:last-child': {
-    paddingBottom: 16,
+    paddingBottom: theme.spacing(2),
   },
-});
+}));
 
-const StyledTypography = styled(Typography)({
+export const StyledTypography = styled(Typography)({
   display: '-webkit-box',
   WebkitBoxOrient: 'vertical',
   WebkitLineClamp: 2,
   overflow: 'hidden',
   textOverflow: 'ellipsis',
 });
-
-export { SyledCard, SyledCardContent, StyledTypography };

@@ -1,13 +1,13 @@
 import Author from '@components/Author';
 import { Theme } from '@emotion/react';
-import { PostType } from '@models/Post';
+import { ArticleType } from '@models/Article';
 import { useNavigate } from 'react-router-dom';
 
 import { CardMedia, SxProps, Typography } from '@mui/material';
 
 import { StyledTypography, SyledCard, SyledCardContent } from './index.styled';
 
-const CardItem = ({ data, sx }: { data: PostType; sx?: SxProps<Theme> }) => {
+const CardItem = ({ data, sx }: { data: ArticleType; sx?: SxProps<Theme> }) => {
   const navigate = useNavigate();
 
   return (
@@ -15,7 +15,7 @@ const CardItem = ({ data, sx }: { data: PostType; sx?: SxProps<Theme> }) => {
       variant="outlined"
       tabIndex={0}
       sx={{ height: '100%', ...sx }}
-      onClick={() => navigate(`/posts/${data.id}`)}
+      onClick={() => navigate(`/articles/${data.id}`)}
     >
       {data.imageUrl && (
         <CardMedia

@@ -2,7 +2,7 @@ import { AuthorType } from './Author';
 import { CommentType } from './Comment';
 import { TagType } from './Tag';
 
-type PostType = {
+type ArticleType = {
   id: string;
   title: string;
   description: string;
@@ -15,13 +15,13 @@ type PostType = {
   updatedAt: string;
 };
 
-type QueryPostType = {
+type QueryArticleType = {
   page?: number;
   limit?: number;
   tag?: string | null;
 };
 
-type CreatePostType = {
+type CreateArticleType = {
   title: string;
   description: string;
   content: string;
@@ -29,11 +29,16 @@ type CreatePostType = {
   tagId: string;
 };
 
-type PostResponseType = {
-  data: PostType[];
+type ArticleResponseType = {
+  data: ArticleType[];
   page: number;
   limit: number;
   totalPages: number;
 };
 
-export type { PostType, QueryPostType, CreatePostType, PostResponseType };
+export type {
+  ArticleType,
+  QueryArticleType,
+  CreateArticleType,
+  ArticleResponseType,
+};

@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import Layout from '@components/Layout';
+import { Search } from '@components/Search';
 import TagList from '@components/TagList';
 import ROUTES from '@constant/routes';
-import { getPosts, resetPosts } from '@store/postSlice';
+import { getArticles, resetArticles } from '@store/articleSlice';
 import { AppDispatch, RootState } from '@store/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import { Search } from '@mui/icons-material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import ShareIcon from '@mui/icons-material/Share';
 import {
@@ -30,10 +30,10 @@ const BlogsPage = () => {
 
   const dispatch = useDispatch<AppDispatch>();
   const {
-    data: postsData,
+    data: articlesData,
     loading,
     hasMore,
-  } = useSelector((state: RootState) => state.posts);
+  } = useSelector((state: RootState) => state.articles);
 
   const [page, setPage] = useState(1);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
@@ -51,12 +51,12 @@ const BlogsPage = () => {
   }, [loading, hasMore]);
 
   useEffect(() => {
-    dispatch(resetPosts());
+    dispatch(resetArticles());
     setPage(1);
   }, [selectedTag, dispatch]);
 
   useEffect(() => {
-    dispatch(getPosts({ page: page, tag: selectedTag }));
+    dispatch(getArticles({ page: page, tag: selectedTag }));
   }, [page, selectedTag, dispatch]);
 
   useEffect(() => {
@@ -83,32 +83,32 @@ const BlogsPage = () => {
                 <Skeleton width="60%" />
               </Grid>
             ))
-          : postsData.map((post) => (
+          : articlesData.map((article) => (
               <Grid
                 component="div"
-                key={post.id}
+                key={article.id}
                 size={{ xs: 12, md: 4 }}
                 sx={{ cursor: 'pointer' }}
-                onClick={() => navigate(ROUTES.BLOG_DETAIL(post.id))}
+                onClick={() => navigate(ROUTES.ARTICLE_DETAIL(article.id))}
               >
                 <StyledCard>
                   <CardMedia
                     component="img"
                     height="200"
-                    image={post.imageUrl}
-                    alt={post.title}
+                    image={article.imageUrl}
+                    alt={article.title}
                     sx={{ objectFit: 'cover' }}
                   />
                   <CardContent>
                     <Typography variant="h6" gutterBottom>
-                      {post.title}
+                      {article.title}
                     </Typography>
                     <Typography
                       variant="body2"
                       color="text.secondary"
                       sx={{ mb: 2, textAlign: 'justify' }}
                     >
-                      {post.description}
+                      {article.description}
                     </Typography>
                     <Box
                       sx={{
@@ -119,20 +119,20 @@ const BlogsPage = () => {
                       }}
                     >
                       <Avatar
-                        src={post.author.avatarUrl}
-                        alt={post.author.displayName}
+                        src={article.author.avatarUrl}
+                        alt={article.author.displayName}
                         sx={{ width: 32, height: 32 }}
                       />
                       <Typography variant="body2">
-                        {post.author.displayName}
+                        {article.author.displayName}
                       </Typography>
                       <Box sx={{ flexGrow: 1 }} />
                       <AccessTimeIcon sx={{ mr: 0.5 }} />
                     </Box>
                     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                       <Chip
-                        key={post.tag.id}
-                        label={post.tag.name}
+                        key={article.tag.id}
+                        label={article.tag.name}
                         size="small"
                         sx={{ mr: 0.5 }}
                       />

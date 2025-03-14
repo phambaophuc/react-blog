@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import ROUTES from '@constant/routes';
-import { PostType } from '@models/Post';
-import { postService } from '@services/postService';
+import { ArticleType } from '@models/Article';
+import { articleService } from '@services/articleService';
 import { formatDate } from '@utils/dateUtils';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,46 +12,51 @@ import Grid from '@mui/material/Grid2';
 
 import { StyledCard } from './index.styled';
 
-const RelatedPosts = ({ postId }: { postId: string }) => {
+const RelatedArticles = ({ articleId }: { articleId: string }) => {
   const navigate = useNavigate();
-  const [relatedPosts, setRelatedPosts] = useState<PostType[]>([]);
-
-  const fetchPost = useCallback(async () => {
-    const posts = await postService.findAllRelated(postId);
-    setRelatedPosts(posts);
-  }, [postId]);
+  const [relatedArticles, setRelatedArticles] = useState<ArticleType[]>([]);
 
   useEffect(() => {
-    fetchPost();
-  }, [fetchPost]);
+    if (!articleId) return;
+    setRelatedArticles([]);
+
+    let isMounted = true;
+    articleService.findAllRelated(articleId).then((articles) => {
+      if (isMounted) setRelatedArticles(articles);
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [articleId]);
 
   return (
     <Box sx={{ mb: 6 }}>
       <Typography variant="h4" sx={{ mb: 4 }}>
-        Related Posts
+        Related Articles
       </Typography>
       <Grid container spacing={4} sx={{ mb: 6 }}>
-        {relatedPosts.map((post) => (
+        {relatedArticles.map((article) => (
           <Grid
             component="div"
             size={{ xs: 12, sm: 6, md: 4 }}
             sx={{ cursor: 'pointer' }}
-            key={post.id}
-            onClick={() => navigate(ROUTES.BLOG_DETAIL(post.id))}
+            key={article.id}
+            onClick={() => navigate(ROUTES.ARTICLE_DETAIL(article.id))}
           >
             <StyledCard>
               <CardMedia
                 component="img"
                 height="200"
-                image={post.imageUrl}
-                alt={post.title}
+                image={article.imageUrl}
+                alt={article.title}
               />
               <CardContent>
                 <Typography variant="h6" gutterBottom>
-                  {post.title}
+                  {article.title}
                 </Typography>
                 <Typography variant="body2" color="text.secondary" paragraph>
-                  {post.description}
+                  {article.description}
                 </Typography>
                 <Box
                   sx={{
@@ -60,11 +65,11 @@ const RelatedPosts = ({ postId }: { postId: string }) => {
                     justifyContent: 'space-between',
                   }}
                 >
-                  <Chip label={post.tag.name} size="small" />
+                  <Chip label={article.tag.name} size="small" />
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <AccessTimeIcon sx={{ mr: 2 }} />
                     <Typography variant="caption">
-                      {formatDate(post.createdAt)}
+                      {formatDate(article.createdAt)}
                     </Typography>
                   </Box>
                 </Box>
@@ -77,4 +82,4 @@ const RelatedPosts = ({ postId }: { postId: string }) => {
   );
 };
 
-export default React.memo(RelatedPosts);
+export default RelatedArticles;
