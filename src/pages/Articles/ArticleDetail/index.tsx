@@ -15,7 +15,7 @@ import { formatDate } from '../../../utils/dateUtils';
 import Comments from './Comments';
 import RelatedArticles from './RelatedArticles';
 
-const BlogDetailPage = () => {
+const ArticleDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useDispatch<AppDispatch>();
   const { articleData } = useSelector((state: RootState) => state.articles);
@@ -75,4 +75,4 @@ const BlogDetailPage = () => {
   );
 };
 
-export default BlogDetailPage;
+export default ArticleDetailPage;

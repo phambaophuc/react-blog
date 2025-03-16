@@ -1,50 +1,104 @@
-import Author from '@components/Author';
+import ROUTES from '@constant/routes';
 import { Theme } from '@emotion/react';
 import { ArticleType } from '@models/Article';
 import { useNavigate } from 'react-router-dom';
 
-import { CardMedia, SxProps, Typography } from '@mui/material';
-
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import ShareIcon from '@mui/icons-material/Share';
 import {
-  StyledCard,
-  StyledCardContent,
-  StyledTypography,
-} from './index.styled';
+  Avatar,
+  Box,
+  CardContent,
+  CardMedia,
+  Chip,
+  IconButton,
+  SxProps,
+  Typography,
+} from '@mui/material';
+import Grid from '@mui/material/Grid2';
+
+import { StyledCard } from './index.styled';
 
 const CardItem = ({ data, sx }: { data: ArticleType; sx?: SxProps<Theme> }) => {
   const navigate = useNavigate();
 
   return (
-    <StyledCard
-      variant="outlined"
-      tabIndex={0}
-      sx={{ height: '100%', ...sx }}
-      onClick={() => navigate(`/articles/${data.id}`)}
+    <Grid
+      component="div"
+      size={{ xs: 12, md: 4 }}
+      sx={{ cursor: 'pointer', ...sx }}
+      onClick={() => navigate(ROUTES.ARTICLE_DETAIL(data.id))}
     >
-      {data.imageUrl && (
+      <StyledCard>
         <CardMedia
           component="img"
-          alt={data.title}
+          height="200"
           image={data.imageUrl}
-          sx={{
-            height: { sm: 'auto', md: '50%' },
-            aspectRatio: { sm: '16 / 9', md: '' },
-          }}
+          alt={data.title}
+          sx={{ objectFit: 'cover' }}
         />
-      )}
-      <StyledCardContent>
-        <Typography gutterBottom variant="caption">
-          {data.tag.name}
-        </Typography>
-        <Typography gutterBottom variant="h6">
-          {data.title}
-        </Typography>
-        <StyledTypography variant="body2" color="text.secondary">
-          {data.description}
-        </StyledTypography>
-      </StyledCardContent>
-      <Author author={data.author} createdAt={data.createdAt} />
-    </StyledCard>
+        <CardContent>
+          <Typography
+            variant="h6"
+            gutterBottom
+            sx={{
+              display: '-webkit-box',
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            }}
+          >
+            {data.title}
+          </Typography>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{
+              mb: 2,
+              textAlign: 'justify',
+              hyphens: 'auto',
+              display: '-webkit-box',
+              WebkitLineClamp: 4,
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            }}
+          >
+            {data.description}
+          </Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              mb: 2,
+              gap: 1,
+            }}
+          >
+            <Avatar
+              src={data.author.avatarUrl}
+              alt={data.author.displayName}
+              sx={{ width: 32, height: 32 }}
+            />
+            <Typography variant="body2">{data.author.displayName}</Typography>
+            <Box sx={{ flexGrow: 1 }} />
+            <AccessTimeIcon sx={{ mr: 0.5 }} />
+          </Box>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+            <Chip
+              key={data.tag.id}
+              label={data.tag.name}
+              size="small"
+              sx={{ mr: 0.5 }}
+            />
+            <Box sx={{ flexGrow: 1 }} />
+            <IconButton size="small">
+              <ShareIcon />
+            </IconButton>
+          </Box>
+        </CardContent>
+      </StyledCard>
+    </Grid>
   );
 };
 

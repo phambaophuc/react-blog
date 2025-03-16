@@ -20,6 +20,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import {
   Box,
   Button,
+  CircularProgress,
   FormControl,
   FormControlLabel,
   InputAdornment,
@@ -40,7 +41,7 @@ import {
   VisuallyHiddenInput,
 } from './index.styled';
 
-const WriteBlogPage = () => {
+const WriteArticlePage = () => {
   const navigate = useNavigate();
 
   const [tags, setTags] = useState<TagType[]>([]);
@@ -54,6 +55,8 @@ const WriteBlogPage = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [useLink, setUseLink] = useState(false);
+  const [isPublishing, setIsPublishing] = useState(false);
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const fetchTags = async () => {
     const tagList = await tagService.findAll();
@@ -68,6 +71,7 @@ const WriteBlogPage = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setArticle({ ...article, [e.target.name]: e.target.value });
+    setErrors((prevErrors) => ({ ...prevErrors, [e.target.name]: '' }));
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,13 +82,37 @@ const WriteBlogPage = () => {
     }
   };
 
+  const validateForm = () => {
+    const newErrors: { [key: string]: string } = {};
+
+    if (!article.title) newErrors.title = 'Title is required';
+    if (!article.description) newErrors.description = 'Description is required';
+    if (!article.content) newErrors.content = 'Content is required';
+    if (!article.tagId) newErrors.tagId = 'Tag is required';
+    if (useLink && !article.imageUrl)
+      newErrors.imageUrl = 'Image URL is required';
+    if (!useLink && !imageFile) newErrors.imageFile = 'Image file is required';
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handlePublish = async () => {
-    let uploadedImageUrl = article.imageUrl;
-    if (imageFile) {
-      uploadedImageUrl = await storageService.uploadFile(imageFile);
+    if (!validateForm()) return;
+
+    setIsPublishing(true);
+    try {
+      let uploadedImageUrl = article.imageUrl;
+      if (imageFile) {
+        uploadedImageUrl = await storageService.uploadFile(imageFile);
+      }
+      await articleService.create({ ...article, imageUrl: uploadedImageUrl });
+      navigate(ROUTES.ARTICLES, { replace: true });
+    } catch (error) {
+      console.error('Error publishing article:', error);
+    } finally {
+      setIsPublishing(false);
     }
-    await articleService.create({ ...article, imageUrl: uploadedImageUrl });
-    navigate(ROUTES.ARTICLES, { replace: true });
   };
 
   return (
@@ -103,6 +131,8 @@ const WriteBlogPage = () => {
               fullWidth
               value={article.title}
               onChange={handleChange}
+              error={!!errors.title}
+              helperText={errors.title}
               slotProps={{
                 input: {
                   startAdornment: (
@@ -115,7 +145,7 @@ const WriteBlogPage = () => {
             />
           </Grid>
           <Grid size={6}>
-            <FormControl fullWidth>
+            <FormControl fullWidth error={!!errors.tagId}>
               <InputLabel>Tag</InputLabel>
               <Select
                 value={article.tagId}
@@ -140,6 +170,11 @@ const WriteBlogPage = () => {
                   </MenuItem>
                 ))}
               </Select>
+              {errors.tagId && (
+                <Typography variant="caption" color="error">
+                  {errors.tagId}
+                </Typography>
+              )}
             </FormControl>
           </Grid>
         </Grid>
@@ -152,6 +187,8 @@ const WriteBlogPage = () => {
           rows={2}
           value={article.description}
           onChange={handleChange}
+          error={!!errors.description}
+          helperText={errors.description}
           sx={{ marginTop: 3 }}
           slotProps={{
             input: {
@@ -180,6 +217,8 @@ const WriteBlogPage = () => {
               fullWidth
               value={article.imageUrl}
               onChange={handleChange}
+              error={!!errors.imageUrl}
+              helperText={errors.imageUrl}
               placeholder="Paste image URL here..."
             />
           ) : (
@@ -204,6 +243,11 @@ const WriteBlogPage = () => {
                 </>
               )}
               <VisuallyHiddenInput type="file" onChange={handleFileChange} />
+              {errors.imageFile && (
+                <Typography variant="caption" color="error">
+                  {errors.imageFile}
+                </Typography>
+              )}
             </UploadBox>
           )}
         </Box>
@@ -212,6 +256,11 @@ const WriteBlogPage = () => {
           content={article.content}
           setContent={(c) => setArticle({ ...article, content: c })}
         />
+        {errors.content && (
+          <Typography variant="caption" color="error">
+            {errors.content}
+          </Typography>
+        )}
 
         <ActionButtons>
           <Button variant="contained" color="primary" startIcon={<SaveIcon />}>
@@ -229,8 +278,18 @@ const WriteBlogPage = () => {
             color="success"
             onClick={handlePublish}
             startIcon={<PublishIcon />}
+            disabled={isPublishing}
           >
             Publish
+            {isPublishing && (
+              <CircularProgress
+                size={24}
+                sx={{
+                  color: 'white',
+                  marginLeft: 1,
+                }}
+              />
+            )}
           </Button>
         </ActionButtons>
       </StyledPaper>
@@ -238,4 +297,4 @@ const WriteBlogPage = () => {
   );
 };
 
-export default WriteBlogPage;
+export default WriteArticlePage;
