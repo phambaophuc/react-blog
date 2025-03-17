@@ -55,11 +55,15 @@ const SignupPage: React.FC = () => {
           Sign up to share your thoughts and connect with like-minded people.
         </Typography>
         {error && (
-          <Alert severity="error" sx={{ mt: 2 }}>
+          <Alert severity="error" sx={{ mt: (theme) => theme.spacing(2) }}>
             {error}
           </Alert>
         )}
-        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          sx={{ mt: (theme) => theme.spacing(3) }}
+        >
           <StyledTextField
             fullWidth
             label="Full Name"
@@ -93,12 +97,13 @@ const SignupPage: React.FC = () => {
             Sign Up
           </StyledButton>
         </Box>
-        <Typography variant="body2" color="textSecondary" sx={{ mt: 2 }}>
+        <Typography
+          variant="body2"
+          color="textSecondary"
+          sx={{ mt: (theme) => theme.spacing(2) }}
+        >
           Already have an account?{' '}
-          <Link
-            to="/signin"
-            style={{ color: '#2575fc', textDecoration: 'none' }}
-          >
+          <Link to="/signin" style={{ textDecoration: 'none' }}>
             Sign in
           </Link>
         </Typography>

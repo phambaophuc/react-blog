@@ -1,17 +1,19 @@
 import { useEffect } from 'react';
 
+import FormattedContent from '@components/FormattedContent';
+import Layout from '@components/Layout';
+import { getArticleByID } from '@store/articleSlice';
+import { AppDispatch, RootState } from '@store/store';
+import { formatDate } from '@utils/dateUtils';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import BookmarkIcon from '@mui/icons-material/Bookmark';
-import ShareIcon from '@mui/icons-material/Share';
+import {
+  Bookmark as BookmarkIcon,
+  Share as ShareIcon,
+} from '@mui/icons-material';
 import { Avatar, Box, IconButton, Typography } from '@mui/material';
 
-import FormattedContent from '../../../components/FormattedContent';
-import Layout from '../../../components/Layout';
-import { getArticleByID } from '../../../store/articleSlice';
-import { AppDispatch, RootState } from '../../../store/store';
-import { formatDate } from '../../../utils/dateUtils';
 import Comments from './Comments';
 import RelatedArticles from './RelatedArticles';
 
@@ -30,13 +32,29 @@ const ArticleDetailPage = () => {
   }
 
   return (
-    <Layout maxWidth="xl" sx={{ py: 4, minHeight: '100vh' }}>
-      <Box component="article" sx={{ mb: 6 }}>
-        <Typography variant="h2" gutterBottom>
+    <Layout
+      maxWidth="md"
+      sx={{
+        py: (theme) => theme.spacing(4),
+        minHeight: '100vh',
+      }}
+    >
+      <Box component="article" sx={{ mb: (theme) => theme.spacing(6) }}>
+        <Typography variant="h3" gutterBottom>
           {articleData.title}
         </Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-          <Avatar src={articleData.author.avatarUrl} sx={{ mr: 2 }} />
+
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            mb: (theme) => theme.spacing(3),
+          }}
+        >
+          <Avatar
+            src={articleData.author.avatarUrl}
+            sx={{ mr: (theme) => theme.spacing(2) }}
+          />
           <Box>
             <Typography variant="subtitle1">
               Written by {articleData.author.displayName}
@@ -46,20 +64,29 @@ const ArticleDetailPage = () => {
             </Typography>
           </Box>
         </Box>
+
         <Box
           component="img"
           src={articleData.imageUrl}
           alt={articleData.title}
           sx={{
             width: '100%',
-            height: 400,
+            height: (theme) => theme.spacing(50),
             objectFit: 'cover',
-            borderRadius: 2,
-            mb: 4,
+            borderRadius: (theme) => theme.shape.borderRadius,
+            mb: (theme) => theme.spacing(4),
           }}
         />
+
         <FormattedContent content={articleData.content} />
-        <Box sx={{ display: 'flex', gap: 2, mb: 4 }}>
+
+        <Box
+          sx={{
+            display: 'flex',
+            gap: (theme) => theme.spacing(2),
+            mb: (theme) => theme.spacing(4),
+          }}
+        >
           <IconButton>
             <ShareIcon />
           </IconButton>

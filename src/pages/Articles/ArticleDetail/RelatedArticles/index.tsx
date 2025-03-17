@@ -6,7 +6,7 @@ import { articleService } from '@services/articleService';
 import { formatDate } from '@utils/dateUtils';
 import { useNavigate } from 'react-router-dom';
 
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import { AccessTime as AccessTimeIcon } from '@mui/icons-material';
 import { Box, CardContent, CardMedia, Chip, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 
@@ -31,15 +31,15 @@ const RelatedArticles = ({ articleId }: { articleId: string }) => {
   }, [articleId]);
 
   return (
-    <Box sx={{ mb: 6 }}>
-      <Typography variant="h4" sx={{ mb: 4 }}>
+    <Box sx={{ mb: (theme) => theme.spacing(6) }}>
+      <Typography variant="h4" sx={{ mb: (theme) => theme.spacing(4) }}>
         Related Articles
       </Typography>
-      <Grid container spacing={4} sx={{ mb: 6 }}>
+      <Grid container spacing={4} sx={{ mb: (theme) => theme.spacing(6) }}>
         {relatedArticles.map((article) => (
           <Grid
             component="div"
-            size={{ xs: 12, sm: 6, md: 4 }}
+            size={{ xs: 12, sm: 12, md: 6 }}
             sx={{ cursor: 'pointer' }}
             key={article.id}
             onClick={() => navigate(ROUTES.ARTICLE_DETAIL(article.id))}
@@ -47,11 +47,20 @@ const RelatedArticles = ({ articleId }: { articleId: string }) => {
             <StyledCard>
               <CardMedia
                 component="img"
-                height="200"
                 image={article.imageUrl}
                 alt={article.title}
+                sx={{
+                  height: (theme) => theme.spacing(25),
+                }}
               />
-              <CardContent>
+              <CardContent
+                sx={{
+                  flexGrow: 1,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                }}
+              >
                 <Typography
                   variant="h6"
                   gutterBottom
@@ -69,7 +78,7 @@ const RelatedArticles = ({ articleId }: { articleId: string }) => {
                   variant="body2"
                   color="text.secondary"
                   sx={{
-                    mb: 2,
+                    mb: (theme) => theme.spacing(2),
                     textAlign: 'justify',
                     hyphens: 'auto',
                     display: '-webkit-box',
@@ -90,7 +99,7 @@ const RelatedArticles = ({ articleId }: { articleId: string }) => {
                 >
                   <Chip label={article.tag.name} size="small" />
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <AccessTimeIcon sx={{ mr: 2 }} />
+                    <AccessTimeIcon sx={{ mr: (theme) => theme.spacing(2) }} />
                     <Typography variant="caption">
                       {formatDate(article.createdAt)}
                     </Typography>

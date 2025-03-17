@@ -42,8 +42,8 @@ const TagList: React.FC<TagListProps> = ({ onTagSelect }) => {
       sx={{
         display: 'flex',
         flexWrap: 'wrap',
-        gap: 1,
-        mb: 3,
+        gap: (theme) => theme.spacing(1),
+        mb: (theme) => theme.spacing(3),
       }}
     >
       <Chip
@@ -51,7 +51,7 @@ const TagList: React.FC<TagListProps> = ({ onTagSelect }) => {
         label="All categories"
         onClick={() => handleTagClick('')}
         color={selectedTag ? 'default' : 'primary'}
-        sx={{ m: 0.5 }}
+        sx={{ m: (theme) => theme.spacing(0.5) }}
       />
       {tags.map((tag) => (
         <Chip
@@ -60,7 +60,7 @@ const TagList: React.FC<TagListProps> = ({ onTagSelect }) => {
           label={tag.name}
           onClick={() => handleTagClick(tag.name)}
           color={selectedTag === tag.name ? 'primary' : 'default'}
-          sx={{ m: 0.5 }}
+          sx={{ m: (theme) => theme.spacing(0.5) }}
         />
       ))}
     </Box>

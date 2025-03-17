@@ -1,104 +1,111 @@
 import ROUTES from '@constant/routes';
-import { Theme } from '@emotion/react';
 import { ArticleType } from '@models/Article';
+import { formatDate } from '@utils/dateUtils';
 import { useNavigate } from 'react-router-dom';
 
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import ShareIcon from '@mui/icons-material/Share';
+import { Bookmark as BookmarkIcon } from '@mui/icons-material';
 import {
   Avatar,
   Box,
-  CardContent,
   CardMedia,
   Chip,
   IconButton,
-  SxProps,
   Typography,
 } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 
-import { StyledCard } from './index.styled';
+import { StyledCard, StyledExcerpt, StyledTitle } from './index.styled';
 
-const CardItem = ({ data, sx }: { data: ArticleType; sx?: SxProps<Theme> }) => {
+const CardItem = ({ data }: { data: ArticleType }) => {
   const navigate = useNavigate();
 
   return (
-    <Grid
-      component="div"
-      size={{ xs: 12, md: 4 }}
-      sx={{ cursor: 'pointer', ...sx }}
-      onClick={() => navigate(ROUTES.ARTICLE_DETAIL(data.id))}
-    >
-      <StyledCard>
-        <CardMedia
-          component="img"
-          height="200"
-          image={data.imageUrl}
-          alt={data.title}
-          sx={{ objectFit: 'cover' }}
+    <StyledCard>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: (theme) => theme.spacing(1),
+          mb: (theme) => theme.spacing(1),
+        }}
+      >
+        <Avatar
+          alt={data.author.displayName}
+          src={data.author.avatarUrl}
+          sx={{
+            width: (theme) => theme.spacing(4),
+            height: (theme) => theme.spacing(4),
+          }}
         />
-        <CardContent>
-          <Typography
-            variant="h6"
-            gutterBottom
-            sx={{
-              display: '-webkit-box',
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: 'vertical',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-            }}
-          >
-            {data.title}
-          </Typography>
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            sx={{
-              mb: 2,
-              textAlign: 'justify',
-              hyphens: 'auto',
-              display: '-webkit-box',
-              WebkitLineClamp: 4,
-              WebkitBoxOrient: 'vertical',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-            }}
-          >
-            {data.description}
-          </Typography>
+        <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
+          {data.author.displayName}
+        </Typography>
+        <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+          {formatDate(data.createdAt)}
+        </Typography>
+      </Box>
+
+      <Grid container spacing={3}>
+        <Grid size={{ xs: 12, md: 8 }}>
+          <Box sx={{ mb: (theme) => theme.spacing(2) }}>
+            <StyledTitle
+              onClick={() => navigate(ROUTES.ARTICLE_DETAIL(data.id))}
+            >
+              {data.title}
+            </StyledTitle>
+            <StyledExcerpt>{data.description}</StyledExcerpt>
+          </Box>
+
           <Box
             sx={{
               display: 'flex',
+              justifyContent: 'space-between',
               alignItems: 'center',
-              mb: 2,
-              gap: 1,
+              mt: (theme) => theme.spacing(2),
             }}
           >
-            <Avatar
-              src={data.author.avatarUrl}
-              alt={data.author.displayName}
-              sx={{ width: 32, height: 32 }}
-            />
-            <Typography variant="body2">{data.author.displayName}</Typography>
-            <Box sx={{ flexGrow: 1 }} />
-            <AccessTimeIcon sx={{ mr: 0.5 }} />
-          </Box>
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-            <Chip
-              key={data.tag.id}
-              label={data.tag.name}
-              size="small"
-              sx={{ mr: 0.5 }}
-            />
-            <Box sx={{ flexGrow: 1 }} />
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: (theme) => theme.spacing(1),
+              }}
+            >
+              <Chip
+                label={data.tag.name}
+                sx={{
+                  backgroundColor: (theme) => theme.palette.grey[200],
+                  color: 'text.primary',
+                  borderRadius: (theme) => theme.shape.borderRadius,
+                  height: (theme) => theme.spacing(3),
+                }}
+              />
+              <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                10 read
+              </Typography>
+            </Box>
             <IconButton size="small">
-              <ShareIcon />
+              <BookmarkIcon
+                sx={{ fontSize: (theme) => theme.typography.pxToRem(16) }}
+              />
             </IconButton>
           </Box>
-        </CardContent>
-      </StyledCard>
-    </Grid>
+        </Grid>
+
+        <Grid size={{ xs: 12, md: 4 }}>
+          <CardMedia
+            component="img"
+            height={120}
+            image={data.imageUrl}
+            alt={data.title}
+            sx={{
+              objectFit: 'cover',
+              borderRadius: (theme) => theme.shape.borderRadius,
+            }}
+          />
+        </Grid>
+      </Grid>
+    </StyledCard>
   );
 };
 

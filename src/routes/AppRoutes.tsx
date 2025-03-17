@@ -17,8 +17,6 @@ const Loading = () => (
   </Box>
 );
 
-const NotFoundPage = lazy(() => import('../pages/NotFound'));
-
 const ArticleDetailPage = lazy(() => import('../pages/Articles/ArticleDetail'));
 const ArticlesPage = lazy(() => import('../pages/Articles'));
 const WriteArticlePage = lazy(() => import('../pages/Articles/WriteArticle'));
@@ -39,7 +37,7 @@ const AppRoutes: React.FC = () => {
           <Route path="write" element={<WriteArticlePage />} />
         </Route>
 
-        <Route path="*" element={<NotFoundPage />} />
+        <Route path="*" element={<ArticlesPage />} />
       </Routes>
     </Suspense>
   );

@@ -10,16 +10,19 @@ import { storageService } from '@services/storageService';
 import { tagService } from '@services/tagService';
 import { useNavigate } from 'react-router-dom';
 
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import DescriptionIcon from '@mui/icons-material/Description';
-import TagIcon from '@mui/icons-material/LocalOffer';
-import PublishIcon from '@mui/icons-material/Publish';
-import SaveIcon from '@mui/icons-material/Save';
-import TitleIcon from '@mui/icons-material/Title';
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import {
+  CloudUpload as CloudUploadIcon,
+  Description as DescriptionIcon,
+  Publish as PublishIcon,
+  Save as SaveIcon,
+  LocalOffer as TagIcon,
+  Title as TitleIcon,
+  Visibility as VisibilityIcon,
+} from '@mui/icons-material';
 import {
   Box,
   Button,
+  CardMedia,
   CircularProgress,
   FormControl,
   FormControlLabel,
@@ -118,7 +121,12 @@ const WriteArticlePage = () => {
   return (
     <Layout maxWidth="lg">
       <StyledPaper>
-        <Typography sx={{ mb: 4 }} variant="h4" fontWeight="bold" gutterBottom>
+        <Typography
+          sx={{ mb: (theme) => theme.spacing(4) }}
+          variant="h4"
+          fontWeight="bold"
+          gutterBottom
+        >
           📝 Write a Blog
         </Typography>
 
@@ -189,7 +197,7 @@ const WriteArticlePage = () => {
           onChange={handleChange}
           error={!!errors.description}
           helperText={errors.description}
-          sx={{ marginTop: 3 }}
+          sx={{ mt: (theme) => theme.spacing(3) }}
           slotProps={{
             input: {
               startAdornment: (
@@ -201,7 +209,7 @@ const WriteArticlePage = () => {
           }}
         />
 
-        <Box sx={{ my: 2 }}>
+        <Box sx={{ my: (theme) => theme.spacing(2) }}>
           <FormControlLabel
             control={
               <Switch checked={useLink} onChange={() => setUseLink(!useLink)} />
@@ -222,21 +230,26 @@ const WriteArticlePage = () => {
               placeholder="Paste image URL here..."
             />
           ) : (
-            <UploadBox as="label" sx={{ marginTop: 1 }}>
+            <UploadBox as="label" sx={{ mt: (theme) => theme.spacing(1) }}>
               {imagePreview ? (
-                <img
-                  src={imagePreview}
+                <CardMedia
+                  component="img"
+                  image={imagePreview}
                   alt="Preview"
-                  style={{
-                    width: '100%',
+                  sx={{
                     height: '100%',
-                    objectFit: 'cover',
-                    borderRadius: '8px',
+                    objectFit: 'none',
+                    borderRadius: (theme) => theme.shape.borderRadius,
                   }}
                 />
               ) : (
                 <>
-                  <CloudUploadIcon sx={{ fontSize: 48, color: 'gray' }} />
+                  <CloudUploadIcon
+                    sx={{
+                      fontSize: (theme) => theme.typography.pxToRem(48),
+                      color: 'gray',
+                    }}
+                  />
                   <Typography variant="body2" color="textSecondary">
                     Click to upload or drag & drop an image
                   </Typography>
@@ -286,7 +299,7 @@ const WriteArticlePage = () => {
                 size={24}
                 sx={{
                   color: 'white',
-                  marginLeft: 1,
+                  ml: (theme) => theme.spacing(1),
                 }}
               />
             )}

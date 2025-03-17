@@ -3,13 +3,22 @@ import ROUTES from '@constant/routes';
 import useHideOnScroll from '@hooks/useHideOnScroll';
 import { useNavigate } from 'react-router-dom';
 
-import { Typography } from '@mui/material';
-import AppBar from '@mui/material/AppBar';
-import Container from '@mui/material/Container';
+import {
+  NotificationsOutlined as NotificationsIcon,
+  Search as SearchIcon,
+  EditNote as WriteIcon,
+} from '@mui/icons-material';
+import {
+  AppBar,
+  Badge,
+  Box,
+  IconButton,
+  InputBase,
+  Toolbar,
+  Typography,
+} from '@mui/material';
 
-import { LogoWrapper, StyledToolbar } from './index.styled';
-
-const AppHeader = () => {
+const Header = () => {
   const navigate = useNavigate();
   const headerRef = useHideOnScroll();
 
@@ -17,36 +26,67 @@ const AppHeader = () => {
     <AppBar
       component="div"
       ref={headerRef}
-      position="fixed"
       enableColorOnDark
       sx={{
-        boxShadow: 0,
-        bgcolor: 'transparent',
-        backgroundImage: 'none',
-        mt: 'calc(var(--template-frame-height, 0px) + 28px)',
+        backgroundColor: (theme) => theme.palette.background.default,
+        color: (theme) => theme.palette.text.primary,
+        boxShadow: (theme) => theme.shadows[1],
+        borderBottom: (theme) => `0 solid ${theme.palette.divider}`,
       }}
     >
-      <Container maxWidth="lg">
-        <StyledToolbar variant="dense" disableGutters>
-          <LogoWrapper>
-            <Typography
-              component="div"
-              variant="h6"
-              sx={{
-                color: 'primary.main',
-                fontWeight: 700,
-                letterSpacing: 1,
-              }}
-              onClick={() => navigate(ROUTES.ARTICLES)}
-            >
-              WELCOME TO BLOG
-            </Typography>
-          </LogoWrapper>
+      <Toolbar>
+        <Box sx={{ display: 'flex', flexGrow: 1 }} gap={3}>
+          <Typography
+            variant="h6"
+            sx={{ cursor: 'pointer' }}
+            onClick={() => navigate(ROUTES.ARTICLES)}
+          >
+            ThoughtSphere
+          </Typography>
+
+          <Box
+            display="flex"
+            alignItems="center"
+            paddingX={1}
+            sx={{
+              backgroundColor: (theme) => theme.palette.grey[200],
+              borderRadius: (theme) => theme.shape.borderRadius,
+            }}
+          >
+            <SearchIcon
+              sx={{ color: (theme) => theme.palette.text.secondary }}
+            />
+            <InputBase
+              placeholder="Search..."
+              sx={{ mx: 1, flex: 1 }}
+              inputProps={{ 'aria-label': 'search' }}
+            />
+          </Box>
+        </Box>
+
+        <Box display="flex" alignItems="center" gap={3}>
+          <Box
+            display="flex"
+            alignItems="center"
+            gap={1}
+            sx={{ cursor: 'pointer' }}
+            onClick={() => navigate(ROUTES.WRITE_ARTICLE)}
+          >
+            <WriteIcon />
+            <Typography variant="body2">Write</Typography>
+          </Box>
+
+          <IconButton color="inherit">
+            <Badge color="error">
+              <NotificationsIcon />
+            </Badge>
+          </IconButton>
+
           <UserAvatar />
-        </StyledToolbar>
-      </Container>
+        </Box>
+      </Toolbar>
     </AppBar>
   );
 };
 
-export default AppHeader;
+export default Header;

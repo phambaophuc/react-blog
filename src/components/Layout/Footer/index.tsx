@@ -1,15 +1,19 @@
 import React from 'react';
 
-import FacebookIcon from '@mui/icons-material/GitHub';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import TwitterIcon from '@mui/icons-material/X';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import Link from '@mui/material/Link';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
+import {
+  GitHub as GitHubIcon,
+  LinkedIn as LinkedInIcon,
+  X as TwitterIcon,
+} from '@mui/icons-material';
+import {
+  Box,
+  Container,
+  Divider,
+  IconButton,
+  Link,
+  Stack,
+  Typography,
+} from '@mui/material';
 
 const Copyright = () => {
   return (
@@ -70,7 +74,7 @@ const Footer = () => {
               aria-label="GitHub"
               sx={{ alignSelf: 'center' }}
             >
-              <FacebookIcon />
+              <GitHubIcon />
             </IconButton>
             <IconButton
               color="inherit"

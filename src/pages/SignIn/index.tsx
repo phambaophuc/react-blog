@@ -39,15 +39,21 @@ const SigninPage: React.FC = () => {
         <Typography variant="h4" gutterBottom fontWeight="bold">
           Welcome Back!
         </Typography>
-        <Typography variant="body1" color="textSecondary" gutterBottom>
+        <Typography variant="body1" color="text.secondary" gutterBottom>
           Sign in to continue sharing your thoughts.
         </Typography>
+
         {error && (
-          <Alert severity="error" sx={{ mt: 3 }}>
+          <Alert severity="error" sx={{ mt: (theme) => theme.spacing(3) }}>
             {error}
           </Alert>
         )}
-        <Box component="form" onSubmit={handleSignIn} sx={{ mt: 3 }}>
+
+        <Box
+          component="form"
+          onSubmit={handleSignIn}
+          sx={{ mt: (theme) => theme.spacing(3) }}
+        >
           <StyledTextField
             fullWidth
             label="Email"
@@ -73,11 +79,18 @@ const SigninPage: React.FC = () => {
             {loading ? 'Signing in...' : 'Sign In'}
           </StyledButton>
         </Box>
-        <Typography variant="body2" color="textSecondary" sx={{ mt: 2 }}>
+
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ mt: (theme) => theme.spacing(2) }}
+        >
           Don't have an account?{' '}
           <Link
             to="/signup"
-            style={{ color: '#2575fc', textDecoration: 'none' }}
+            style={{
+              textDecoration: 'none',
+            }}
           >
             Sign up
           </Link>

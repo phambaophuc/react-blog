@@ -5,34 +5,40 @@ import { Box, Container, ContainerProps, CssBaseline } from '@mui/material';
 import Footer from './Footer';
 import AppHeader from './Header';
 
-const Layout: React.FC<PropsWithChildren<ContainerProps>> = ({
+interface LayoutProps extends ContainerProps {
+  header?: boolean;
+  footer?: boolean;
+}
+
+const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({
+  header = true,
+  footer = true,
   children,
   ...rest
 }) => {
   return (
     <>
       <CssBaseline enableColorScheme />
-      <AppHeader />
+      {header && <AppHeader />}
 
       <Box
         sx={{
           display: 'flex',
           flexDirection: 'column',
           minHeight: '100vh',
-          background: 'linear-gradient(to bottom, #fdfbfb, #ebedee)', // Gradient sáng
         }}
       >
         <Container
           {...rest}
           sx={{
             flex: 1,
-            my: 16,
+            my: (theme) => theme.spacing(16),
           }}
         >
           {children}
         </Container>
 
-        <Footer />
+        {footer && <Footer />}
       </Box>
     </>
   );

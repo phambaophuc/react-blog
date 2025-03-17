@@ -55,9 +55,9 @@ const RichTextEditor = ({
     <Box
       sx={{
         ...sx,
-        border: '1px solid #ddd',
-        borderRadius: '8px',
-        backgroundColor: '#fff',
+        border: (theme) => `1px solid ${theme.palette.divider}`,
+        borderRadius: (theme) => theme.shape.borderRadius,
+        backgroundColor: (theme) => theme.palette.background.paper,
       }}
     >
       <Box
@@ -65,9 +65,9 @@ const RichTextEditor = ({
           display: 'flex',
           flexWrap: 'wrap',
           alignItems: 'center',
-          gap: 1,
-          p: 1,
-          borderBottom: '1px solid #ddd',
+          gap: (theme) => theme.spacing(1),
+          p: (theme) => theme.spacing(1),
+          borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
         }}
       >
         <Tooltip title="Bold">

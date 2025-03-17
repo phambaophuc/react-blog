@@ -20,7 +20,9 @@ const CommentList: React.FC<{
             onReply={onReply}
             onDelete={onDelete}
           />
-          {index < comments.length - 1 && <Divider sx={{ my: 2 }} />}
+          {index < comments.length - 1 && (
+            <Divider sx={{ my: (theme) => theme.spacing(2) }} />
+          )}
         </Box>
       ))}
     </Box>

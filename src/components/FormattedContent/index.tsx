@@ -1,7 +1,5 @@
 import parse from 'html-react-parser';
 
-import { Typography } from '@mui/material';
-
 import { StyledImage } from './index.styled';
 
 const FormattedContent = ({ content }: { content: string }) => {
@@ -13,11 +11,7 @@ const FormattedContent = ({ content }: { content: string }) => {
     }
   };
 
-  return (
-    <Typography variant="body1" sx={{ whiteSpace: 'pre-line', mb: 4 }}>
-      {parse(content, { replace: transform })}
-    </Typography>
-  );
+  return <>{parse(content, { replace: transform })}</>;
 };
 
 export default FormattedContent;

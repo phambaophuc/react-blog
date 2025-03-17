@@ -71,11 +71,18 @@ const Comments: React.FC<{ comments: CommentType[] }> = ({
   };
 
   return (
-    <Paper sx={{ p: 3, mb: 4 }}>
+    <Paper
+      sx={{ p: (theme) => theme.spacing(3), mb: (theme) => theme.spacing(4) }}
+    >
       <Typography variant="h5" gutterBottom>
         Comments
       </Typography>
-      {user && <CommentInput onSubmit={handleArticleComment} sx={{ mb: 4 }} />}
+      {user && (
+        <CommentInput
+          onSubmit={handleArticleComment}
+          sx={{ mb: (theme) => theme.spacing(4) }}
+        />
+      )}
       <CommentList
         comments={comments}
         onReply={handleArticleReply}

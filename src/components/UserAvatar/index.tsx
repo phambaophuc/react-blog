@@ -6,18 +6,22 @@ import { AppDispatch, RootState } from '@store/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import LogoutIcon from '@mui/icons-material/Logout';
+import {
+  AccountCircle as AccountCircleIcon,
+  BookmarksOutlined as LibraryIcon,
+  PersonOutline as ProfileIcon,
+} from '@mui/icons-material';
 import {
   Avatar,
   Box,
   Button,
+  Divider,
   IconButton,
   Menu,
-  MenuItem,
   Tooltip,
-  Typography,
 } from '@mui/material';
+
+import { CustomMenuItem } from './index.styled';
 
 const UserAvatar: React.FC = () => {
   const navigate = useNavigate();
@@ -48,45 +52,39 @@ const UserAvatar: React.FC = () => {
       anchorEl={anchorEl}
       open={Boolean(anchorEl)}
       onClose={handleMenuClose}
-      slotProps={{
-        paper: {
-          elevation: 3,
-          sx: { width: 'fit-content' },
-        },
-      }}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
     >
-      <MenuItem
-        onClick={handleMenuClose}
-        sx={{ display: 'flex', alignItems: 'start' }}
-      >
-        <AccountCircleIcon
-          sx={{ fontSize: 18, marginRight: 1, color: 'primary.main' }}
-        />
-        <Typography variant="body2">Profile</Typography>
-      </MenuItem>
-      <MenuItem
-        onClick={handleLogout}
-        sx={{ display: 'flex', alignItems: 'start' }}
-      >
-        <LogoutIcon
-          sx={{ fontSize: 18, marginRight: 1, color: 'error.main' }}
-        />
-        <Typography variant="body2">Logout</Typography>
-      </MenuItem>
+      <CustomMenuItem onClick={handleMenuClose}>
+        <ProfileIcon sx={{ mr: (theme) => theme.spacing(1) }} /> Profile
+      </CustomMenuItem>
+      <CustomMenuItem onClick={handleMenuClose}>
+        <LibraryIcon sx={{ mr: (theme) => theme.spacing(1) }} /> Library
+      </CustomMenuItem>
+      <Divider />
+      <CustomMenuItem onClick={handleMenuClose}>Help</CustomMenuItem>
+      <CustomMenuItem onClick={handleMenuClose}>Settings</CustomMenuItem>
+      <Divider />
+      <CustomMenuItem onClick={handleLogout}>Sign Out</CustomMenuItem>
     </Menu>
   );
 
   return (
-    <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        gap: (theme) => theme.spacing(1),
+        alignItems: 'center',
+      }}
+    >
       {user ? (
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Typography
-            variant="body1"
-            color="primary"
-            sx={{ display: { xs: 'none', md: 'flex' } }}
-          >
-            Hello, {user.user_metadata.displayName}
-          </Typography>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: (theme) => theme.spacing(1),
+          }}
+        >
           <Tooltip title="Account settings">
             <IconButton
               onClick={handleProfileMenuOpen}
@@ -96,7 +94,10 @@ const UserAvatar: React.FC = () => {
               <Avatar
                 alt={user.user_metadata.displayName}
                 src={user.user_metadata.avatarUrl}
-                sx={{ width: 35, height: 35 }}
+                sx={{
+                  width: (theme) => theme.spacing(4.5),
+                  height: (theme) => theme.spacing(4.5),
+                }}
               >
                 <AccountCircleIcon />
               </Avatar>
@@ -104,7 +105,7 @@ const UserAvatar: React.FC = () => {
           </Tooltip>
         </Box>
       ) : (
-        <Box sx={{ display: 'flex', gap: 1 }}>
+        <Box sx={{ display: 'flex', gap: (theme) => theme.spacing(1) }}>
           <Button
             variant="outlined"
             color="primary"

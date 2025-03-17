@@ -32,7 +32,7 @@ const CommentInput: React.FC<CommentInputProps> = ({
         placeholder={placeholder}
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        sx={{ mb: 1 }}
+        sx={{ mb: (theme) => theme.spacing(1) }}
       />
       <Button variant="contained" type="submit" startIcon={<SendIcon />}>
         Comment
