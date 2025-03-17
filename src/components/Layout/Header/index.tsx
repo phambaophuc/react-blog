@@ -36,13 +36,13 @@ const Header = () => {
     >
       <Toolbar>
         <Box sx={{ display: 'flex', flexGrow: 1 }} gap={3}>
-          <Typography
-            variant="h6"
-            sx={{ cursor: 'pointer' }}
+          <Box
+            component="img"
+            src="/logo.svg"
+            alt="Page Logo"
+            sx={{ height: 40, cursor: 'pointer' }}
             onClick={() => navigate(ROUTES.ARTICLES)}
-          >
-            ThoughtSphere
-          </Typography>
+          />
 
           <Box
             display="flex"

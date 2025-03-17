@@ -17,6 +17,8 @@ const Loading = () => (
   </Box>
 );
 
+const LandingPage = lazy(() => import('../pages/Landing'));
+
 const ArticleDetailPage = lazy(() => import('../pages/Articles/ArticleDetail'));
 const ArticlesPage = lazy(() => import('../pages/Articles'));
 const WriteArticlePage = lazy(() => import('../pages/Articles/WriteArticle'));
@@ -37,7 +39,7 @@ const AppRoutes: React.FC = () => {
           <Route path="write" element={<WriteArticlePage />} />
         </Route>
 
-        <Route path="*" element={<ArticlesPage />} />
+        <Route path="*" element={<LandingPage />} />
       </Routes>
     </Suspense>
   );

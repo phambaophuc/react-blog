@@ -8,6 +8,8 @@ import { TagType } from '@models/Tag';
 import { articleService } from '@services/articleService';
 import { storageService } from '@services/storageService';
 import { tagService } from '@services/tagService';
+import { RootState } from '@store/store';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import {
@@ -46,6 +48,7 @@ import {
 
 const WriteArticlePage = () => {
   const navigate = useNavigate();
+  const { user } = useSelector((state: RootState) => state.auth);
 
   const [tags, setTags] = useState<TagType[]>([]);
   const [article, setArticle] = useState<CreateArticleType>({
@@ -65,6 +68,10 @@ const WriteArticlePage = () => {
     const tagList = await tagService.findAll();
     setTags(tagList);
   };
+
+  useEffect(() => {
+    if (!user) navigate(ROUTES.SIGNIN);
+  }, [navigate, user]);
 
   useEffect(() => {
     fetchTags();
@@ -111,8 +118,8 @@ const WriteArticlePage = () => {
       }
       await articleService.create({ ...article, imageUrl: uploadedImageUrl });
       navigate(ROUTES.ARTICLES, { replace: true });
-    } catch (error) {
-      console.error('Error publishing article:', error);
+    } catch {
+      throw new Error('Something went wrong!');
     } finally {
       setIsPublishing(false);
     }

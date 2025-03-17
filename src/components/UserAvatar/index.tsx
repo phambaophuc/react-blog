@@ -107,20 +107,11 @@ const UserAvatar: React.FC = () => {
       ) : (
         <Box sx={{ display: 'flex', gap: (theme) => theme.spacing(1) }}>
           <Button
-            variant="outlined"
             color="primary"
             onClick={() => navigate(ROUTES.SIGNIN)}
             sx={{ textTransform: 'none' }}
           >
             Sign In
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => navigate(ROUTES.SIGNUP)}
-            sx={{ textTransform: 'none' }}
-          >
-            Sign Up
           </Button>
         </Box>
       )}
