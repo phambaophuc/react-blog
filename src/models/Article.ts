@@ -8,6 +8,7 @@ type ArticleType = {
   description: string;
   content: string;
   imageUrl: string;
+  views: number;
   tag: TagType;
   author: AuthorType;
   comments: CommentType[];

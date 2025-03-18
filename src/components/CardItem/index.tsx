@@ -80,6 +80,12 @@ const CardItem = ({ data }: { data: ArticleType }) => {
                   height: (theme) => theme.spacing(3),
                 }}
               />
+              <Typography variant="caption" sx={{ color: '#757575' }}>
+                {new Intl.NumberFormat('en', { notation: 'compact' }).format(
+                  data.views
+                )}{' '}
+                views
+              </Typography>
               <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                 10 read
               </Typography>
