@@ -1,12 +1,11 @@
 import React from 'react';
 
-import ROUTES from '@constant/routes';
 import { signIn } from '@store/authSlice';
 import { AppDispatch, RootState } from '@store/store';
+import { useAppNavigation } from '@utils/navigation';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
 
-import { Alert, Box, Typography } from '@mui/material';
+import { Alert, Box, Link, Typography } from '@mui/material';
 
 import {
   StyledButton,
@@ -16,7 +15,7 @@ import {
 } from './index.styled';
 
 const SigninPage: React.FC = () => {
-  const navigate = useNavigate();
+  const { goToArticles, goToSignup } = useAppNavigation();
 
   const dispatch = useDispatch<AppDispatch>();
   const { loading, error } = useSelector((state: RootState) => state.auth);
@@ -28,9 +27,7 @@ const SigninPage: React.FC = () => {
     const email = form.email.value;
     const password = form.password.value;
 
-    dispatch(signIn({ email, password }))
-      .unwrap()
-      .then(() => navigate(ROUTES.ARTICLES));
+    dispatch(signIn({ email, password })).unwrap().then(goToArticles);
   };
 
   return (
@@ -83,15 +80,14 @@ const SigninPage: React.FC = () => {
         <Typography
           variant="body2"
           color="text.secondary"
-          sx={{ mt: (theme) => theme.spacing(2) }}
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          gap={(theme) => theme.spacing(0.5)}
+          mt={(theme) => theme.spacing(2)}
         >
           Don't have an account?{' '}
-          <Link
-            to="/signup"
-            style={{
-              textDecoration: 'none',
-            }}
-          >
+          <Link component="button" underline="hover" onClick={goToSignup}>
             Sign up
           </Link>
         </Typography>

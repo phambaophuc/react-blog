@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 
-import ROUTES from '@constant/routes';
 import { authService } from '@services/authService';
-import { Link, useNavigate } from 'react-router-dom';
+import { useAppNavigation } from '@utils/navigation';
 
-import { Alert, Box, Typography } from '@mui/material';
+import { Alert, Box, Link, Typography } from '@mui/material';
 
 import {
   StyledButton,
@@ -20,7 +19,7 @@ interface FormData {
 }
 
 const SignupPage: React.FC = () => {
-  const navigate = useNavigate();
+  const { goToSignin } = useAppNavigation();
 
   const [formData, setFormData] = useState<FormData>({
     displayName: '',
@@ -41,7 +40,7 @@ const SignupPage: React.FC = () => {
       return;
     }
     await authService.signUp({ displayName, email, password });
-    navigate(ROUTES.SIGNIN);
+    goToSignin();
     setError('');
   };
 
@@ -99,11 +98,15 @@ const SignupPage: React.FC = () => {
         </Box>
         <Typography
           variant="body2"
-          color="textSecondary"
-          sx={{ mt: (theme) => theme.spacing(2) }}
+          color="text.secondary"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          gap={(theme) => theme.spacing(0.5)}
+          mt={(theme) => theme.spacing(2)}
         >
           Already have an account?{' '}
-          <Link to="/signin" style={{ textDecoration: 'none' }}>
+          <Link component="button" underline="hover" onClick={goToSignin}>
             Sign in
           </Link>
         </Typography>

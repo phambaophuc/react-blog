@@ -1,34 +1,56 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import FormattedContent from '@components/FormattedContent';
 import Layout from '@components/Layout';
-import { getArticleByID } from '@store/articleSlice';
-import { AppDispatch, RootState } from '@store/store';
+import { ArticleType } from '@models/Article';
+import { articleService } from '@services/articleService';
 import { formatDate } from '@utils/dateUtils';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppNavigation } from '@utils/navigation';
 import { useParams } from 'react-router-dom';
 
 import {
   Bookmark as BookmarkIcon,
   Share as ShareIcon,
 } from '@mui/icons-material';
-import { Avatar, Box, IconButton, Typography } from '@mui/material';
+import { Avatar, Box, Button, IconButton, Typography } from '@mui/material';
 
 import Comments from './Comments';
 import RelatedArticles from './RelatedArticles';
 
 const ArticleDetailPage = () => {
+  const { goToArticles } = useAppNavigation();
+
   const { id } = useParams<{ id: string }>();
-  const dispatch = useDispatch<AppDispatch>();
-  const { articleData } = useSelector((state: RootState) => state.articles);
+  const [articleData, setArticleData] = useState<ArticleType | null>();
 
   useEffect(() => {
-    if (id) dispatch(getArticleByID(id));
-    window.scroll(0, 0);
-  }, [id, dispatch]);
+    const fetchArticle = async () => {
+      if (!id) return;
+
+      const article = await articleService.findById(id);
+      setArticleData(article);
+    };
+
+    fetchArticle();
+    window.scrollTo(0, 0);
+  }, [id]);
 
   if (!articleData) {
-    return <Typography>Blog not found</Typography>;
+    return (
+      <Box textAlign="center" mt={4}>
+        <Typography variant="button" gutterBottom display="block" color="error">
+          Article not found
+        </Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          sx={{ mt: 2 }}
+          onClick={goToArticles}
+        >
+          Go Back to Articles
+        </Button>
+      </Box>
+    );
   }
 
   return (

@@ -1,7 +1,6 @@
-import ROUTES from '@constant/routes';
 import { ArticleType } from '@models/Article';
 import { formatDate } from '@utils/dateUtils';
-import { useNavigate } from 'react-router-dom';
+import { useAppNavigation } from '@utils/navigation';
 
 import { Bookmark as BookmarkIcon } from '@mui/icons-material';
 import {
@@ -17,7 +16,7 @@ import Grid from '@mui/material/Grid2';
 import { StyledCard, StyledExcerpt, StyledTitle } from './index.styled';
 
 const CardItem = ({ data }: { data: ArticleType }) => {
-  const navigate = useNavigate();
+  const { goToArticleDetail } = useAppNavigation();
 
   return (
     <StyledCard>
@@ -48,9 +47,7 @@ const CardItem = ({ data }: { data: ArticleType }) => {
       <Grid container spacing={3}>
         <Grid size={{ xs: 12, md: 8 }}>
           <Box sx={{ mb: (theme) => theme.spacing(2) }}>
-            <StyledTitle
-              onClick={() => navigate(ROUTES.ARTICLE_DETAIL(data.id))}
-            >
+            <StyledTitle onClick={() => goToArticleDetail(data.id)}>
               {data.title}
             </StyledTitle>
             <StyledExcerpt>{data.description}</StyledExcerpt>

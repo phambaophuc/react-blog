@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
 
-import ROUTES from '@constant/routes';
 import { ArticleType } from '@models/Article';
 import { articleService } from '@services/articleService';
 import { formatDate } from '@utils/dateUtils';
-import { useNavigate } from 'react-router-dom';
+import { useAppNavigation } from '@utils/navigation';
 
 import { AccessTime as AccessTimeIcon } from '@mui/icons-material';
 import { Box, CardContent, CardMedia, Chip, Typography } from '@mui/material';
@@ -13,7 +12,7 @@ import Grid from '@mui/material/Grid2';
 import { StyledCard } from './index.styled';
 
 const RelatedArticles = ({ articleId }: { articleId: string }) => {
-  const navigate = useNavigate();
+  const { goToArticleDetail } = useAppNavigation();
   const [relatedArticles, setRelatedArticles] = useState<ArticleType[]>([]);
 
   useEffect(() => {
@@ -42,7 +41,7 @@ const RelatedArticles = ({ articleId }: { articleId: string }) => {
             size={{ xs: 12, sm: 12, md: 6 }}
             sx={{ cursor: 'pointer' }}
             key={article.id}
-            onClick={() => navigate(ROUTES.ARTICLE_DETAIL(article.id))}
+            onClick={() => goToArticleDetail(article.id)}
           >
             <StyledCard>
               <CardMedia

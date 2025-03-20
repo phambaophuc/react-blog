@@ -4,18 +4,17 @@ import CardItem from '@components/CardItem';
 import Layout from '@components/Layout';
 import { Search } from '@components/Search';
 import TagList from '@components/TagList';
-import ROUTES from '@constant/routes';
 import { getArticles, resetArticles } from '@store/articleSlice';
 import { AppDispatch, RootState } from '@store/store';
 import { formatDate } from '@utils/dateUtils';
+import { useAppNavigation } from '@utils/navigation';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 
 import { Box, Chip, Divider, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 
 const ArticlesPage = () => {
-  const navigate = useNavigate();
+  const { goToArticleDetail } = useAppNavigation();
 
   const dispatch = useDispatch<AppDispatch>();
   const {
@@ -138,7 +137,7 @@ const ArticlesPage = () => {
                       mb: (theme) => theme.spacing(1),
                       cursor: 'pointer',
                     }}
-                    onClick={() => navigate(ROUTES.ARTICLE_DETAIL(article.id))}
+                    onClick={() => goToArticleDetail(article.id)}
                   >
                     {article.title}
                   </Typography>

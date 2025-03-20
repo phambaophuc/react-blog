@@ -2,15 +2,14 @@ import { useEffect, useState } from 'react';
 
 import Layout from '@components/Layout';
 import RichTextEditor from '@components/RichTextEditor';
-import ROUTES from '@constant/routes';
 import { CreateArticleType } from '@models/Article';
 import { TagType } from '@models/Tag';
 import { articleService } from '@services/articleService';
 import { storageService } from '@services/storageService';
 import { tagService } from '@services/tagService';
 import { RootState } from '@store/store';
+import { useAppNavigation } from '@utils/navigation';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 
 import {
   CloudUpload as CloudUploadIcon,
@@ -47,7 +46,7 @@ import {
 } from './index.styled';
 
 const WriteArticlePage = () => {
-  const navigate = useNavigate();
+  const { goToSignin, goToArticles } = useAppNavigation();
   const { user } = useSelector((state: RootState) => state.auth);
 
   const [tags, setTags] = useState<TagType[]>([]);
@@ -70,8 +69,8 @@ const WriteArticlePage = () => {
   };
 
   useEffect(() => {
-    if (!user) navigate(ROUTES.SIGNIN);
-  }, [navigate, user]);
+    if (!user) goToSignin();
+  }, [goToSignin, user]);
 
   useEffect(() => {
     fetchTags();
@@ -117,7 +116,7 @@ const WriteArticlePage = () => {
         uploadedImageUrl = await storageService.uploadFile(imageFile);
       }
       await articleService.create({ ...article, imageUrl: uploadedImageUrl });
-      navigate(ROUTES.ARTICLES, { replace: true });
+      goToArticles();
     } catch {
       throw new Error('Something went wrong!');
     } finally {

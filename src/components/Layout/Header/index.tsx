@@ -1,7 +1,6 @@
 import UserAvatar from '@components/UserAvatar';
-import ROUTES from '@constant/routes';
 import useHideOnScroll from '@hooks/useHideOnScroll';
-import { useNavigate } from 'react-router-dom';
+import { useAppNavigation } from '@utils/navigation';
 
 import {
   NotificationsOutlined as NotificationsIcon,
@@ -19,7 +18,7 @@ import {
 } from '@mui/material';
 
 const Header = () => {
-  const navigate = useNavigate();
+  const { goToArticles, goToWriteArticle } = useAppNavigation();
   const headerRef = useHideOnScroll();
 
   return (
@@ -41,7 +40,7 @@ const Header = () => {
             src="/logo.svg"
             alt="Page Logo"
             sx={{ height: 40, cursor: 'pointer' }}
-            onClick={() => navigate(ROUTES.ARTICLES)}
+            onClick={goToArticles}
           />
 
           <Box
@@ -70,7 +69,7 @@ const Header = () => {
             alignItems="center"
             gap={1}
             sx={{ cursor: 'pointer' }}
-            onClick={() => navigate(ROUTES.WRITE_ARTICLE)}
+            onClick={goToWriteArticle}
           >
             <WriteIcon />
             <Typography variant="body2">Write</Typography>

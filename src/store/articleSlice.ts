@@ -3,8 +3,18 @@ import {
   ArticleType,
   QueryArticleType,
 } from '@models/Article';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { articleService } from '@services/articleService';
+
+const mergeArticles = (
+  existingArticles: ArticleType[],
+  newArticles: ArticleType[]
+): ArticleType[] => {
+  const mergedArticles = [...existingArticles, ...newArticles];
+  return Array.from(
+    new Map(mergedArticles.map((article) => [article.id, article])).values()
+  );
+};
 
 export const getArticles = createAsyncThunk(
   'articles/getArticles',
@@ -13,20 +23,13 @@ export const getArticles = createAsyncThunk(
   }
 );
 
-export const getArticleByID = createAsyncThunk(
-  'articles/getArticleByID',
-  async (id: string) => {
-    return await articleService.findById(id);
-  }
-);
-
-type InitType = ArticleResponseType & {
+type ArticleState = ArticleResponseType & {
   loading: boolean;
   hasMore: boolean;
   articleData: ArticleType | null;
 };
 
-const initialState: InitType = {
+const initialState: ArticleState = {
   data: [],
   page: 1,
   limit: 10,
@@ -51,31 +54,24 @@ const articleSlice = createSlice({
       .addCase(getArticles.pending, (state) => {
         state.loading = true;
       })
-      .addCase(getArticles.fulfilled, (state, action) => {
-        state.loading = false;
+      .addCase(
+        getArticles.fulfilled,
+        (state, action: PayloadAction<ArticleResponseType>) => {
+          state.loading = false;
 
-        if (action.meta.arg.page === 1) {
-          state.data = action.payload.data;
-        } else {
-          state.data = [
-            ...new Map(
-              [...state.data, ...action.payload.data].map((article) => [
-                article.id,
-                article,
-              ])
-            ).values(),
-          ];
+          if (action.payload.page === 1) {
+            state.data = action.payload.data;
+          } else {
+            state.data = mergeArticles(state.data, action.payload.data);
+          }
+
+          state.page = action.payload.page;
+          state.totalPages = action.payload.totalPages;
+          state.hasMore = action.payload.page < action.payload.totalPages;
         }
-
-        state.page = action.payload.page;
-        state.totalPages = action.payload.totalPages;
-        state.hasMore = action.payload.page < action.payload.totalPages;
-      })
+      )
       .addCase(getArticles.rejected, (state) => {
         state.loading = false;
-      })
-      .addCase(getArticleByID.fulfilled, (state, action) => {
-        state.articleData = action.payload;
       });
   },
 });

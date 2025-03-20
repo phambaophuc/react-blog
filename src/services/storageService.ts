@@ -5,16 +5,12 @@ export const storageService = {
     const formData = new FormData();
     formData.append('file', file);
 
-    try {
-      const response = await apiClient.post('/storage/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+    const response = await apiClient.post('/storage/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
 
-      return response.data.url;
-    } catch (error) {
-      console.error(error);
-    }
+    return response.data.url;
   },
 };

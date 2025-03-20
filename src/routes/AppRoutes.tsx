@@ -1,5 +1,6 @@
 import React, { Suspense, lazy } from 'react';
 
+import ROUTES from '@utils/routes';
 import { Route, Routes } from 'react-router-dom';
 
 import { Box, CircularProgress } from '@mui/material';
@@ -30,16 +31,18 @@ const AppRoutes: React.FC = () => {
   return (
     <Suspense fallback={<Loading />}>
       <Routes>
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/signin" element={<SigninPage />} />
-
-        <Route path="/articles">
-          <Route index element={<ArticlesPage />} />
-          <Route path=":id" element={<ArticleDetailPage />} />
-          <Route path="write" element={<WriteArticlePage />} />
-        </Route>
-
-        <Route path="*" element={<LandingPage />} />
+        <Route path={ROUTES.SIGNUP as string} element={<SignupPage />} />
+        <Route path={ROUTES.SIGNIN as string} element={<SigninPage />} />
+        <Route path={ROUTES.ARTICLES as string} element={<ArticlesPage />} />
+        <Route
+          path={`${ROUTES.ARTICLES}/:id`}
+          element={<ArticleDetailPage />}
+        />
+        <Route
+          path={ROUTES.WRITE_ARTICLE as string}
+          element={<WriteArticlePage />}
+        />
+        <Route path="/" element={<LandingPage />} />
       </Routes>
     </Suspense>
   );

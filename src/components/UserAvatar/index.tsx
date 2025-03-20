@@ -1,10 +1,9 @@
 import { useCallback, useState } from 'react';
 
-import ROUTES from '@constant/routes';
 import { logout } from '@store/authSlice';
 import { AppDispatch, RootState } from '@store/store';
+import { useAppNavigation } from '@utils/navigation';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 
 import {
   AccountCircle as AccountCircleIcon,
@@ -24,7 +23,7 @@ import {
 import { CustomMenuItem } from './index.styled';
 
 const UserAvatar: React.FC = () => {
-  const navigate = useNavigate();
+  const { goToSignin } = useAppNavigation();
 
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
@@ -108,7 +107,7 @@ const UserAvatar: React.FC = () => {
         <Box sx={{ display: 'flex', gap: (theme) => theme.spacing(1) }}>
           <Button
             color="primary"
-            onClick={() => navigate(ROUTES.SIGNIN)}
+            onClick={goToSignin}
             sx={{ textTransform: 'none' }}
           >
             Sign In

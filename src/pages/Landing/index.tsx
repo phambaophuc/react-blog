@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
-import ROUTES from '@constant/routes';
-import { useNavigate } from 'react-router-dom';
+import { useAppNavigation } from '@utils/navigation';
 
 import { Menu as MenuIcon } from '@mui/icons-material';
 import {
@@ -29,7 +28,7 @@ import {
 } from './index.styled';
 
 const Landing = () => {
-  const navigate = useNavigate();
+  const { goToSignin } = useAppNavigation();
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const theme = useTheme();
@@ -77,10 +76,7 @@ const Landing = () => {
                 {navItems.map((item) => (
                   <NavButton key={item}>{item}</NavButton>
                 ))}
-                <SignInButton
-                  variant="contained"
-                  onClick={() => navigate(ROUTES.SIGNIN)}
-                >
+                <SignInButton variant="contained" onClick={goToSignin}>
                   Sign in
                 </SignInButton>
               </Box>
