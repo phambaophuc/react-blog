@@ -24,7 +24,6 @@ type QueryArticleType = {
 
 type CreateArticleType = {
   title: string;
-  description: string;
   content: string;
   imageUrl: string;
   tagId: string;

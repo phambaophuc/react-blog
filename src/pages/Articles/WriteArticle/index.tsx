@@ -13,7 +13,6 @@ import { useSelector } from 'react-redux';
 
 import {
   CloudUpload as CloudUploadIcon,
-  Description as DescriptionIcon,
   Publish as PublishIcon,
   Save as SaveIcon,
   LocalOffer as TagIcon,
@@ -52,7 +51,6 @@ const WriteArticlePage = () => {
   const [tags, setTags] = useState<TagType[]>([]);
   const [article, setArticle] = useState<CreateArticleType>({
     title: '',
-    description: '',
     content: '',
     imageUrl: '',
     tagId: '',
@@ -95,7 +93,6 @@ const WriteArticlePage = () => {
     const newErrors: { [key: string]: string } = {};
 
     if (!article.title) newErrors.title = 'Title is required';
-    if (!article.description) newErrors.description = 'Description is required';
     if (!article.content) newErrors.content = 'Content is required';
     if (!article.tagId) newErrors.tagId = 'Tag is required';
     if (useLink && !article.imageUrl)
@@ -192,28 +189,6 @@ const WriteArticlePage = () => {
             </FormControl>
           </Grid>
         </Grid>
-
-        <TextField
-          label="Short Description"
-          name="description"
-          variant="outlined"
-          fullWidth
-          rows={2}
-          value={article.description}
-          onChange={handleChange}
-          error={!!errors.description}
-          helperText={errors.description}
-          sx={{ mt: (theme) => theme.spacing(3) }}
-          slotProps={{
-            input: {
-              startAdornment: (
-                <InputAdornment position="start">
-                  <DescriptionIcon />
-                </InputAdornment>
-              ),
-            },
-          }}
-        />
 
         <Box sx={{ my: (theme) => theme.spacing(2) }}>
           <FormControlLabel
