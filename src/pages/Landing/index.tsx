@@ -28,7 +28,7 @@ import {
 } from './index.styled';
 
 const Landing = () => {
-  const { goToSignin } = useAppNavigation();
+  const { goToSignin, goToArticles } = useAppNavigation();
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const theme = useTheme();
@@ -127,7 +127,7 @@ const Landing = () => {
             >
               A place to read, write, and deepen your understanding
             </Typography>
-            <HeroButton variant="contained" size="large">
+            <HeroButton variant="contained" size="large" onClick={goToArticles}>
               Start reading
             </HeroButton>
           </Grid>
