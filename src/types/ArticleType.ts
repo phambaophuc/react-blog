@@ -1,6 +1,6 @@
-import { AuthorType } from './Author';
-import { CommentType } from './Comment';
-import { TagType } from './Tag';
+import { CommentType } from './CommentType';
+import { TagType } from './TagType';
+import { UserType } from './UserType';
 
 type ArticleType = {
   id: string;
@@ -10,7 +10,7 @@ type ArticleType = {
   imageUrl: string;
   views: number;
   tag: TagType;
-  author: AuthorType;
+  user: UserType;
   comments: CommentType[];
   createdAt: string;
   updatedAt: string;

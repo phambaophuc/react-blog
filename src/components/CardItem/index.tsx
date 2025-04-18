@@ -1,4 +1,4 @@
-import { ArticleType } from '@models/Article';
+import { ArticleType } from '@models/ArticleType';
 import { formatDate } from '@utils/dateUtils';
 import { useAppNavigation } from '@utils/navigation';
 
@@ -29,15 +29,15 @@ const CardItem = ({ data }: { data: ArticleType }) => {
         }}
       >
         <Avatar
-          alt={data.author.displayName}
-          src={data.author.avatarUrl}
+          alt={data.user.displayName}
+          src={data.user.avatarUrl}
           sx={{
             width: (theme) => theme.spacing(4),
             height: (theme) => theme.spacing(4),
           }}
         />
         <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-          {data.author.displayName}
+          {data.user.displayName}
         </Typography>
         <Typography variant="caption" sx={{ color: 'text.secondary' }}>
           {formatDate(data.createdAt)}

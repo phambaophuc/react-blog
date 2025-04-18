@@ -1,4 +1,4 @@
-import { SignInType } from '@models/Auth';
+import { SignInType } from '@models/AuthType';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { authService } from '@services/authService';
 

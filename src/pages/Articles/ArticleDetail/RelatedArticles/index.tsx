@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { ArticleType } from '@models/Article';
+import { ArticleType } from '@models/ArticleType';
 import { articleService } from '@services/articleService';
 import { formatDate } from '@utils/dateUtils';
 import { useAppNavigation } from '@utils/navigation';

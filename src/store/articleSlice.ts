@@ -2,7 +2,7 @@ import {
   ArticleResponseType,
   ArticleType,
   QueryArticleType,
-} from '@models/Article';
+} from '@models/ArticleType';
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { articleService } from '@services/articleService';
 

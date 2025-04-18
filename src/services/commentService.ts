@@ -1,4 +1,4 @@
-import { CreateCommentType } from '@models/Comment';
+import { CreateCommentType } from '@models/CommentType';
 
 import { apiClient } from './apiClient';
 

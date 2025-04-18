@@ -145,7 +145,7 @@ const ArticlesPage = () => {
                     variant="caption"
                     sx={{ color: 'text.secondary' }}
                   >
-                    {article.author.displayName} ·{' '}
+                    {article.user.displayName} ·{' '}
                     {formatDate(article.createdAt)}
                   </Typography>
                 </Box>

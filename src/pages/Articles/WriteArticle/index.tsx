@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 
 import Layout from '@components/Layout';
 import RichTextEditor from '@components/RichTextEditor';
-import { CreateArticleType } from '@models/Article';
-import { TagType } from '@models/Tag';
+import { CreateArticleType } from '@models/ArticleType';
+import { TagType } from '@models/TagType';
 import { articleService } from '@services/articleService';
 import { storageService } from '@services/storageService';
 import { tagService } from '@services/tagService';

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import React from 'react';
 
-import { TagType } from '@models/Tag';
+import { TagType } from '@models/TagType';
 import { tagService } from '@services/tagService';
 
 import { Box, Chip } from '@mui/material';

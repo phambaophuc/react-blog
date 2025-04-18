@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import FormattedContent from '@components/FormattedContent';
 import Layout from '@components/Layout';
-import { ArticleType } from '@models/Article';
+import { ArticleType } from '@models/ArticleType';
 import { articleService } from '@services/articleService';
 import { formatDate } from '@utils/dateUtils';
 import { useAppNavigation } from '@utils/navigation';
@@ -74,12 +74,12 @@ const ArticleDetailPage = () => {
           }}
         >
           <Avatar
-            src={articleData.author.avatarUrl}
+            src={articleData.user.avatarUrl}
             sx={{ mr: (theme) => theme.spacing(2) }}
           />
           <Box>
             <Typography variant="subtitle1">
-              Written by {articleData.author.displayName}
+              Written by {articleData.user.displayName}
             </Typography>
             <Typography variant="body2" color="text.secondary">
               Published on {formatDate(articleData.createdAt)}

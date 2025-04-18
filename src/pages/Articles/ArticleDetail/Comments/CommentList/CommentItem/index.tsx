@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { CommentType } from '@models/Comment';
+import { CommentType } from '@models/CommentType';
 import { RootState } from '@store/store';
 import { timeAgo } from '@utils/dateUtils';
 import { useSelector } from 'react-redux';
@@ -31,15 +31,15 @@ const CommentItem: React.FC<{
     <Box sx={{ mb: (theme) => theme.spacing(2) }}>
       <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
         <Avatar
-          src={comment.author.avatarUrl}
+          src={comment.user.avatarUrl}
           sx={{ mr: (theme) => theme.spacing(2) }}
         />
         <Box sx={{ flex: 1 }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Typography variant="subtitle2">
-              {comment.author.displayName}
+              {comment.user.displayName}
             </Typography>
-            {user?.id === comment.author.id && (
+            {user?.id === comment.user.id && (
               <IconButton
                 size="small"
                 color="error"
@@ -112,7 +112,7 @@ const CommentItem: React.FC<{
                     }}
                   >
                     <Avatar
-                      src={reply.author.avatarUrl}
+                      src={reply.user.avatarUrl}
                       sx={{
                         width: (theme) => theme.spacing(4),
                         height: (theme) => theme.spacing(4),
@@ -122,9 +122,9 @@ const CommentItem: React.FC<{
                     <Box>
                       <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <Typography variant="subtitle2">
-                          {reply.author.displayName}
+                          {reply.user.displayName}
                         </Typography>
-                        {user?.id === reply.author.id && (
+                        {user?.id === reply.user.id && (
                           <IconButton
                             size="small"
                             color="error"

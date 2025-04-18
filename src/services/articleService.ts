@@ -3,7 +3,7 @@ import {
   ArticleType,
   CreateArticleType,
   QueryArticleType,
-} from '@models/Article';
+} from '@models/ArticleType';
 
 import { apiClient } from './apiClient';
 import { DEFAULT_LIMIT, DEFAULT_PAGE } from '@constant/pagination';

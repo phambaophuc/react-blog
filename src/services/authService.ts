@@ -1,4 +1,4 @@
-import { SignUpType } from '@models/Auth';
+import { SignUpType } from '@models/AuthType';
 
 import { apiClient } from './apiClient';
 

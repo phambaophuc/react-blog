@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { CommentType } from '@models/Comment';
+import { CommentType } from '@models/CommentType';
 import { commentService } from '@services/commentService';
 import { RootState } from '@store/store';
 import { useSelector } from 'react-redux';
