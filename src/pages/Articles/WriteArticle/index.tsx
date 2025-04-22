@@ -5,14 +5,12 @@ import RichTextEditor from '@components/RichTextEditor';
 import { CreateArticleType } from '@models/ArticleType';
 import { TagType } from '@models/TagType';
 import { articleService } from '@services/articleService';
-import { storageService } from '@services/storageService';
 import { tagService } from '@services/tagService';
 import { RootState } from '@store/store';
 import { useAppNavigation } from '@utils/navigation';
 import { useSelector } from 'react-redux';
 
 import {
-  CloudUpload as CloudUploadIcon,
   Publish as PublishIcon,
   Save as SaveIcon,
   LocalOffer as TagIcon,
@@ -20,29 +18,20 @@ import {
   Visibility as VisibilityIcon,
 } from '@mui/icons-material';
 import {
-  Box,
   Button,
-  CardMedia,
   CircularProgress,
   FormControl,
-  FormControlLabel,
   InputAdornment,
   InputLabel,
   MenuItem,
   OutlinedInput,
   Select,
-  Switch,
   TextField,
   Typography,
 } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 
-import {
-  ActionButtons,
-  StyledPaper,
-  UploadBox,
-  VisuallyHiddenInput,
-} from './index.styled';
+import { ActionButtons, StyledPaper } from './index.styled';
 
 const WriteArticlePage = () => {
   const { goToSignin, goToArticles } = useAppNavigation();
@@ -52,12 +41,8 @@ const WriteArticlePage = () => {
   const [article, setArticle] = useState<CreateArticleType>({
     title: '',
     content: '',
-    imageUrl: '',
     tagId: '',
   });
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [useLink, setUseLink] = useState(false);
   const [isPublishing, setIsPublishing] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
@@ -81,23 +66,12 @@ const WriteArticlePage = () => {
     setErrors((prevErrors) => ({ ...prevErrors, [e.target.name]: '' }));
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setImageFile(file);
-      setImagePreview(URL.createObjectURL(file));
-    }
-  };
-
   const validateForm = () => {
     const newErrors: { [key: string]: string } = {};
 
     if (!article.title) newErrors.title = 'Title is required';
     if (!article.content) newErrors.content = 'Content is required';
     if (!article.tagId) newErrors.tagId = 'Tag is required';
-    if (useLink && !article.imageUrl)
-      newErrors.imageUrl = 'Image URL is required';
-    if (!useLink && !imageFile) newErrors.imageFile = 'Image file is required';
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -108,11 +82,7 @@ const WriteArticlePage = () => {
 
     setIsPublishing(true);
     try {
-      let uploadedImageUrl = article.imageUrl;
-      if (imageFile) {
-        uploadedImageUrl = await storageService.uploadFile(imageFile);
-      }
-      await articleService.create({ ...article, imageUrl: uploadedImageUrl });
+      await articleService.create(article);
       goToArticles();
     } catch {
       throw new Error('Something went wrong!');
@@ -190,63 +160,8 @@ const WriteArticlePage = () => {
           </Grid>
         </Grid>
 
-        <Box sx={{ my: (theme) => theme.spacing(2) }}>
-          <FormControlLabel
-            control={
-              <Switch checked={useLink} onChange={() => setUseLink(!useLink)} />
-            }
-            label="Use Image URL"
-          />
-
-          {useLink ? (
-            <TextField
-              label="Image URL"
-              name="imageUrl"
-              variant="outlined"
-              fullWidth
-              value={article.imageUrl}
-              onChange={handleChange}
-              error={!!errors.imageUrl}
-              helperText={errors.imageUrl}
-              placeholder="Paste image URL here..."
-            />
-          ) : (
-            <UploadBox as="label" sx={{ mt: (theme) => theme.spacing(1) }}>
-              {imagePreview ? (
-                <CardMedia
-                  component="img"
-                  image={imagePreview}
-                  alt="Preview"
-                  sx={{
-                    height: '100%',
-                    objectFit: 'none',
-                    borderRadius: (theme) => theme.shape.borderRadius,
-                  }}
-                />
-              ) : (
-                <>
-                  <CloudUploadIcon
-                    sx={{
-                      fontSize: (theme) => theme.typography.pxToRem(48),
-                      color: 'gray',
-                    }}
-                  />
-                  <Typography variant="body2" color="textSecondary">
-                    Click to upload or drag & drop an image
-                  </Typography>
-                </>
-              )}
-              <VisuallyHiddenInput type="file" onChange={handleFileChange} />
-              {errors.imageFile && (
-                <Typography variant="caption" color="error">
-                  {errors.imageFile}
-                </Typography>
-              )}
-            </UploadBox>
-          )}
-        </Box>
-
         <RichTextEditor
+          sx={{ mt: (theme) => theme.spacing(2) }}
           content={article.content}
           setContent={(c) => setArticle({ ...article, content: c })}
         />

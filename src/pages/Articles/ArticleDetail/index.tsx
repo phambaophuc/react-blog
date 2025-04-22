@@ -87,19 +87,6 @@ const ArticleDetailPage = () => {
           </Box>
         </Box>
 
-        <Box
-          component="img"
-          src={articleData.imageUrl}
-          alt={articleData.title}
-          sx={{
-            width: '100%',
-            height: (theme) => theme.spacing(50),
-            objectFit: 'cover',
-            borderRadius: (theme) => theme.shape.borderRadius,
-            mb: (theme) => theme.spacing(4),
-          }}
-        />
-
         <FormattedContent content={articleData.content} />
 
         <Box

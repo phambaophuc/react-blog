@@ -22,7 +22,7 @@ import {
   Title,
   Undo,
 } from '@mui/icons-material';
-import { Box, IconButton, SxProps, Theme, Tooltip } from '@mui/material';
+import { Box, IconButton, Paper, SxProps, Theme, Tooltip } from '@mui/material';
 
 import { EditorWrapper } from './index.styled';
 
@@ -51,12 +51,15 @@ const RichTextEditor = ({
 
   if (!editor) return null;
 
+  const getButtonColor = (condition: boolean) =>
+    condition ? 'primary' : 'default';
+
   return (
-    <Box
+    <Paper
+      elevation={2}
       sx={{
         ...sx,
         border: (theme) => `1px solid ${theme.palette.divider}`,
-        borderRadius: (theme) => theme.shape.borderRadius,
         backgroundColor: (theme) => theme.palette.background.paper,
       }}
     >
@@ -66,19 +69,25 @@ const RichTextEditor = ({
           flexWrap: 'wrap',
           alignItems: 'center',
           gap: (theme) => theme.spacing(1),
-          p: (theme) => theme.spacing(1),
           borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
+          p: (theme) => theme.spacing(1),
         }}
       >
         <Tooltip title="Bold">
-          <IconButton onClick={() => editor.chain().focus().toggleBold().run()}>
+          <IconButton
+            size="small"
+            onClick={() => editor.chain().focus().toggleBold().run()}
+            color={getButtonColor(editor.isActive('bold'))}
+          >
             <FormatBold />
           </IconButton>
         </Tooltip>
 
         <Tooltip title="Italic">
           <IconButton
+            size="small"
             onClick={() => editor.chain().focus().toggleItalic().run()}
+            color={getButtonColor(editor.isActive('italic'))}
           >
             <FormatItalic />
           </IconButton>
@@ -86,7 +95,9 @@ const RichTextEditor = ({
 
         <Tooltip title="Underline">
           <IconButton
+            size="small"
             onClick={() => editor.chain().focus().toggleUnderline().run()}
+            color={getButtonColor(editor.isActive('underline'))}
           >
             <FormatUnderlined />
           </IconButton>
@@ -94,7 +105,9 @@ const RichTextEditor = ({
 
         <Tooltip title="Strikethrough">
           <IconButton
+            size="small"
             onClick={() => editor.chain().focus().toggleStrike().run()}
+            color={getButtonColor(editor.isActive('strike'))}
           >
             <StrikethroughS />
           </IconButton>
@@ -102,9 +115,11 @@ const RichTextEditor = ({
 
         <Tooltip title="Heading 1">
           <IconButton
+            size="small"
             onClick={() =>
               editor.chain().focus().toggleHeading({ level: 1 }).run()
             }
+            color={getButtonColor(editor.isActive('heading', { level: 1 }))}
           >
             <Title fontSize="small" />
           </IconButton>
@@ -112,7 +127,9 @@ const RichTextEditor = ({
 
         <Tooltip title="Bullet List">
           <IconButton
+            size="small"
             onClick={() => editor.chain().focus().toggleBulletList().run()}
+            color={getButtonColor(editor.isActive('bulletList'))}
           >
             <FormatListBulleted />
           </IconButton>
@@ -120,7 +137,9 @@ const RichTextEditor = ({
 
         <Tooltip title="Numbered List">
           <IconButton
+            size="small"
             onClick={() => editor.chain().focus().toggleOrderedList().run()}
+            color={getButtonColor(editor.isActive('orderedList'))}
           >
             <FormatListNumbered />
           </IconButton>
@@ -128,7 +147,9 @@ const RichTextEditor = ({
 
         <Tooltip title="Blockquote">
           <IconButton
+            size="small"
             onClick={() => editor.chain().focus().toggleBlockquote().run()}
+            color={getButtonColor(editor.isActive('blockquote'))}
           >
             <FormatQuote />
           </IconButton>
@@ -136,7 +157,9 @@ const RichTextEditor = ({
 
         <Tooltip title="Align Left">
           <IconButton
+            size="small"
             onClick={() => editor.chain().focus().setTextAlign('left').run()}
+            color={getButtonColor(editor.isActive({ textAlign: 'left' }))}
           >
             <FormatAlignLeft />
           </IconButton>
@@ -144,7 +167,9 @@ const RichTextEditor = ({
 
         <Tooltip title="Align Center">
           <IconButton
+            size="small"
             onClick={() => editor.chain().focus().setTextAlign('center').run()}
+            color={getButtonColor(editor.isActive({ textAlign: 'center' }))}
           >
             <FormatAlignCenter />
           </IconButton>
@@ -152,26 +177,35 @@ const RichTextEditor = ({
 
         <Tooltip title="Align Right">
           <IconButton
+            size="small"
             onClick={() => editor.chain().focus().setTextAlign('right').run()}
+            color={getButtonColor(editor.isActive({ textAlign: 'right' }))}
           >
             <FormatAlignRight />
           </IconButton>
         </Tooltip>
 
         <Tooltip title="Undo">
-          <IconButton onClick={() => editor.chain().focus().undo().run()}>
+          <IconButton
+            size="small"
+            onClick={() => editor.chain().focus().undo().run()}
+          >
             <Undo />
           </IconButton>
         </Tooltip>
 
         <Tooltip title="Redo">
-          <IconButton onClick={() => editor.chain().focus().redo().run()}>
+          <IconButton
+            size="small"
+            onClick={() => editor.chain().focus().redo().run()}
+          >
             <Redo />
           </IconButton>
         </Tooltip>
 
         <Tooltip title="Insert Image">
           <IconButton
+            size="small"
             onClick={() => {
               const url = prompt('Enter image URL');
               if (url) editor.chain().focus().setImage({ src: url }).run();
@@ -183,6 +217,7 @@ const RichTextEditor = ({
 
         <Tooltip title="Insert Link">
           <IconButton
+            size="small"
             onClick={() => {
               const url = prompt('Enter URL');
               if (url) editor.chain().focus().setLink({ href: url }).run();
@@ -194,9 +229,9 @@ const RichTextEditor = ({
       </Box>
 
       <EditorWrapper>
-        <EditorContent editor={editor} style={{ minHeight: 300 }} />
+        <EditorContent editor={editor} style={{ minHeight: 400 }} />
       </EditorWrapper>
-    </Box>
+    </Paper>
   );
 };
 

@@ -1,3 +1,4 @@
+import { DEFAULT_LIMIT, DEFAULT_PAGE } from '@constant/pagination';
 import {
   ArticleResponseType,
   ArticleType,
@@ -6,7 +7,6 @@ import {
 } from '@models/ArticleType';
 
 import { apiClient } from './apiClient';
-import { DEFAULT_LIMIT, DEFAULT_PAGE } from '@constant/pagination';
 
 export const articleService = {
   findAll: async (query: QueryArticleType): Promise<ArticleResponseType> => {
