@@ -1,10 +1,9 @@
 import { styled } from '@mui/material';
 
-export const StyledImage = styled('img')({
+export const StyledImage = styled('img')(({ theme }) => ({
   width: '100%',
-  height: '500px',
-  objectFit: 'fill',
-  borderRadius: '8px',
+  objectFit: 'cover',
+  borderRadius: theme.shape.borderRadius,
   display: 'block',
   margin: 'auto',
-});
+}));

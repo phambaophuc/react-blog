@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 
-import { Link } from 'react-router-dom';
+import { authService } from '@services/authService';
+import { useAppNavigation } from '@utils/navigation';
 
-import { Alert, Box, Typography } from '@mui/material';
+import { Alert, Box, Link, Typography } from '@mui/material';
 
 import {
   StyledButton,
@@ -12,14 +13,16 @@ import {
 } from './index.styled';
 
 interface FormData {
-  fullname: string;
+  displayName: string;
   email: string;
   password: string;
 }
 
 const SignupPage: React.FC = () => {
+  const { goToSignin } = useAppNavigation();
+
   const [formData, setFormData] = useState<FormData>({
-    fullname: '',
+    displayName: '',
     email: '',
     password: '',
   });
@@ -29,12 +32,15 @@ const SignupPage: React.FC = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const { displayName, email, password } = formData;
     e.preventDefault();
-    if (!formData.fullname || !formData.email || !formData.password) {
+    if (!displayName || !email || !password) {
       setError('All fields are required.');
       return;
     }
+    await authService.signUp({ displayName, email, password });
+    goToSignin();
     setError('');
   };
 
@@ -48,18 +54,22 @@ const SignupPage: React.FC = () => {
           Sign up to share your thoughts and connect with like-minded people.
         </Typography>
         {error && (
-          <Alert severity="error" sx={{ mb: 2 }}>
+          <Alert severity="error" sx={{ mt: (theme) => theme.spacing(2) }}>
             {error}
           </Alert>
         )}
-        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 5 }}>
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          sx={{ mt: (theme) => theme.spacing(3) }}
+        >
           <StyledTextField
             fullWidth
             label="Full Name"
-            name="fullname"
+            name="displayName"
             variant="outlined"
             size="small"
-            value={formData.fullname}
+            value={formData.displayName}
             onChange={handleChange}
           />
           <StyledTextField
@@ -86,12 +96,17 @@ const SignupPage: React.FC = () => {
             Sign Up
           </StyledButton>
         </Box>
-        <Typography variant="body2" color="textSecondary" sx={{ mt: 2 }}>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          gap={(theme) => theme.spacing(0.5)}
+          mt={(theme) => theme.spacing(2)}
+        >
           Already have an account?{' '}
-          <Link
-            to="/signin"
-            style={{ color: '#2575fc', textDecoration: 'none' }}
-          >
+          <Link component="button" underline="hover" onClick={goToSignin}>
             Sign in
           </Link>
         </Typography>

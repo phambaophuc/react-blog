@@ -1,23 +1,19 @@
 import { Paper, styled } from '@mui/material';
 
 export const EditorWrapper = styled(Paper)(({ theme }) => ({
-  marginTop: theme.spacing(2),
   padding: theme.spacing(2),
-  minHeight: '200px',
+  minHeight: theme.spacing(25),
   borderRadius: theme.shape.borderRadius,
-  backgroundColor: 'white',
+  backgroundColor: theme.palette.common.white,
   '& .ProseMirror': {
     border: 'none',
     outline: 'none',
     padding: theme.spacing(1),
-    minHeight: '180px',
-    fontSize: '16px',
+    minHeight: theme.spacing(22),
+    fontSize: theme.typography.pxToRem(16),
     fontFamily: theme.typography.fontFamily,
     '& img': {
-      width: '100%',
-      height: '400px',
-      objectFit: 'fill',
-      borderRadius: '8px',
+      borderRadius: theme.shape.borderRadius,
       display: 'block',
       margin: 'auto',
     },

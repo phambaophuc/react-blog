@@ -1,12 +1,11 @@
 import React from 'react';
 
-import ROUTES from '@constant/routes';
 import { signIn } from '@store/authSlice';
 import { AppDispatch, RootState } from '@store/store';
+import { useAppNavigation } from '@utils/navigation';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
 
-import { Alert, Box, Typography } from '@mui/material';
+import { Alert, Box, Link, Typography } from '@mui/material';
 
 import {
   StyledButton,
@@ -16,7 +15,7 @@ import {
 } from './index.styled';
 
 const SigninPage: React.FC = () => {
-  const navigate = useNavigate();
+  const { goToArticles, goToSignup } = useAppNavigation();
 
   const dispatch = useDispatch<AppDispatch>();
   const { loading, error } = useSelector((state: RootState) => state.auth);
@@ -28,9 +27,7 @@ const SigninPage: React.FC = () => {
     const email = form.email.value;
     const password = form.password.value;
 
-    dispatch(signIn({ email, password }))
-      .unwrap()
-      .then(() => navigate(ROUTES.BLOGS));
+    dispatch(signIn({ email, password })).unwrap().then(goToArticles);
   };
 
   return (
@@ -39,15 +36,21 @@ const SigninPage: React.FC = () => {
         <Typography variant="h4" gutterBottom fontWeight="bold">
           Welcome Back!
         </Typography>
-        <Typography variant="body1" color="textSecondary" gutterBottom>
+        <Typography variant="body1" color="text.secondary" gutterBottom>
           Sign in to continue sharing your thoughts.
         </Typography>
+
         {error && (
-          <Alert severity="error" sx={{ mt: 3 }}>
+          <Alert severity="error" sx={{ mt: (theme) => theme.spacing(3) }}>
             {error}
           </Alert>
         )}
-        <Box component="form" onSubmit={handleSignIn} sx={{ mt: 3 }}>
+
+        <Box
+          component="form"
+          onSubmit={handleSignIn}
+          sx={{ mt: (theme) => theme.spacing(3) }}
+        >
           <StyledTextField
             fullWidth
             label="Email"
@@ -73,12 +76,18 @@ const SigninPage: React.FC = () => {
             {loading ? 'Signing in...' : 'Sign In'}
           </StyledButton>
         </Box>
-        <Typography variant="body2" color="textSecondary" sx={{ mt: 2 }}>
+
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          gap={(theme) => theme.spacing(0.5)}
+          mt={(theme) => theme.spacing(2)}
+        >
           Don't have an account?{' '}
-          <Link
-            to="/signup"
-            style={{ color: '#2575fc', textDecoration: 'none' }}
-          >
+          <Link component="button" underline="hover" onClick={goToSignup}>
             Sign up
           </Link>
         </Typography>

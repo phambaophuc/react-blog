@@ -1,5 +1,5 @@
-import { Button, Paper, TextField } from '@mui/material';
-import { Container, keyframes, styled } from '@mui/system';
+import { Button, Paper, TextField, styled } from '@mui/material';
+import { Container, keyframes } from '@mui/system';
 
 const fadeIn = keyframes`
   from { opacity: 0; transform: translateY(-20px); }
@@ -13,41 +13,41 @@ export const StyledContainer = styled(Container)({
   alignItems: 'center',
 });
 
-export const StyledPaper = styled(Paper)({
-  padding: '40px 30px',
-  borderRadius: '12px',
-  boxShadow: '0px 6px 20px rgba(0, 0, 0, 0.15)',
+export const StyledPaper = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(5, 4),
+  borderRadius: theme.shape.borderRadius * 1.5,
+  boxShadow: theme.shadows[4],
   textAlign: 'center',
-  maxWidth: '450px',
+  maxWidth: theme.spacing(56),
   width: '100%',
   backgroundColor: 'rgba(255, 255, 255, 0.95)',
   backdropFilter: 'blur(10px)',
   animation: `${fadeIn} 0.8s ease-in-out`,
-});
+}));
 
-export const StyledButton = styled(Button)({
-  marginTop: '20px',
-  padding: '12px 0',
-  fontSize: '16px',
-  fontWeight: 'bold',
+export const StyledButton = styled(Button)(({ theme }) => ({
+  marginTop: theme.spacing(2.5),
+  padding: theme.spacing(1.5, 0),
+  fontSize: theme.typography.pxToRem(16),
+  fontWeight: theme.typography.fontWeightBold,
   textTransform: 'none',
-  borderRadius: '8px',
-  background: 'linear-gradient(135deg, #6a11cb, #2575fc)',
-  color: 'white',
-  transition: '0.3s',
+  borderRadius: theme.shape.borderRadius,
+  background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+  color: theme.palette.common.white,
+  transition: theme.transitions.create('background', { duration: 300 }),
   '&:hover': {
-    background: 'linear-gradient(135deg, #5a0fb5, #1d65d6)',
+    background: `linear-gradient(135deg, ${theme.palette.primary.dark}, ${theme.palette.secondary.dark})`,
   },
-});
+}));
 
-export const StyledTextField = styled(TextField)({
-  marginBottom: '15px',
+export const StyledTextField = styled(TextField)(({ theme }) => ({
+  marginBottom: theme.spacing(2),
   '& .MuiInputBase-root': {
-    fontSize: '14px',
+    fontSize: theme.typography.pxToRem(14),
     backgroundColor: 'rgba(255, 255, 255, 0.85)',
-    borderRadius: '6px',
+    borderRadius: theme.shape.borderRadius,
   },
   '& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
-    borderColor: '#2575fc',
+    borderColor: theme.palette.secondary.main,
   },
-});
+}));

@@ -1,16 +1,16 @@
-import { AuthorType } from './Author';
+import { UserType } from './UserType';
 
 type CommentType = {
   id: string;
   content: string;
   createdAt: string;
-  author: AuthorType;
+  user: UserType;
   replies: CommentType[];
 };
 
 type CreateCommentType = {
   content: string;
-  postId: string;
+  articleId: string;
   parentId?: string;
 };
 

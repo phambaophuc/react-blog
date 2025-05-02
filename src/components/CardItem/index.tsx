@@ -1,46 +1,114 @@
-import Author from '@components/Author';
-import { Theme } from '@emotion/react';
-import { PostType } from '@models/Post';
-import { useNavigate } from 'react-router-dom';
+import { ArticleType } from '@models/ArticleType';
+import { formatDate } from '@utils/dateUtils';
+import { useAppNavigation } from '@utils/navigation';
 
-import { CardMedia, SxProps, Typography } from '@mui/material';
+import { Bookmark as BookmarkIcon } from '@mui/icons-material';
+import {
+  Avatar,
+  Box,
+  CardMedia,
+  Chip,
+  IconButton,
+  Typography,
+} from '@mui/material';
+import Grid from '@mui/material/Grid2';
 
-import { StyledTypography, SyledCard, SyledCardContent } from './index.styled';
+import { StyledCard, StyledExcerpt, StyledTitle } from './index.styled';
 
-const CardItem = ({ data, sx }: { data: PostType; sx?: SxProps<Theme> }) => {
-  const navigate = useNavigate();
+const CardItem = ({ data }: { data: ArticleType }) => {
+  const { goToArticleDetail } = useAppNavigation();
 
   return (
-    <SyledCard
-      variant="outlined"
-      tabIndex={0}
-      sx={{ height: '100%', ...sx }}
-      onClick={() => navigate(`/posts/${data.id}`)}
-    >
-      {data.imageUrl && (
-        <CardMedia
-          component="img"
-          alt={data.title}
-          image={data.imageUrl}
+    <StyledCard>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: (theme) => theme.spacing(1),
+          mb: (theme) => theme.spacing(1),
+        }}
+      >
+        <Avatar
+          alt={data.user.displayName}
+          src={data.user.avatarUrl}
           sx={{
-            height: { sm: 'auto', md: '50%' },
-            aspectRatio: { sm: '16 / 9', md: '' },
+            width: (theme) => theme.spacing(4),
+            height: (theme) => theme.spacing(4),
           }}
         />
-      )}
-      <SyledCardContent>
-        <Typography gutterBottom variant="caption">
-          {data.tag.name}
+        <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
+          {data.user.displayName}
         </Typography>
-        <Typography gutterBottom variant="h6">
-          {data.title}
+        <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+          {formatDate(data.createdAt)}
         </Typography>
-        <StyledTypography variant="body2" color="text.secondary">
-          {data.description}
-        </StyledTypography>
-      </SyledCardContent>
-      <Author author={data.author} createdAt={data.createdAt} />
-    </SyledCard>
+      </Box>
+
+      <Grid container spacing={3}>
+        <Grid size={{ xs: 12, md: 8 }}>
+          <Box sx={{ mb: (theme) => theme.spacing(2) }}>
+            <StyledTitle onClick={() => goToArticleDetail(data.id)}>
+              {data.title}
+            </StyledTitle>
+            <StyledExcerpt>{data.description}</StyledExcerpt>
+          </Box>
+
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              mt: (theme) => theme.spacing(2),
+            }}
+          >
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: (theme) => theme.spacing(1),
+              }}
+            >
+              <Chip
+                label={data.tag.name}
+                sx={{
+                  backgroundColor: (theme) => theme.palette.grey[200],
+                  color: 'text.primary',
+                  borderRadius: (theme) => theme.shape.borderRadius,
+                  height: (theme) => theme.spacing(3),
+                }}
+              />
+              <Typography variant="caption" sx={{ color: '#757575' }}>
+                {new Intl.NumberFormat('en', { notation: 'compact' }).format(
+                  data.views
+                )}{' '}
+                views
+              </Typography>
+              <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                10 read
+              </Typography>
+            </Box>
+            <IconButton size="small">
+              <BookmarkIcon
+                sx={{ fontSize: (theme) => theme.typography.pxToRem(16) }}
+              />
+            </IconButton>
+          </Box>
+        </Grid>
+
+        <Grid size={{ xs: 12, md: 4 }}>
+          <CardMedia
+            component="img"
+            height={120}
+            image={data.imageUrl}
+            alt={data.title}
+            sx={{
+              objectFit: 'cover',
+              borderRadius: (theme) => theme.shape.borderRadius,
+            }}
+          />
+        </Grid>
+      </Grid>
+    </StyledCard>
   );
 };
 

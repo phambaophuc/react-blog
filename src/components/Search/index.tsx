@@ -10,7 +10,14 @@ export const Search = () => {
       value={''}
       slotProps={{
         input: {
-          startAdornment: <SearchIcon sx={{ fontSize: 20, mr: 1 }} />,
+          startAdornment: (
+            <SearchIcon
+              sx={{
+                fontSize: (theme) => theme.typography.pxToRem(20),
+                mr: (theme) => theme.spacing(1),
+              }}
+            />
+          ),
         },
       }}
       sx={{ mb: 3 }}

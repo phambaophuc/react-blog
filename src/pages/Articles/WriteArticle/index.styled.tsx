@@ -7,11 +7,12 @@ export const StyledPaper = styled(Paper)(({ theme }) => ({
   boxShadow: theme.shadows[3],
 }));
 
-export const ButtonGroup = styled(Box)({
+export const ActionButtons = styled(Box)(({ theme }) => ({
   display: 'flex',
-  justifyContent: 'space-between',
-  marginTop: '18px',
-});
+  justifyContent: 'end',
+  gap: theme.spacing(0.5),
+  marginTop: theme.spacing(2),
+}));
 
 export const UploadBox = styled(Box)(({ theme }) => ({
   border: `2px dashed ${theme.palette.grey[400]}`,
