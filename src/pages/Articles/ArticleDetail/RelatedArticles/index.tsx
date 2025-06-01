@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 
-import { ArticleType } from '@models/ArticleType';
-import { articleService } from '@services/articleService';
-import { formatDate } from '@utils/dateUtils';
-import { useAppNavigation } from '@utils/navigation';
+import { useApiServices } from '@/services';
+import { ArticleType } from '@/types/ArticleType';
+import { formatDate } from '@/utils/dateUtils';
+import { useAppNavigation } from '@/utils/navigation';
 
 import { AccessTime as AccessTimeIcon } from '@mui/icons-material';
 import { Box, CardContent, CardMedia, Chip, Typography } from '@mui/material';
@@ -14,6 +14,8 @@ import { StyledCard } from './index.styled';
 const RelatedArticles = ({ articleId }: { articleId: string }) => {
   const { goToArticleDetail } = useAppNavigation();
   const [relatedArticles, setRelatedArticles] = useState<ArticleType[]>([]);
+
+  const { articles: articleService } = useApiServices();
 
   useEffect(() => {
     if (!articleId) return;
@@ -27,7 +29,7 @@ const RelatedArticles = ({ articleId }: { articleId: string }) => {
     return () => {
       isMounted = false;
     };
-  }, [articleId]);
+  }, [articleId, articleService]);
 
   return (
     <Box sx={{ mb: (theme) => theme.spacing(6) }}>

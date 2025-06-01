@@ -1,11 +1,12 @@
 import React from 'react';
 
-import { signIn } from '@store/authSlice';
-import { AppDispatch, RootState } from '@store/store';
-import { useAppNavigation } from '@utils/navigation';
-import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/store';
+import { useAppNavigation } from '@/utils/navigation';
+import { useSelector } from 'react-redux';
 
 import { Alert, Box, Link, Typography } from '@mui/material';
+
+import { useAuth } from '@/store/hooks';
 
 import {
   StyledButton,
@@ -17,8 +18,9 @@ import {
 const SigninPage: React.FC = () => {
   const { goToArticles, goToSignup } = useAppNavigation();
 
-  const dispatch = useDispatch<AppDispatch>();
   const { loading, error } = useSelector((state: RootState) => state.auth);
+
+  const { signIn } = useAuth();
 
   const handleSignIn = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -27,7 +29,7 @@ const SigninPage: React.FC = () => {
     const email = form.email.value;
     const password = form.password.value;
 
-    dispatch(signIn({ email, password })).unwrap().then(goToArticles);
+    signIn({ email, password }).unwrap().then(goToArticles);
   };
 
   return (

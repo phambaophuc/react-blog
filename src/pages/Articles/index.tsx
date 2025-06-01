@@ -1,30 +1,30 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import CardItem from '@components/CardItem';
-import Layout from '@components/Layout';
-import { Search } from '@components/Search';
-import TagList from '@components/TagList';
-import { getArticles, resetArticles } from '@store/articleSlice';
-import { AppDispatch, RootState } from '@store/store';
-import { formatDate } from '@utils/dateUtils';
-import { useAppNavigation } from '@utils/navigation';
-import { useDispatch, useSelector } from 'react-redux';
+import CardItem from '@/components/CardItem';
+import Layout from '@/components/Layout';
+import TagList from '@/components/TagList';
+import { RootState } from '@/store';
+import { formatDate } from '@/utils/dateUtils';
+import { useAppNavigation } from '@/utils/navigation';
+import { useSelector } from 'react-redux';
 
+import { Search } from '@mui/icons-material';
 import { Box, Chip, Divider, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid2';
+
+import { useArticles } from '@/store/hooks';
 
 const ArticlesPage = () => {
   const { goToArticleDetail } = useAppNavigation();
 
-  const dispatch = useDispatch<AppDispatch>();
-  const {
-    data: articlesData,
-    loading,
-    hasMore,
-  } = useSelector((state: RootState) => state.articles);
+  const { articles, loading, hasMore } = useSelector(
+    (state: RootState) => state.articles
+  );
 
   const [page, setPage] = useState(1);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
+
+  const { resetArticles, fetchArticles } = useArticles();
 
   const handleScroll = useCallback(() => {
     if (loading || !hasMore) return;
@@ -39,13 +39,13 @@ const ArticlesPage = () => {
   }, [loading, hasMore]);
 
   useEffect(() => {
-    dispatch(resetArticles());
+    resetArticles();
     setPage(1);
-  }, [selectedTag, dispatch]);
+  }, [selectedTag, resetArticles]);
 
   useEffect(() => {
-    dispatch(getArticles({ page: page, tag: selectedTag }));
-  }, [page, selectedTag, dispatch]);
+    fetchArticles({ page, tag: selectedTag });
+  }, [page, selectedTag, fetchArticles]);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
@@ -69,7 +69,7 @@ const ArticlesPage = () => {
 
       <Grid container spacing={4}>
         <Grid size={{ xs: 12, md: 8 }}>
-          {articlesData.map((article) => (
+          {articles.map((article) => (
             <CardItem data={article} key={article.id} />
           ))}
         </Grid>
@@ -128,7 +128,7 @@ const ArticlesPage = () => {
                 Recent Stories
               </Typography>
 
-              {articlesData.slice(0, 2).map((article) => (
+              {articles.slice(0, 2).map((article) => (
                 <Box key={article.id} sx={{ mb: (theme) => theme.spacing(3) }}>
                   <Typography
                     variant="subtitle1"

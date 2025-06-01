@@ -1,18 +1,16 @@
 import { useEffect } from 'react';
 
-import { fetchUser } from '@store/authSlice';
-import { AppDispatch } from '@store/store';
-import { useDispatch } from 'react-redux';
+import { useAuth } from '@/store/hooks';
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const dispatch = useDispatch<AppDispatch>();
+  const { fetchUser } = useAuth();
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');
     if (token) {
-      dispatch(fetchUser());
+      fetchUser();
     }
-  }, [dispatch]);
+  }, [fetchUser]);
 
   return <>{children}</>;
 };

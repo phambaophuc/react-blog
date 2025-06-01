@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { CommentType } from '@models/CommentType';
+import { CommentType } from '@/types/CommentType';
 
 import { Box, Divider } from '@mui/material';
 

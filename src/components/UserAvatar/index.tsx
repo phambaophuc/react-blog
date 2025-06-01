@@ -1,9 +1,8 @@
 import { useCallback, useState } from 'react';
 
-import { logout } from '@store/authSlice';
-import { AppDispatch, RootState } from '@store/store';
-import { useAppNavigation } from '@utils/navigation';
-import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/store';
+import { useAppNavigation } from '@/utils/navigation';
+import { useSelector } from 'react-redux';
 
 import {
   AccountCircle as AccountCircleIcon,
@@ -20,6 +19,8 @@ import {
   Tooltip,
 } from '@mui/material';
 
+import { useAuth } from '@/store/hooks';
+
 import { CustomMenuItem } from './index.styled';
 
 const UserAvatar: React.FC = () => {
@@ -27,8 +28,9 @@ const UserAvatar: React.FC = () => {
 
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
-  const dispatch = useDispatch<AppDispatch>();
   const { user } = useSelector((state: RootState) => state.auth);
+
+  const { signOut } = useAuth();
 
   const handleProfileMenuOpen = useCallback(
     (event: React.MouseEvent<HTMLElement>) => {
@@ -42,9 +44,9 @@ const UserAvatar: React.FC = () => {
   }, []);
 
   const handleLogout = useCallback(() => {
-    dispatch(logout());
+    signOut();
     handleMenuClose();
-  }, [dispatch, handleMenuClose]);
+  }, [handleMenuClose, signOut]);
 
   const renderProfileMenu = (
     <Menu

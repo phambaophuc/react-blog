@@ -1,22 +1,73 @@
-import { SignUpType } from '@models/AuthType';
+import { SignInType, SignUpType } from '@/types/AuthType';
+import { UserType } from '@/types/UserType';
 
-import { apiClient } from './apiClient';
+import { BaseApiClient, BaseService } from './base';
 
-export const authService = {
-  signUp: async (body: SignUpType) => {
-    const response = await apiClient.post('/auth/signup', body);
-    return response.data;
-  },
-  signIn: async (email: string, password: string) => {
-    const response = await apiClient.post('auth/signin', { email, password });
-
-    const token = response.data.token;
-    localStorage.setItem('access_token', token);
-
-    return token;
-  },
-  getUser: async () => {
-    const response = await apiClient.get('auth/users/me');
-    return response.data;
-  },
+type AuthResponse = {
+  accessToken: string;
+  refreshToken: string;
 };
+
+export class AuthService extends BaseService {
+  constructor(client: BaseApiClient) {
+    super(client, '/auth');
+  }
+
+  async signUp(body: SignUpType): Promise<AuthResponse> {
+    return this.client.post<AuthResponse>(`${this.baseUrl}/signup`, body);
+  }
+
+  async signIn(credentials: SignInType): Promise<AuthResponse> {
+    const response = await this.client.post<AuthResponse>(
+      `${this.baseUrl}/signin`,
+      credentials
+    );
+
+    // Store tokens
+    const tokenManager = new (
+      await import('./base/TokenManager')
+    ).TokenManager();
+    await tokenManager.setToken(response.accessToken, response.refreshToken);
+
+    return response;
+  }
+
+  async getUser(): Promise<UserType> {
+    return this.client.get<UserType>(`${this.baseUrl}/users/me`);
+  }
+
+  async signOut(): Promise<void> {
+    const tokenManager = new (
+      await import('./base/TokenManager')
+    ).TokenManager();
+    await tokenManager.clearToken();
+
+    try {
+      await this.client.post<void>(`${this.baseUrl}/signout`);
+    } catch (error) {
+      // Ignore errors during signout
+      console.warn('Signout request failed:', error);
+    }
+  }
+
+  async refreshToken(): Promise<AuthResponse> {
+    const tokenManager = new (
+      await import('./base/TokenManager')
+    ).TokenManager();
+    const refreshToken = await tokenManager.getRefreshToken();
+
+    if (!refreshToken) {
+      throw new Error('No refresh token available');
+    }
+
+    const response = await this.client.post<AuthResponse>(
+      `${this.baseUrl}/refresh`,
+      {
+        refreshToken,
+      }
+    );
+
+    await tokenManager.setToken(response.accessToken, response.refreshToken);
+    return response;
+  }
+}

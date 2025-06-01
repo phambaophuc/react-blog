@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
-import { CommentType } from '@models/CommentType';
-import { RootState } from '@store/store';
-import { timeAgo } from '@utils/dateUtils';
+import { RootState } from '@/store';
+import { CommentType } from '@/types/CommentType';
+import { timeAgo } from '@/utils/dateUtils';
 import { useSelector } from 'react-redux';
 
 import { Close as CloseIcon, Reply as ReplyIcon } from '@mui/icons-material';

@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
 
-import Layout from '@components/Layout';
-import RichTextEditor from '@components/RichTextEditor';
-import { CreateArticleType } from '@models/ArticleType';
-import { TagType } from '@models/TagType';
-import { articleService } from '@services/articleService';
-import { tagService } from '@services/tagService';
-import { RootState } from '@store/store';
-import { useAppNavigation } from '@utils/navigation';
+import Layout from '@/components/Layout';
+import RichTextEditor from '@/components/RichTextEditor';
+import { useApiServices } from '@/services';
+import { RootState } from '@/store';
+import { CreateArticleType } from '@/types/ArticleType';
+import { TagType } from '@/types/TagType';
+import { useAppNavigation } from '@/utils/navigation';
 import { useSelector } from 'react-redux';
 
 import {
@@ -46,18 +45,20 @@ const WriteArticlePage = () => {
   const [isPublishing, setIsPublishing] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  const fetchTags = async () => {
-    const tagList = await tagService.findAll();
-    setTags(tagList);
-  };
+  const { tags: tagService, articles: articleService } = useApiServices();
 
   useEffect(() => {
     if (!user) goToSignin();
   }, [goToSignin, user]);
 
   useEffect(() => {
+    const fetchTags = async () => {
+      const tagList = await tagService.findAll();
+      setTags(tagList);
+    };
+
     fetchTags();
-  }, []);
+  }, [tagService]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

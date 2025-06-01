@@ -1,6 +1,6 @@
-import { ArticleType } from '@models/ArticleType';
-import { formatDate } from '@utils/dateUtils';
-import { useAppNavigation } from '@utils/navigation';
+import { ArticleType } from '@/types/ArticleType';
+import { formatDate } from '@/utils/dateUtils';
+import { useAppNavigation } from '@/utils/navigation';
 
 import { Bookmark as BookmarkIcon } from '@mui/icons-material';
 import {

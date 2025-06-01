@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 
-import FormattedContent from '@components/FormattedContent';
-import Layout from '@components/Layout';
-import { ArticleType } from '@models/ArticleType';
-import { articleService } from '@services/articleService';
-import { formatDate } from '@utils/dateUtils';
-import { useAppNavigation } from '@utils/navigation';
+import FormattedContent from '@/components/FormattedContent';
+import Layout from '@/components/Layout';
+import { useApiServices } from '@/services';
+import { ArticleType } from '@/types/ArticleType';
+import { formatDate } from '@/utils/dateUtils';
+import { useAppNavigation } from '@/utils/navigation';
 import { useParams } from 'react-router-dom';
 
 import {
@@ -18,22 +18,23 @@ import Comments from './Comments';
 import RelatedArticles from './RelatedArticles';
 
 const ArticleDetailPage = () => {
+  const { id } = useParams<{ id: string }>();
   const { goToArticles } = useAppNavigation();
 
-  const { id } = useParams<{ id: string }>();
   const [articleData, setArticleData] = useState<ArticleType | null>();
+
+  const { articles: articleService } = useApiServices();
 
   useEffect(() => {
     const fetchArticle = async () => {
       if (!id) return;
-
       const article = await articleService.findById(id);
       setArticleData(article);
     };
 
     fetchArticle();
     window.scrollTo(0, 0);
-  }, [id]);
+  }, [articleService, id]);
 
   if (!articleData) {
     return (

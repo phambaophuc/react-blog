@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
-import { CommentType } from '@models/CommentType';
-import { commentService } from '@services/commentService';
-import { RootState } from '@store/store';
+import { useApiServices } from '@/services';
+import { RootState } from '@/store';
+import { CommentType } from '@/types/CommentType';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
@@ -18,6 +18,8 @@ const Comments: React.FC<{ comments: CommentType[] }> = ({
   const { user } = useSelector((state: RootState) => state.auth);
 
   const [comments, setComments] = useState<CommentType[]>(initialComments);
+
+  const { comments: commentService } = useApiServices();
 
   useEffect(() => {
     setComments(initialComments);
@@ -51,23 +53,21 @@ const Comments: React.FC<{ comments: CommentType[] }> = ({
   };
 
   const handleDeleteComment = async (commentId: string) => {
-    const success = await commentService.delete(commentId);
-    if (success) {
-      setComments((prev) =>
-        prev
-          .map((comment) =>
-            comment.id === commentId
-              ? null
-              : {
-                  ...comment,
-                  replies: comment.replies.filter(
-                    (reply) => reply.id !== commentId
-                  ),
-                }
-          )
-          .filter((comment): comment is CommentType => comment !== null)
-      );
-    }
+    await commentService.delete(commentId);
+    setComments((prev) =>
+      prev
+        .map((comment) =>
+          comment.id === commentId
+            ? null
+            : {
+                ...comment,
+                replies: comment.replies.filter(
+                  (reply) => reply.id !== commentId
+                ),
+              }
+        )
+        .filter((comment): comment is CommentType => comment !== null)
+    );
   };
 
   return (

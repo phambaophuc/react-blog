@@ -24,13 +24,7 @@
 
     "baseUrl": "./",
     "paths": {
-      "@components/*": ["src/components/*"],
-      "@constant/*": ["src/constant/*"],
-      "@hooks/*": ["src/hooks/*"],
-      "@models/*": ["src/types/*"],
-      "@store/*": ["src/store/*"],
-      "@utils/*": ["src/utils/*"],
-      "@services/*": ["src/services/*"]
+      "@/*": ["src/*"]
     }
   },
   "include": ["src"]

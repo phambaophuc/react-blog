@@ -1,6 +1,6 @@
-import UserAvatar from '@components/UserAvatar';
-import useHideOnScroll from '@hooks/useHideOnScroll';
-import { useAppNavigation } from '@utils/navigation';
+import UserAvatar from '@/components/UserAvatar';
+import useHideOnScroll from '@/hooks/useHideOnScroll';
+import { useAppNavigation } from '@/utils/navigation';
 
 import {
   NotificationsOutlined as NotificationsIcon,
