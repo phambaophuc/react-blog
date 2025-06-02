@@ -1,23 +1,17 @@
-import { SignInType, SignUpType } from '@/types/AuthType';
-import { UserType } from '@/types/UserType';
+import { AuthResponse, SignInRequest, SignUpRequest, User } from '@/types';
 
 import { BaseApiClient, BaseService } from './base';
-
-type AuthResponse = {
-  accessToken: string;
-  refreshToken: string;
-};
 
 export class AuthService extends BaseService {
   constructor(client: BaseApiClient) {
     super(client, '/auth');
   }
 
-  async signUp(body: SignUpType): Promise<AuthResponse> {
+  async signUp(body: SignUpRequest): Promise<AuthResponse> {
     return this.client.post<AuthResponse>(`${this.baseUrl}/signup`, body);
   }
 
-  async signIn(credentials: SignInType): Promise<AuthResponse> {
+  async signIn(credentials: SignInRequest): Promise<AuthResponse> {
     const response = await this.client.post<AuthResponse>(
       `${this.baseUrl}/signin`,
       credentials
@@ -32,8 +26,8 @@ export class AuthService extends BaseService {
     return response;
   }
 
-  async getUser(): Promise<UserType> {
-    return this.client.get<UserType>(`${this.baseUrl}/users/me`);
+  async getUser(): Promise<User> {
+    return this.client.get<User>(`${this.baseUrl}/users/me`);
   }
 
   async signOut(): Promise<void> {

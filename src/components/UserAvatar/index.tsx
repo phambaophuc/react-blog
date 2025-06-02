@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 
-import { RootState } from '@/store';
+import { selectCurrentUser } from '@/store';
 import { useAppNavigation } from '@/utils/navigation';
 import { useSelector } from 'react-redux';
 
@@ -28,7 +28,7 @@ const UserAvatar: React.FC = () => {
 
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
-  const { user } = useSelector((state: RootState) => state.auth);
+  const user = useSelector(selectCurrentUser);
 
   const { signOut } = useAuth();
 

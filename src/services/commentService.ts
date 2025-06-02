@@ -1,4 +1,4 @@
-import { CommentType, CreateCommentType } from '@/types/CommentType';
+import { Comment, CreateCommentRequest } from '@/types';
 
 import { BaseApiClient, BaseService } from './base';
 
@@ -12,21 +12,19 @@ export class CommentService extends BaseService {
   //   return this.client.get<CommentType[]>(`${this.baseUrl}?${queryString}`);
   // }
 
-  async findByArticleId(articleId: string): Promise<CommentType[]> {
-    return this.client.get<CommentType[]>(
-      `${this.baseUrl}?articleId=${articleId}`
-    );
+  async findByArticleId(articleId: string): Promise<Comment[]> {
+    return this.client.get<Comment[]>(`${this.baseUrl}?articleId=${articleId}`);
   }
 
-  async create(comment: CreateCommentType): Promise<CommentType> {
-    return this.client.post<CommentType>(this.baseUrl, comment);
+  async create(comment: CreateCommentRequest): Promise<Comment> {
+    return this.client.post<Comment>(this.baseUrl, comment);
   }
 
   async update(
     id: string,
-    comment: Partial<CreateCommentType>
-  ): Promise<CommentType> {
-    return this.client.put<CommentType>(`${this.baseUrl}/${id}`, comment);
+    comment: Partial<CreateCommentRequest>
+  ): Promise<Comment> {
+    return this.client.put<Comment>(`${this.baseUrl}/${id}`, comment);
   }
 
   async delete(id: string): Promise<void> {

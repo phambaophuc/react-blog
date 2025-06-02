@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { RootState } from '@/store';
+import { selectAuth } from '@/store';
 import { useAppNavigation } from '@/utils/navigation';
 import { useSelector } from 'react-redux';
 
@@ -18,7 +18,7 @@ import {
 const SigninPage: React.FC = () => {
   const { goToArticles, goToSignup } = useAppNavigation();
 
-  const { loading, error } = useSelector((state: RootState) => state.auth);
+  const { loading, error } = useSelector(selectAuth);
 
   const { signIn } = useAuth();
 

@@ -2,24 +2,19 @@ import { useCallback, useEffect, useState } from 'react';
 
 import CardItem from '@/components/CardItem';
 import Layout from '@/components/Layout';
+import RecentStories from '@/components/RecentStories';
+import { Search } from '@/components/Search';
 import TagList from '@/components/TagList';
-import { RootState } from '@/store';
-import { formatDate } from '@/utils/dateUtils';
-import { useAppNavigation } from '@/utils/navigation';
+import { selectArticles } from '@/store';
 import { useSelector } from 'react-redux';
 
-import { Search } from '@mui/icons-material';
 import { Box, Chip, Divider, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 
 import { useArticles } from '@/store/hooks';
 
 const ArticlesPage = () => {
-  const { goToArticleDetail } = useAppNavigation();
-
-  const { articles, loading, hasMore } = useSelector(
-    (state: RootState) => state.articles
-  );
+  const { articles, loading, hasMore } = useSelector(selectArticles);
 
   const [page, setPage] = useState(1);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
@@ -41,11 +36,11 @@ const ArticlesPage = () => {
   useEffect(() => {
     resetArticles();
     setPage(1);
-  }, [selectedTag, resetArticles]);
+  }, [selectedTag]);
 
   useEffect(() => {
     fetchArticles({ page, tag: selectedTag });
-  }, [page, selectedTag, fetchArticles]);
+  }, [page, selectedTag]);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
@@ -117,39 +112,7 @@ const ArticlesPage = () => {
 
             <Divider sx={{ mb: (theme) => theme.spacing(4) }} />
 
-            <Box>
-              <Typography
-                variant="h6"
-                sx={{
-                  fontFamily: (theme) => theme.typography.fontFamily,
-                  mb: (theme) => theme.spacing(2),
-                }}
-              >
-                Recent Stories
-              </Typography>
-
-              {articles.slice(0, 2).map((article) => (
-                <Box key={article.id} sx={{ mb: (theme) => theme.spacing(3) }}>
-                  <Typography
-                    variant="subtitle1"
-                    sx={{
-                      fontWeight: (theme) => theme.typography.fontWeightBold,
-                      mb: (theme) => theme.spacing(1),
-                      cursor: 'pointer',
-                    }}
-                    onClick={() => goToArticleDetail(article.id)}
-                  >
-                    {article.title}
-                  </Typography>
-                  <Typography
-                    variant="caption"
-                    sx={{ color: 'text.secondary' }}
-                  >
-                    {article.user.displayName} · {formatDate(article.createdAt)}
-                  </Typography>
-                </Box>
-              ))}
-            </Box>
+            <RecentStories />
           </Box>
         </Grid>
       </Grid>

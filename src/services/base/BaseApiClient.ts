@@ -59,7 +59,7 @@ export class BaseApiClient {
             return this.client(originalRequest);
           } catch (refreshError) {
             await this.tokenManager.clearToken();
-            window.location.href = '/login';
+            window.location.href = '/signin';
             return Promise.reject(new ApiError(refreshError));
           }
         }

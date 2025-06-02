@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useApiServices } from '@/services';
-import { ArticleType } from '@/types/ArticleType';
+import { Article } from '@/types';
 import { formatDate } from '@/utils/dateUtils';
 import { useAppNavigation } from '@/utils/navigation';
 
@@ -13,23 +13,23 @@ import { StyledCard } from './index.styled';
 
 const RelatedArticles = ({ articleId }: { articleId: string }) => {
   const { goToArticleDetail } = useAppNavigation();
-  const [relatedArticles, setRelatedArticles] = useState<ArticleType[]>([]);
+  const [relatedArticles, setRelatedArticles] = useState<Article[]>([]);
 
   const { articles: articleService } = useApiServices();
 
   useEffect(() => {
-    if (!articleId) return;
-    setRelatedArticles([]);
+    if (!articleId) {
+      setRelatedArticles([]);
+      return;
+    }
 
-    let isMounted = true;
-    articleService.findAllRelated(articleId).then((articles) => {
-      if (isMounted) setRelatedArticles(articles);
-    });
-
-    return () => {
-      isMounted = false;
+    const fetchData = async () => {
+      const articles = await articleService.findAllRelated(articleId);
+      setRelatedArticles(articles);
     };
-  }, [articleId, articleService]);
+
+    fetchData();
+  }, [articleId]);
 
   return (
     <Box sx={{ mb: (theme) => theme.spacing(6) }}>
@@ -48,7 +48,7 @@ const RelatedArticles = ({ articleId }: { articleId: string }) => {
             <StyledCard>
               <CardMedia
                 component="img"
-                image={article.imageUrl}
+                image={article.imageUrl ?? ''}
                 alt={article.title}
                 sx={{
                   height: (theme) => theme.spacing(25),
@@ -115,4 +115,4 @@ const RelatedArticles = ({ articleId }: { articleId: string }) => {
   );
 };
 
-export default RelatedArticles;
+export default React.memo(RelatedArticles);

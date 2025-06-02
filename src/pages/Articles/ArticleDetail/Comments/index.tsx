@@ -1,23 +1,23 @@
 import React, { useEffect, useState } from 'react';
 
+import CommentInput from '@/components/CommentInput';
 import { useApiServices } from '@/services';
-import { RootState } from '@/store';
-import { CommentType } from '@/types/CommentType';
+import { selectCurrentUser } from '@/store';
+import { Comment } from '@/types';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import { Paper, Typography } from '@mui/material';
 
-import CommentInput from './CommentInput';
 import CommentList from './CommentList';
 
-const Comments: React.FC<{ comments: CommentType[] }> = ({
+const Comments: React.FC<{ comments: Comment[] }> = ({
   comments: initialComments,
 }) => {
   const { id } = useParams<{ id: string }>();
-  const { user } = useSelector((state: RootState) => state.auth);
+  const user = useSelector(selectCurrentUser);
 
-  const [comments, setComments] = useState<CommentType[]>(initialComments);
+  const [comments, setComments] = useState<Comment[]>(initialComments);
 
   const { comments: commentService } = useApiServices();
 
@@ -66,7 +66,7 @@ const Comments: React.FC<{ comments: CommentType[] }> = ({
                 ),
               }
         )
-        .filter((comment): comment is CommentType => comment !== null)
+        .filter((comment): comment is Comment => comment !== null)
     );
   };
 

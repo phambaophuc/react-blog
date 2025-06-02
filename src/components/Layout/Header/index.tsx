@@ -1,3 +1,5 @@
+import React from 'react';
+
 import UserAvatar from '@/components/UserAvatar';
 import useHideOnScroll from '@/hooks/useHideOnScroll';
 import { useAppNavigation } from '@/utils/navigation';
@@ -88,4 +90,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default React.memo(Header);

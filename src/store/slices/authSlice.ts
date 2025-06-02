@@ -1,6 +1,5 @@
 import { useApiServices } from '@/services';
-import { SignInType, SignUpType } from '@/types/AuthType';
-import { UserType } from '@/types/UserType';
+import { SignInRequest, SignUpRequest, User } from '@/types';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 import { BaseState } from '../types';
@@ -9,7 +8,7 @@ import { setFulfilled, setPending, setRejected } from '../utils/stateUtils';
 
 export const signIn = createAppAsyncThunk(
   'auth/signIn',
-  async (credentials: SignInType) => {
+  async (credentials: SignInRequest) => {
     const { auth } = useApiServices();
     const response = await auth.signIn(credentials);
     const user = await auth.getUser();
@@ -19,7 +18,7 @@ export const signIn = createAppAsyncThunk(
 
 export const signUp = createAppAsyncThunk(
   'auth/signUp',
-  async (userData: SignUpType) => {
+  async (userData: SignUpRequest) => {
     const { auth } = useApiServices();
     return await auth.signUp(userData);
   }
@@ -94,7 +93,7 @@ const authSlice = createSlice({
       state.error = null;
     },
 
-    updateUser: (state, action: PayloadAction<Partial<UserType>>) => {
+    updateUser: (state, action: PayloadAction<Partial<User>>) => {
       if (state.user) {
         state.user = { ...state.user, ...action.payload };
       }

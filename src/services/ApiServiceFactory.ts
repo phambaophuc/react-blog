@@ -1,9 +1,9 @@
-import { ArticleService } from './ArticleService';
-import { AuthService } from './AuthService';
-import { CommentService } from './CommentService';
-import { StorageService } from './StorageService';
-import { TagService } from './TagService';
+import { ArticleService } from './articleService';
+import { AuthService } from './authService';
 import { BaseApiClient } from './base';
+import { CommentService } from './commentService';
+import { StorageService } from './storageService';
+import { TagService } from './tagService';
 
 export class ApiServiceFactory {
   private static instance: ApiServiceFactory;

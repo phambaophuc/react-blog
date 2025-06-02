@@ -1,9 +1,5 @@
 import { useApiServices } from '@/services';
-import {
-  ArticleType,
-  CreateArticleType,
-  QueryArticleType,
-} from '@/types/ArticleType';
+import { Article, ArticleFilters, CreateArticleRequest } from '@/types';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 import { BaseState, PaginatedState } from '../types';
@@ -11,9 +7,9 @@ import { createAppAsyncThunk } from '../utils/asyncThunkUtils';
 import { setFulfilled, setPending, setRejected } from '../utils/stateUtils';
 
 const mergeArticles = (
-  existingArticles: ArticleType[],
-  newArticles: ArticleType[]
-): ArticleType[] => {
+  existingArticles: Article[],
+  newArticles: Article[]
+): Article[] => {
   const mergedArticles = [...existingArticles, ...newArticles];
   return Array.from(
     new Map(mergedArticles.map((article) => [article.id, article])).values()
@@ -22,7 +18,7 @@ const mergeArticles = (
 
 export const fetchArticles = createAppAsyncThunk(
   'articles/fetchArticles',
-  async (query: QueryArticleType) => {
+  async (query: ArticleFilters) => {
     const { articles } = useApiServices();
     return await articles.findAll(query);
   }
@@ -46,20 +42,20 @@ export const fetchRelatedArticles = createAppAsyncThunk(
 
 export const createArticle = createAppAsyncThunk(
   'articles/createArticle',
-  async (article: CreateArticleType) => {
+  async (article: CreateArticleRequest) => {
     const { articles } = useApiServices();
     return await articles.create(article);
   }
 );
 
 interface ArticleState extends BaseState, PaginatedState {
-  articles: ArticleType[];
-  currentArticle: ArticleType | null;
-  relatedArticles: ArticleType[];
-  searchResults: ArticleType[];
-  filters: QueryArticleType;
+  articles: Article[];
+  currentArticle: Article | null;
+  relatedArticles: Article[];
+  searchResults: Article[];
+  filters: ArticleFilters;
   isSearching: boolean;
-  lastQuery: QueryArticleType | null;
+  lastQuery: ArticleFilters | null;
 }
 
 const initialState: ArticleState = {
@@ -106,7 +102,7 @@ const articleSlice = createSlice({
       state.error = null;
     },
 
-    setFilters: (state, action: PayloadAction<Partial<QueryArticleType>>) => {
+    setFilters: (state, action: PayloadAction<Partial<ArticleFilters>>) => {
       state.filters = { ...state.filters, ...action.payload };
     },
 
@@ -114,7 +110,7 @@ const articleSlice = createSlice({
       state.filters = { page: 1, limit: 10 };
     },
 
-    updateArticleInList: (state, action: PayloadAction<ArticleType>) => {
+    updateArticleInList: (state, action: PayloadAction<Article>) => {
       const index = state.articles.findIndex(
         (article) => article.id === action.payload.id
       );

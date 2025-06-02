@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { CreateArticleType, QueryArticleType } from '@/types/ArticleType';
+import { ArticleFilters, CreateArticleRequest } from '@/types';
 
 import { useAppDispatch, useAppSelector } from '..';
 import {
@@ -16,7 +16,7 @@ export const useArticles = () => {
   const articles = useAppSelector((state) => state.articles);
 
   const handleFetchArticles = useCallback(
-    (query: QueryArticleType) => dispatch(fetchArticles(query)),
+    (query: ArticleFilters) => dispatch(fetchArticles(query)),
     [dispatch]
   );
 
@@ -26,7 +26,7 @@ export const useArticles = () => {
   );
 
   const handleCreateArticle = useCallback(
-    (article: CreateArticleType) => dispatch(createArticle(article)),
+    (article: CreateArticleRequest) => dispatch(createArticle(article)),
     [dispatch]
   );
 
@@ -36,7 +36,7 @@ export const useArticles = () => {
   );
 
   const handleSetFilters = useCallback(
-    (filters: Partial<QueryArticleType>) => dispatch(setFilters(filters)),
+    (filters: Partial<ArticleFilters>) => dispatch(setFilters(filters)),
     [dispatch]
   );
 

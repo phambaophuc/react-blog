@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { SignInType, SignUpType } from '@/types/AuthType';
+import { SignInRequest, SignUpRequest } from '@/types';
 
 import { useAppDispatch, useAppSelector } from '..';
 import {
@@ -16,12 +16,12 @@ export const useAuth = () => {
   const auth = useAppSelector((state) => state.auth);
 
   const handleSignIn = useCallback(
-    (credentials: SignInType) => dispatch(signIn(credentials)),
+    (credentials: SignInRequest) => dispatch(signIn(credentials)),
     [dispatch]
   );
 
   const handleSignUp = useCallback(
-    (userData: SignUpType) => dispatch(signUp(userData)),
+    (userData: SignUpRequest) => dispatch(signUp(userData)),
     [dispatch]
   );
 

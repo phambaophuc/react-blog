@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { useApiServices } from '@/services';
-import { TagType } from '@/types/TagType';
+import { Tag } from '@/types';
 
 import { Box, Chip } from '@mui/material';
 
@@ -10,7 +10,7 @@ interface TagListProps {
 }
 
 const TagList: React.FC<TagListProps> = ({ onTagSelect }) => {
-  const [tags, setTags] = useState<TagType[]>([]);
+  const [tags, setTags] = useState<Tag[]>([]);
   const [selectedTag, setSelectedTag] = useState<string | null>();
 
   const { tags: tagService } = useApiServices();
@@ -22,7 +22,7 @@ const TagList: React.FC<TagListProps> = ({ onTagSelect }) => {
     };
 
     fetchTags();
-  }, [tagService]);
+  }, []);
 
   const handleTagClick = (tagName: string) => {
     if (selectedTag === tagName) {
