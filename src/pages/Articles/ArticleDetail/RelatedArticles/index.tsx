@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { ArticleType } from '@models/ArticleType';
-import { articleService } from '@services/articleService';
-import { formatDate } from '@utils/dateUtils';
-import { useAppNavigation } from '@utils/navigation';
+import { useApiServices } from '@/services';
+import { Article } from '@/types';
+import { formatDate } from '@/utils/dateUtils';
+import { useAppNavigation } from '@/utils/navigation';
 
 import { AccessTime as AccessTimeIcon } from '@mui/icons-material';
 import { Box, CardContent, CardMedia, Chip, Typography } from '@mui/material';
@@ -13,20 +13,22 @@ import { StyledCard } from './index.styled';
 
 const RelatedArticles = ({ articleId }: { articleId: string }) => {
   const { goToArticleDetail } = useAppNavigation();
-  const [relatedArticles, setRelatedArticles] = useState<ArticleType[]>([]);
+  const [relatedArticles, setRelatedArticles] = useState<Article[]>([]);
+
+  const { articles: articleService } = useApiServices();
 
   useEffect(() => {
-    if (!articleId) return;
-    setRelatedArticles([]);
+    if (!articleId) {
+      setRelatedArticles([]);
+      return;
+    }
 
-    let isMounted = true;
-    articleService.findAllRelated(articleId).then((articles) => {
-      if (isMounted) setRelatedArticles(articles);
-    });
-
-    return () => {
-      isMounted = false;
+    const fetchData = async () => {
+      const articles = await articleService.findAllRelated(articleId);
+      setRelatedArticles(articles);
     };
+
+    fetchData();
   }, [articleId]);
 
   return (
@@ -46,7 +48,7 @@ const RelatedArticles = ({ articleId }: { articleId: string }) => {
             <StyledCard>
               <CardMedia
                 component="img"
-                image={article.imageUrl}
+                image={article.imageUrl ?? ''}
                 alt={article.title}
                 sx={{
                   height: (theme) => theme.spacing(25),
@@ -113,4 +115,4 @@ const RelatedArticles = ({ articleId }: { articleId: string }) => {
   );
 };
 
-export default RelatedArticles;
+export default React.memo(RelatedArticles);

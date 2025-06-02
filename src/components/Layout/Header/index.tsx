@@ -1,6 +1,8 @@
-import UserAvatar from '@components/UserAvatar';
-import useHideOnScroll from '@hooks/useHideOnScroll';
-import { useAppNavigation } from '@utils/navigation';
+import React from 'react';
+
+import UserAvatar from '@/components/UserAvatar';
+import useHideOnScroll from '@/hooks/useHideOnScroll';
+import { useAppNavigation } from '@/utils/navigation';
 
 import {
   NotificationsOutlined as NotificationsIcon,
@@ -88,4 +90,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default React.memo(Header);

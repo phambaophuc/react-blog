@@ -1,23 +1,25 @@
 import React, { useEffect, useState } from 'react';
 
-import { CommentType } from '@models/CommentType';
-import { commentService } from '@services/commentService';
-import { RootState } from '@store/store';
+import CommentInput from '@/components/CommentInput';
+import { useApiServices } from '@/services';
+import { selectCurrentUser } from '@/store';
+import { Comment } from '@/types';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import { Paper, Typography } from '@mui/material';
 
-import CommentInput from './CommentInput';
 import CommentList from './CommentList';
 
-const Comments: React.FC<{ comments: CommentType[] }> = ({
+const Comments: React.FC<{ comments: Comment[] }> = ({
   comments: initialComments,
 }) => {
   const { id } = useParams<{ id: string }>();
-  const { user } = useSelector((state: RootState) => state.auth);
+  const user = useSelector(selectCurrentUser);
 
-  const [comments, setComments] = useState<CommentType[]>(initialComments);
+  const [comments, setComments] = useState<Comment[]>(initialComments);
+
+  const { comments: commentService } = useApiServices();
 
   useEffect(() => {
     setComments(initialComments);
@@ -51,23 +53,21 @@ const Comments: React.FC<{ comments: CommentType[] }> = ({
   };
 
   const handleDeleteComment = async (commentId: string) => {
-    const success = await commentService.delete(commentId);
-    if (success) {
-      setComments((prev) =>
-        prev
-          .map((comment) =>
-            comment.id === commentId
-              ? null
-              : {
-                  ...comment,
-                  replies: comment.replies.filter(
-                    (reply) => reply.id !== commentId
-                  ),
-                }
-          )
-          .filter((comment): comment is CommentType => comment !== null)
-      );
-    }
+    await commentService.delete(commentId);
+    setComments((prev) =>
+      prev
+        .map((comment) =>
+          comment.id === commentId
+            ? null
+            : {
+                ...comment,
+                replies: comment.replies.filter(
+                  (reply) => reply.id !== commentId
+                ),
+              }
+        )
+        .filter((comment): comment is Comment => comment !== null)
+    );
   };
 
   return (

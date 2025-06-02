@@ -1,30 +1,25 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import CardItem from '@components/CardItem';
-import Layout from '@components/Layout';
-import { Search } from '@components/Search';
-import TagList from '@components/TagList';
-import { getArticles, resetArticles } from '@store/articleSlice';
-import { AppDispatch, RootState } from '@store/store';
-import { formatDate } from '@utils/dateUtils';
-import { useAppNavigation } from '@utils/navigation';
-import { useDispatch, useSelector } from 'react-redux';
+import CardItem from '@/components/CardItem';
+import Layout from '@/components/Layout';
+import RecentStories from '@/components/RecentStories';
+import { Search } from '@/components/Search';
+import TagList from '@/components/TagList';
+import { selectArticles } from '@/store';
+import { useSelector } from 'react-redux';
 
 import { Box, Chip, Divider, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 
-const ArticlesPage = () => {
-  const { goToArticleDetail } = useAppNavigation();
+import { useArticles } from '@/store/hooks';
 
-  const dispatch = useDispatch<AppDispatch>();
-  const {
-    data: articlesData,
-    loading,
-    hasMore,
-  } = useSelector((state: RootState) => state.articles);
+const ArticlesPage = () => {
+  const { articles, loading, hasMore } = useSelector(selectArticles);
 
   const [page, setPage] = useState(1);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
+
+  const { resetArticles, fetchArticles } = useArticles();
 
   const handleScroll = useCallback(() => {
     if (loading || !hasMore) return;
@@ -39,13 +34,13 @@ const ArticlesPage = () => {
   }, [loading, hasMore]);
 
   useEffect(() => {
-    dispatch(resetArticles());
+    resetArticles();
     setPage(1);
-  }, [selectedTag, dispatch]);
+  }, [selectedTag]);
 
   useEffect(() => {
-    dispatch(getArticles({ page: page, tag: selectedTag }));
-  }, [page, selectedTag, dispatch]);
+    fetchArticles({ page, tag: selectedTag });
+  }, [page, selectedTag]);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
@@ -69,7 +64,7 @@ const ArticlesPage = () => {
 
       <Grid container spacing={4}>
         <Grid size={{ xs: 12, md: 8 }}>
-          {articlesData.map((article) => (
+          {articles.map((article) => (
             <CardItem data={article} key={article.id} />
           ))}
         </Grid>
@@ -117,39 +112,7 @@ const ArticlesPage = () => {
 
             <Divider sx={{ mb: (theme) => theme.spacing(4) }} />
 
-            <Box>
-              <Typography
-                variant="h6"
-                sx={{
-                  fontFamily: (theme) => theme.typography.fontFamily,
-                  mb: (theme) => theme.spacing(2),
-                }}
-              >
-                Recent Stories
-              </Typography>
-
-              {articlesData.slice(0, 2).map((article) => (
-                <Box key={article.id} sx={{ mb: (theme) => theme.spacing(3) }}>
-                  <Typography
-                    variant="subtitle1"
-                    sx={{
-                      fontWeight: (theme) => theme.typography.fontWeightBold,
-                      mb: (theme) => theme.spacing(1),
-                      cursor: 'pointer',
-                    }}
-                    onClick={() => goToArticleDetail(article.id)}
-                  >
-                    {article.title}
-                  </Typography>
-                  <Typography
-                    variant="caption"
-                    sx={{ color: 'text.secondary' }}
-                  >
-                    {article.user.displayName} · {formatDate(article.createdAt)}
-                  </Typography>
-                </Box>
-              ))}
-            </Box>
+            <RecentStories />
           </Box>
         </Grid>
       </Grid>

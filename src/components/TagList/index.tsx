@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { TagType } from '@models/TagType';
-import { tagService } from '@services/tagService';
+import { useApiServices } from '@/services';
+import { Tag } from '@/types';
 
 import { Box, Chip } from '@mui/material';
 
@@ -11,19 +10,17 @@ interface TagListProps {
 }
 
 const TagList: React.FC<TagListProps> = ({ onTagSelect }) => {
-  const [tags, setTags] = useState<TagType[]>([]);
+  const [tags, setTags] = useState<Tag[]>([]);
   const [selectedTag, setSelectedTag] = useState<string | null>();
 
-  const fetchTags = async () => {
-    try {
-      const tagList = await tagService.findAll();
-      setTags(tagList);
-    } catch (error) {
-      console.error('Error fetching tags:', error);
-    }
-  };
+  const { tags: tagService } = useApiServices();
 
   useEffect(() => {
+    const fetchTags = async () => {
+      const tagList = await tagService.findAll();
+      setTags(tagList);
+    };
+
     fetchTags();
   }, []);
 

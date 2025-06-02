@@ -1,7 +1,13 @@
 {
   "root": true,
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint", "prettier", "react-hooks", "import", "simple-import-sort"],
+  "plugins": [
+    "@typescript-eslint",
+    "prettier",
+    "react-hooks",
+    "import",
+    "simple-import-sort"
+  ],
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
@@ -40,15 +46,6 @@
   "settings": {
     "import/resolver": {
       "alias": {
-        "map": [
-          ["@components", "./src/components"],
-          ["@constant", "./src/constant"],
-          ["@hooks", "./src/hooks"],
-          ["@models", "./src/models"],
-          ["@store", "./src/store"],
-          ["@utils", "./src/utils"],
-          ["@services", "./src/services"]
-        ],
         "extensions": [".js", ".jsx", ".ts", ".tsx"]
       },
       "node": {

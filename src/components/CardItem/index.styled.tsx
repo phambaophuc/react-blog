@@ -12,6 +12,12 @@ export const StyledTitle = styled(Typography)(({ theme }) => ({
   fontSize: theme.typography.h6.fontSize,
   marginBottom: theme.spacing(1),
   cursor: 'pointer',
+  display: '-webkit-box',
+  WebkitLineClamp: 2,
+  WebkitBoxOrient: 'vertical',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+
   '&:hover': {
     color: theme.palette.primary.main,
   },

@@ -1,6 +1,6 @@
-import { ArticleType } from '@models/ArticleType';
-import { formatDate } from '@utils/dateUtils';
-import { useAppNavigation } from '@utils/navigation';
+import { Article } from '@/types';
+import { formatDate } from '@/utils/dateUtils';
+import { useAppNavigation } from '@/utils/navigation';
 
 import { Bookmark as BookmarkIcon } from '@mui/icons-material';
 import {
@@ -15,7 +15,7 @@ import Grid from '@mui/material/Grid2';
 
 import { StyledCard, StyledExcerpt, StyledTitle } from './index.styled';
 
-const CardItem = ({ data }: { data: ArticleType }) => {
+const CardItem = ({ data }: { data: Article }) => {
   const { goToArticleDetail } = useAppNavigation();
 
   return (
@@ -30,7 +30,7 @@ const CardItem = ({ data }: { data: ArticleType }) => {
       >
         <Avatar
           alt={data.user.displayName}
-          src={data.user.avatarUrl}
+          src={data.user.avatarUrl ?? ''}
           sx={{
             width: (theme) => theme.spacing(4),
             height: (theme) => theme.spacing(4),
@@ -99,7 +99,7 @@ const CardItem = ({ data }: { data: ArticleType }) => {
           <CardMedia
             component="img"
             height={120}
-            image={data.imageUrl}
+            image={data.imageUrl ?? ''}
             alt={data.title}
             sx={{
               objectFit: 'cover',

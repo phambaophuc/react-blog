@@ -1,14 +1,10 @@
 import { useEffect, useState } from 'react';
 
-import Layout from '@components/Layout';
-import RichTextEditor from '@components/RichTextEditor';
-import { CreateArticleType } from '@models/ArticleType';
-import { TagType } from '@models/TagType';
-import { articleService } from '@services/articleService';
-import { tagService } from '@services/tagService';
-import { RootState } from '@store/store';
-import { useAppNavigation } from '@utils/navigation';
-import { useSelector } from 'react-redux';
+import Layout from '@/components/Layout';
+import RichTextEditor from '@/components/RichTextEditor';
+import { useApiServices } from '@/services';
+import { CreateArticleRequest, Tag } from '@/types';
+import { useAppNavigation } from '@/utils/navigation';
 
 import {
   Publish as PublishIcon,
@@ -34,11 +30,10 @@ import Grid from '@mui/material/Grid2';
 import { ActionButtons, StyledPaper } from './index.styled';
 
 const WriteArticlePage = () => {
-  const { goToSignin, goToArticles } = useAppNavigation();
-  const { user } = useSelector((state: RootState) => state.auth);
+  const { goToArticles } = useAppNavigation();
 
-  const [tags, setTags] = useState<TagType[]>([]);
-  const [article, setArticle] = useState<CreateArticleType>({
+  const [tags, setTags] = useState<Tag[]>([]);
+  const [article, setArticle] = useState<CreateArticleRequest>({
     title: '',
     content: '',
     tagId: '',
@@ -46,16 +41,14 @@ const WriteArticlePage = () => {
   const [isPublishing, setIsPublishing] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  const fetchTags = async () => {
-    const tagList = await tagService.findAll();
-    setTags(tagList);
-  };
+  const { tags: tagService, articles: articleService } = useApiServices();
 
   useEffect(() => {
-    if (!user) goToSignin();
-  }, [goToSignin, user]);
+    const fetchTags = async () => {
+      const tagList = await tagService.findAll();
+      setTags(tagList);
+    };
 
-  useEffect(() => {
     fetchTags();
   }, []);
 

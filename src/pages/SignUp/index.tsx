@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-import { authService } from '@services/authService';
-import { useAppNavigation } from '@utils/navigation';
+import { useApiServices } from '@/services';
+import { useAppNavigation } from '@/utils/navigation';
 
 import { Alert, Box, Link, Typography } from '@mui/material';
 
@@ -27,6 +27,8 @@ const SignupPage: React.FC = () => {
     password: '',
   });
   const [error, setError] = useState<string>('');
+
+  const { auth: authService } = useApiServices();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
