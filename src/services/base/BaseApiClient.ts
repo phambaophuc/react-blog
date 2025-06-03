@@ -12,10 +12,10 @@ export interface ApiClientConfig {
 export class BaseApiClient {
   protected client: AxiosInstance;
   private tokenManager: TokenManager;
-  private retryAttempts: number;
+  // private retryAttempts: number;
 
   constructor(config: ApiClientConfig) {
-    this.retryAttempts = config.retryAttempts ?? 3;
+    // this.retryAttempts = config.retryAttempts ?? 3;
     this.tokenManager = new TokenManager();
 
     this.client = axios.create({
