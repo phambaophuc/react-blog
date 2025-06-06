@@ -93,8 +93,8 @@ const UserAvatar: React.FC = () => {
               aria-label="account settings"
             >
               <Avatar
-                alt={user.user_metadata.displayName}
-                src={user.user_metadata.avatarUrl}
+                alt={user.displayName}
+                src={user.avatarUrl ?? ''}
                 sx={{
                   width: (theme) => theme.spacing(4.5),
                   height: (theme) => theme.spacing(4.5),

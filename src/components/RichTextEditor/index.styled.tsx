@@ -16,6 +16,8 @@ export const EditorWrapper = styled(Paper)(({ theme }) => ({
       borderRadius: theme.shape.borderRadius,
       display: 'block',
       margin: 'auto',
+      maxWidth: '100%',
+      height: 'auto',
     },
   },
 }));

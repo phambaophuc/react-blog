@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
 
 import { ApiError } from './ApiError';
 import { TokenManager } from './TokenManager';
@@ -24,6 +24,7 @@ export class BaseApiClient {
       headers: {
         'Content-Type': 'application/json',
       },
+      withCredentials: true,
     });
 
     this.setupInterceptors();
@@ -34,7 +35,7 @@ export class BaseApiClient {
     this.client.interceptors.request.use(
       async (config) => {
         const token = await this.tokenManager.getToken();
-        if (token) {
+        if (token && config.headers) {
           config.headers.Authorization = `Bearer ${token}`;
         }
         return config;
@@ -45,8 +46,10 @@ export class BaseApiClient {
     // Response interceptor
     this.client.interceptors.response.use(
       (response) => response,
-      async (error) => {
-        const originalRequest = error.config;
+      async (error: AxiosError) => {
+        const originalRequest = error.config as AxiosRequestConfig & {
+          _retry?: boolean;
+        };
 
         // Handle token refresh for 401 errors
         if (error.response?.status === 401 && !originalRequest._retry) {
@@ -55,7 +58,11 @@ export class BaseApiClient {
           try {
             await this.tokenManager.refreshToken();
             const newToken = await this.tokenManager.getToken();
-            originalRequest.headers.Authorization = `Bearer ${newToken}`;
+
+            if (newToken && originalRequest.headers) {
+              originalRequest.headers.Authorization = `Bearer ${newToken}`;
+            }
+
             return this.client(originalRequest);
           } catch (refreshError) {
             await this.tokenManager.clearToken();

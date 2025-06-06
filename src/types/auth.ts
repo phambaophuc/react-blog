@@ -1,3 +1,5 @@
+import { User } from './user';
+
 export interface SignUpRequest {
   displayName: string;
   email: string;
@@ -11,5 +13,5 @@ export interface SignInRequest {
 
 export interface AuthResponse {
   accessToken: string;
-  refreshToken: string;
+  user: User;
 }

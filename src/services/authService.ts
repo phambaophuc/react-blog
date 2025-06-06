@@ -21,7 +21,7 @@ export class AuthService extends BaseService {
     const tokenManager = new (
       await import('./base/TokenManager')
     ).TokenManager();
-    await tokenManager.setToken(response.accessToken, response.refreshToken);
+    await tokenManager.setToken(response.accessToken);
 
     return response;
   }
@@ -48,20 +48,16 @@ export class AuthService extends BaseService {
     const tokenManager = new (
       await import('./base/TokenManager')
     ).TokenManager();
-    const refreshToken = await tokenManager.getRefreshToken();
-
-    if (!refreshToken) {
-      throw new Error('No refresh token available');
-    }
 
     const response = await this.client.post<AuthResponse>(
       `${this.baseUrl}/refresh`,
+      undefined,
       {
-        refreshToken,
+        withCredentials: true,
       }
     );
 
-    await tokenManager.setToken(response.accessToken, response.refreshToken);
+    await tokenManager.setToken(response.accessToken);
     return response;
   }
 }

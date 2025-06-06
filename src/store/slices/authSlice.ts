@@ -34,17 +34,17 @@ export const signOut = createAppAsyncThunk('auth/signOut', async () => {
   await auth.signOut();
 });
 
-export const refreshToken = createAppAsyncThunk(
-  'auth/refreshToken',
-  async () => {
-    const { auth } = useApiServices();
-    return await auth.refreshToken();
-  }
-);
+// export const refreshToken = createAppAsyncThunk(
+//   'auth/refreshToken',
+//   async () => {
+//     const { auth } = useApiServices();
+//     return await auth.refreshToken();
+//   }
+// );
 
 // State interface
 interface AuthState extends BaseState {
-  user: any | null;
+  user: User | null;
   isAuthenticated: boolean;
   accessToken: string | null;
   refreshToken: string | null;
@@ -106,12 +106,11 @@ const authSlice = createSlice({
       .addCase(signIn.pending, setPending)
       .addCase(signIn.fulfilled, (state, action) => {
         setFulfilled(state);
-        const { accessToken, refreshToken, user } = action.payload;
+        const { accessToken, user } = action.payload;
 
         state.user = user;
         state.isAuthenticated = true;
         state.accessToken = accessToken;
-        state.refreshToken = refreshToken;
         state.lastActivity = Date.now();
 
         // Calculate token expiry (assuming JWT)
@@ -176,35 +175,6 @@ const authSlice = createSlice({
       });
 
     // Refresh token
-    builder
-      .addCase(refreshToken.pending, (state) => {
-        state.error = null;
-      })
-      .addCase(refreshToken.fulfilled, (state, action) => {
-        const { accessToken, refreshToken: newRefreshToken } = action.payload;
-        state.accessToken = accessToken;
-        state.refreshToken = newRefreshToken;
-        state.lastActivity = Date.now();
-
-        // Update token expiry
-        if (accessToken) {
-          try {
-            const payload = JSON.parse(atob(accessToken.split('.')[1]));
-            state.tokenExpiry = payload.exp * 1000;
-          } catch {
-            state.tokenExpiry = Date.now() + 60 * 60 * 1000;
-          }
-        }
-      })
-      .addCase(refreshToken.rejected, (state, action) => {
-        // Token refresh failed, user needs to sign in again
-        state.user = null;
-        state.isAuthenticated = false;
-        state.accessToken = null;
-        state.refreshToken = null;
-        state.tokenExpiry = null;
-        state.error = action.payload || 'Session expired';
-      });
   },
 });
 
