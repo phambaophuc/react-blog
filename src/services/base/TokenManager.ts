@@ -1,12 +1,15 @@
-export class TokenManager {
-  private readonly ACCESS_TOKEN_KEY = 'access_token';
+import { store } from '@/store';
 
+import { updateAccessToken } from '@/store/slices/authSlice';
+
+export class TokenManager {
   async getToken(): Promise<string | null> {
-    return localStorage.getItem(this.ACCESS_TOKEN_KEY);
+    const state = store.getState();
+    return state.auth.accessToken;
   }
 
   async setToken(accessToken: string): Promise<void> {
-    localStorage.setItem(this.ACCESS_TOKEN_KEY, accessToken);
+    store.dispatch(updateAccessToken(accessToken));
   }
 
   async refreshToken(): Promise<void> {
@@ -28,6 +31,6 @@ export class TokenManager {
   }
 
   async clearToken(): Promise<void> {
-    localStorage.removeItem(this.ACCESS_TOKEN_KEY);
+    store.dispatch(updateAccessToken(null));
   }
 }

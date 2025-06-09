@@ -2,7 +2,7 @@ import React from 'react';
 
 import UserAvatar from '@/components/UserAvatar';
 import useHideOnScroll from '@/hooks/useHideOnScroll';
-import { useAppNavigation } from '@/utils/navigation';
+import { useAppNavigation } from '@/routes/navigation';
 
 import {
   NotificationsOutlined as NotificationsIcon,

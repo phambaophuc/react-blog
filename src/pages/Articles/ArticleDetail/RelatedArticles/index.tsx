@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
+import { useAppNavigation } from '@/routes/navigation';
 import { useApiServices } from '@/services';
 import { Article } from '@/types';
 import { formatDate } from '@/utils/dateUtils';
-import { useAppNavigation } from '@/utils/navigation';
 
 import { AccessTime as AccessTimeIcon } from '@mui/icons-material';
 import { Box, CardContent, CardMedia, Chip, Typography } from '@mui/material';

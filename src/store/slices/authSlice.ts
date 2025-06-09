@@ -34,20 +34,11 @@ export const signOut = createAppAsyncThunk('auth/signOut', async () => {
   await auth.signOut();
 });
 
-// export const refreshToken = createAppAsyncThunk(
-//   'auth/refreshToken',
-//   async () => {
-//     const { auth } = useApiServices();
-//     return await auth.refreshToken();
-//   }
-// );
-
 // State interface
 interface AuthState extends BaseState {
   user: User | null;
   isAuthenticated: boolean;
   accessToken: string | null;
-  refreshToken: string | null;
   tokenExpiry: number | null;
   lastActivity: number;
   rememberMe: boolean;
@@ -62,7 +53,6 @@ const initialState: AuthState = {
   user: null,
   isAuthenticated: false,
   accessToken: null,
-  refreshToken: null,
   tokenExpiry: null,
   lastActivity: Date.now(),
   rememberMe: false,
@@ -76,7 +66,6 @@ const authSlice = createSlice({
       state.user = null;
       state.isAuthenticated = false;
       state.accessToken = null;
-      state.refreshToken = null;
       state.tokenExpiry = null;
       state.error = null;
     },
@@ -96,6 +85,23 @@ const authSlice = createSlice({
     updateUser: (state, action: PayloadAction<Partial<User>>) => {
       if (state.user) {
         state.user = { ...state.user, ...action.payload };
+      }
+    },
+
+    updateAccessToken: (state, action: PayloadAction<string | null>) => {
+      state.accessToken = action.payload;
+
+      if (!action.payload) {
+        state.isAuthenticated = false;
+        state.user = null;
+        state.tokenExpiry = null;
+      } else {
+        try {
+          const payload = JSON.parse(atob(action.payload.split('.')[1]));
+          state.tokenExpiry = payload.exp * 1000;
+        } catch {
+          state.tokenExpiry = Date.now() + 60 * 60 * 1000;
+        }
       }
     },
   },
@@ -135,7 +141,6 @@ const authSlice = createSlice({
     // Fetch user
     builder
       .addCase(fetchUser.pending, (state) => {
-        // Don't show loading for background user fetch
         state.error = null;
       })
       .addCase(fetchUser.fulfilled, (state, action) => {
@@ -147,7 +152,6 @@ const authSlice = createSlice({
         state.user = null;
         state.isAuthenticated = false;
         state.accessToken = null;
-        state.refreshToken = null;
         state.error = action.payload || 'Failed to fetch user';
       });
 
@@ -159,22 +163,17 @@ const authSlice = createSlice({
         state.user = null;
         state.isAuthenticated = false;
         state.accessToken = null;
-        state.refreshToken = null;
         state.tokenExpiry = null;
         state.error = null;
       })
       .addCase(signOut.rejected, (state, action) => {
-        // Even if signout fails, clear local state
         state.loading = false;
         state.user = null;
         state.isAuthenticated = false;
         state.accessToken = null;
-        state.refreshToken = null;
         state.tokenExpiry = null;
         state.error = action.payload || 'Signout failed';
       });
-
-    // Refresh token
   },
 });
 
@@ -184,6 +183,7 @@ export const {
   setRememberMe,
   clearError,
   updateUser,
+  updateAccessToken,
 } = authSlice.actions;
 
 export default authSlice.reducer;

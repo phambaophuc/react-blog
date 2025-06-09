@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
+import { useAppNavigation } from '@/routes/navigation';
 import { useApiServices } from '@/services';
-import { useAppNavigation } from '@/utils/navigation';
 
 import { Alert, Box, Link, Typography } from '@mui/material';
 

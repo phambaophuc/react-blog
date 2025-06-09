@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 
+import { useAppNavigation } from '@/routes/navigation';
 import { selectCurrentUser } from '@/store';
-import { useAppNavigation } from '@/utils/navigation';
 import { useSelector } from 'react-redux';
 
 import {

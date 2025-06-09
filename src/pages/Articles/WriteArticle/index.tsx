@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 
 import Layout from '@/components/Layout';
 import RichTextEditor from '@/components/RichTextEditor';
+import { useAppNavigation } from '@/routes/navigation';
 import { useApiServices } from '@/services';
 import { CreateArticleRequest, Tag } from '@/types';
-import { useAppNavigation } from '@/utils/navigation';
 
 import {
   Publish as PublishIcon,

@@ -1,11 +1,12 @@
 import { ComponentType, Suspense, lazy } from 'react';
 
 import { selectAuth } from '@/store';
-import ROUTES from '@/utils/routes';
 import { useSelector } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { Box, CircularProgress } from '@mui/material';
+
+import ROUTES from './routes';
 
 interface RouteConfig {
   path: string;

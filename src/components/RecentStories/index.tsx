@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
+import { useAppNavigation } from '@/routes/navigation';
 import { useApiServices } from '@/services';
 import { Article } from '@/types';
 import { formatDate } from '@/utils/dateUtils';
-import { useAppNavigation } from '@/utils/navigation';
 
 import { Box, Typography } from '@mui/material';
 

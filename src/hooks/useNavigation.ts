@@ -1,4 +1,4 @@
-import { ROUTE_KEYS, RouteParams, buildRoute } from '@/utils/routes';
+import { ROUTE_KEYS, RouteParams, buildRoute } from '@/routes/routes';
 import { useNavigate } from 'react-router-dom';
 
 export const useNavigation = () => {

@@ -1,7 +1,7 @@
 import React from 'react';
 
+import { useAppNavigation } from '@/routes/navigation';
 import { selectAuth } from '@/store';
-import { useAppNavigation } from '@/utils/navigation';
 import { useSelector } from 'react-redux';
 
 import { Alert, Box, Link, Typography } from '@mui/material';

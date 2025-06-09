@@ -1,4 +1,5 @@
-import { useNavigation } from '../hooks/useNavigation';
+import { useNavigation } from '@/hooks/useNavigation';
+
 import { ROUTE_KEYS } from './routes';
 
 export const useAppNavigation = () => {

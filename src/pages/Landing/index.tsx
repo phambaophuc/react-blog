@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { useAppNavigation } from '@/utils/navigation';
+import { useAppNavigation } from '@/routes/navigation';
 
 import { Menu as MenuIcon } from '@mui/icons-material';
 import {
