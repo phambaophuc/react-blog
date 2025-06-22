@@ -1,10 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import CardItem from '@/components/CardItem';
-import Layout from '@/components/Layout';
-import RecentStories from '@/components/RecentStories';
-import { Search } from '@/components/Search';
-import TagList from '@/components/TagList';
+import { PostCard, RecentPosts, SearchBox, TagList } from '@/components/blog';
+import { Layout } from '@/components/layout';
 import { selectArticles } from '@/store';
 import { useSelector } from 'react-redux';
 
@@ -58,14 +55,14 @@ const ArticlesPage = () => {
         <Typography variant="h3" component="h1" gutterBottom>
           Technology & Wellness Blog
         </Typography>
-        <Search />
+        <SearchBox />
         <TagList onTagSelect={setSelectedTag} />
       </Box>
 
       <Grid container spacing={4}>
         <Grid size={{ xs: 12, md: 8 }}>
           {articles.map((article) => (
-            <CardItem data={article} key={article.id} />
+            <PostCard article={article} key={article.id} />
           ))}
         </Grid>
 
@@ -112,7 +109,7 @@ const ArticlesPage = () => {
 
             <Divider sx={{ mb: (theme) => theme.spacing(4) }} />
 
-            <RecentStories />
+            <RecentPosts />
           </Box>
         </Grid>
       </Grid>

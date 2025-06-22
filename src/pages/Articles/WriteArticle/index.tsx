@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react';
 
-import Layout from '@/components/Layout';
-import RichTextEditor from '@/components/RichTextEditor';
+import { RichTextEditor } from '@/components/editor';
+import { Layout } from '@/components/layout';
 import { useAppNavigation } from '@/routes/navigation';
 import { useApiServices } from '@/services';
 import { CreateArticleRequest, Tag } from '@/types';
 
 import {
-  Publish as PublishIcon,
-  Save as SaveIcon,
-  LocalOffer as TagIcon,
-  Title as TitleIcon,
-  Visibility as VisibilityIcon,
+  LocalOffer,
+  Publish,
+  Save,
+  Title,
+  Visibility,
 } from '@mui/icons-material';
 import {
   Button,
@@ -111,7 +111,7 @@ const WriteArticlePage = () => {
                 input: {
                   startAdornment: (
                     <InputAdornment position="start">
-                      <TitleIcon />
+                      <Title />
                     </InputAdornment>
                   ),
                 },
@@ -131,7 +131,7 @@ const WriteArticlePage = () => {
                   <OutlinedInput
                     startAdornment={
                       <InputAdornment position="start">
-                        <TagIcon color="action" />
+                        <LocalOffer color="action" />
                       </InputAdornment>
                     }
                     label="Tag"
@@ -165,13 +165,13 @@ const WriteArticlePage = () => {
         )}
 
         <ActionButtons>
-          <Button variant="contained" color="primary" startIcon={<SaveIcon />}>
+          <Button variant="contained" color="primary" startIcon={<Save />}>
             Save Draft
           </Button>
           <Button
             variant="contained"
             color="secondary"
-            startIcon={<VisibilityIcon />}
+            startIcon={<Visibility />}
           >
             Preview
           </Button>
@@ -179,7 +179,7 @@ const WriteArticlePage = () => {
             variant="contained"
             color="success"
             onClick={handlePublish}
-            startIcon={<PublishIcon />}
+            startIcon={<Publish />}
             disabled={isPublishing}
           >
             Publish

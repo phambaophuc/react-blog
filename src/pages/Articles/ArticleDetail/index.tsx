@@ -1,20 +1,15 @@
 import { useEffect, useState } from 'react';
 
-import FormattedContent from '@/components/FormattedContent';
-import Layout from '@/components/Layout';
+import { PostContent, RelatedPosts } from '@/components/blog';
+import { Comment } from '@/components/comments';
+import { Layout } from '@/components/layout';
 import { useApiServices } from '@/services';
 import { Article } from '@/types';
 import { formatDate } from '@/utils/dateUtils';
 import { useParams } from 'react-router-dom';
 
-import {
-  Bookmark as BookmarkIcon,
-  Share as ShareIcon,
-} from '@mui/icons-material';
+import { Bookmark, Share } from '@mui/icons-material';
 import { Avatar, Box, IconButton, Typography } from '@mui/material';
-
-import Comments from './Comments';
-import RelatedArticles from './RelatedArticles';
 
 const ArticleDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -70,7 +65,7 @@ const ArticleDetailPage = () => {
               </Box>
             </Box>
 
-            <FormattedContent content={articleData.content} />
+            <PostContent content={articleData.content} />
 
             <Box
               sx={{
@@ -80,16 +75,16 @@ const ArticleDetailPage = () => {
               }}
             >
               <IconButton>
-                <ShareIcon />
+                <Share />
               </IconButton>
               <IconButton>
-                <BookmarkIcon />
+                <Bookmark />
               </IconButton>
             </Box>
           </Box>
 
-          <RelatedArticles articleId={articleData.id} />
-          <Comments comments={articleData.comments} />
+          <RelatedPosts articleId={articleData.id} />
+          <Comment comments={articleData.comments} />
         </>
       )}
     </Layout>

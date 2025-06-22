@@ -1,10 +1,6 @@
 import React from 'react';
 
-import {
-  GitHub as GitHubIcon,
-  LinkedIn as LinkedInIcon,
-  X as TwitterIcon,
-} from '@mui/icons-material';
+import { GitHub, LinkedIn, X as TwitterIcon } from '@mui/icons-material';
 import {
   Box,
   Container,
@@ -74,7 +70,7 @@ const Footer = () => {
               aria-label="GitHub"
               sx={{ alignSelf: 'center' }}
             >
-              <GitHubIcon />
+              <GitHub />
             </IconButton>
             <IconButton
               color="inherit"
@@ -92,7 +88,7 @@ const Footer = () => {
               aria-label="LinkedIn"
               sx={{ alignSelf: 'center' }}
             >
-              <LinkedInIcon />
+              <LinkedIn />
             </IconButton>
           </Stack>
         </Box>
@@ -101,4 +97,4 @@ const Footer = () => {
   );
 };
 
-export default React.memo(Footer);
+export default Footer;

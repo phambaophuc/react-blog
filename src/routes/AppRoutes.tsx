@@ -2,7 +2,7 @@ import { ComponentType, Suspense, lazy } from 'react';
 
 import { selectAuth } from '@/store';
 import { useSelector } from 'react-redux';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 import { Box, CircularProgress } from '@mui/material';
 
@@ -23,8 +23,6 @@ const LandingPage = lazy(() => import('@/pages/Landing'));
 const ArticleDetailPage = lazy(() => import('@/pages/Articles/ArticleDetail'));
 const ArticlesPage = lazy(() => import('@/pages/Articles'));
 const WriteArticlePage = lazy(() => import('@/pages/Articles/WriteArticle'));
-const SigninPage = lazy(() => import('@/pages/SignIn'));
-const SignupPage = lazy(() => import('@/pages/SignUp'));
 
 const LoadingFallback: React.FC = () => (
   <Box
@@ -47,14 +45,6 @@ const publicRoutes: RouteConfig[] = [
     path: '/',
     component: LandingPage,
     exact: true,
-  },
-  {
-    path: ROUTES.SIGNIN as string,
-    component: SigninPage,
-  },
-  {
-    path: ROUTES.SIGNUP as string,
-    component: SignupPage,
   },
   {
     path: ROUTES.ARTICLES as string,
@@ -95,7 +85,11 @@ const ProtectedRouteElement: React.FC<{
   }
 
   if (!user) {
-    return <Navigate to={ROUTES.SIGNIN as string} replace />;
+    return (
+      <Box sx={{ textAlign: 'center', mt: 4 }}>
+        <p>Please sign in to access this page.</p>
+      </Box>
+    );
   }
 
   return <>{children}</>;

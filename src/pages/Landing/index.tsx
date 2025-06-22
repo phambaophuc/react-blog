@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { useAppNavigation } from '@/routes/navigation';
 
-import { Menu as MenuIcon } from '@mui/icons-material';
+import { Menu } from '@mui/icons-material';
 import {
   Box,
   Container,
@@ -28,7 +28,7 @@ import {
 } from './index.styled';
 
 const Landing = () => {
-  const { goToSignin, goToArticles } = useAppNavigation();
+  const { goToArticles } = useAppNavigation();
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const theme = useTheme();
@@ -69,16 +69,14 @@ const Landing = () => {
                 edge="start"
                 onClick={handleDrawerToggle}
               >
-                <MenuIcon />
+                <Menu />
               </IconButton>
             ) : (
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                 {navItems.map((item) => (
                   <NavButton key={item}>{item}</NavButton>
                 ))}
-                <SignInButton variant="contained" onClick={goToSignin}>
-                  Sign in
-                </SignInButton>
+                <SignInButton variant="contained">Sign in</SignInButton>
               </Box>
             )}
           </Toolbar>
