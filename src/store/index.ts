@@ -3,12 +3,14 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
 import articleReducer from './slices/articleSlice';
 import authReducer from './slices/authSlice';
+import commentReducer from './slices/commentsSlice';
 
 // Store configuration
 export const store = configureStore({
   reducer: {
     articles: articleReducer,
     auth: authReducer,
+    comments: commentReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -35,11 +37,15 @@ export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 // Selectors
 export const selectArticles = (state: RootState) => state.articles;
 export const selectAuth = (state: RootState) => state.auth;
+export const selectComments = (state: RootState) => state.comments;
 
 // Derived selectors
 export const selectIsAuthenticated = (state: RootState) =>
   state.auth.isAuthenticated;
 export const selectCurrentUser = (state: RootState) => state.auth.user;
+
 export const selectArticleList = (state: RootState) => state.articles.articles;
 export const selectCurrentArticle = (state: RootState) =>
   state.articles.currentArticle;
+
+export const selectCommentList = (state: RootState) => state.comments.comments;

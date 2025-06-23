@@ -1,33 +1,35 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { PostContent, RelatedPosts } from '@/components/blog';
-import { Comment } from '@/components/comments';
+import { CommentList } from '@/components/comments';
 import { Layout } from '@/components/layout';
-import { useApiServices } from '@/services';
-import { Article } from '@/types';
+import { selectCurrentArticle } from '@/store';
 import { formatDate } from '@/utils/dateUtils';
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import { Bookmark, Share } from '@mui/icons-material';
 import { Avatar, Box, IconButton, Typography } from '@mui/material';
 
+import { useArticles } from '@/store/hooks';
+import { useComments } from '@/store/hooks/useComments';
+
 const ArticleDetailPage = () => {
   const { id } = useParams<{ id: string }>();
+  const { fetchArticleById } = useArticles();
+  const { initComments } = useComments();
 
-  const [articleData, setArticleData] = useState<Article | null>();
-
-  const { articles: articleService } = useApiServices();
+  const currArticle = useSelector(selectCurrentArticle);
 
   useEffect(() => {
     if (!id) return;
-
-    const fetchArticle = async () => {
-      const article = await articleService.findById(id);
-      setArticleData(article);
-    };
-
-    fetchArticle();
+    fetchArticleById(id);
   }, [id]);
+
+  useEffect(() => {
+    if (!currArticle) return;
+    initComments(currArticle.comments);
+  }, [currArticle]);
 
   return (
     <Layout
@@ -37,11 +39,11 @@ const ArticleDetailPage = () => {
         minHeight: '100vh',
       }}
     >
-      {articleData && (
+      {currArticle && (
         <>
           <Box component="article" sx={{ mb: (theme) => theme.spacing(6) }}>
             <Typography variant="h3" gutterBottom>
-              {articleData.title}
+              {currArticle.title}
             </Typography>
 
             <Box
@@ -52,20 +54,20 @@ const ArticleDetailPage = () => {
               }}
             >
               <Avatar
-                src={articleData.user.avatarUrl ?? ''}
+                src={currArticle.user.avatarUrl ?? ''}
                 sx={{ mr: (theme) => theme.spacing(2) }}
               />
               <Box>
                 <Typography variant="subtitle1">
-                  Written by {articleData.user.displayName}
+                  Written by {currArticle.user.displayName}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  Published on {formatDate(articleData.createdAt)}
+                  Published on {formatDate(currArticle.createdAt)}
                 </Typography>
               </Box>
             </Box>
 
-            <PostContent content={articleData.content} />
+            <PostContent content={currArticle.content} />
 
             <Box
               sx={{
@@ -83,8 +85,8 @@ const ArticleDetailPage = () => {
             </Box>
           </Box>
 
-          <RelatedPosts articleId={articleData.id} />
-          <Comment comments={articleData.comments} />
+          <RelatedPosts articleId={currArticle.id} />
+          <CommentList />
         </>
       )}
     </Layout>

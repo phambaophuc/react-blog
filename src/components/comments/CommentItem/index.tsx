@@ -1,7 +1,6 @@
-import { useState } from 'react';
-import React from 'react';
+import React, { useState } from 'react';
 
-import { selectCurrentUser } from '@/store';
+import { selectCurrentArticle, selectCurrentUser } from '@/store';
 import { Comment } from '@/types';
 import { timeAgo } from '@/utils/dateUtils';
 import { useSelector } from 'react-redux';
@@ -16,20 +15,36 @@ import {
   Typography,
 } from '@mui/material';
 
+import { useComments } from '@/store/hooks/useComments';
+
 import CommentInput from '../CommentInput';
 
 interface Props {
   comment: Comment;
-  onReply: (id: string, content: string) => void;
-  onDelete: (id: string) => void;
 }
 
-const CommentItem: React.FC<Props> = ({ comment, onReply, onDelete }) => {
+const CommentItem: React.FC<Props> = ({ comment }) => {
+  const { createComment, deleteComment } = useComments();
+
   const user = useSelector(selectCurrentUser);
+  const currArticle = useSelector(selectCurrentArticle);
 
   const [showReplies, setShowReplies] = useState(false);
   const [replyingTo, setReplyingTo] = useState<boolean>(false);
 
+  const handleReply = async (content: string) => {
+    createComment({
+      content,
+      parentId: comment.id,
+      articleId: currArticle?.id ?? '',
+    });
+    setReplyingTo(false);
+  };
+
+  const handleDeleteComment = async (commentId: string) => {
+    deleteComment(commentId);
+  };
+  console.log(comment);
   return (
     <Box sx={{ mb: (theme) => theme.spacing(2) }}>
       <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
@@ -46,7 +61,7 @@ const CommentItem: React.FC<Props> = ({ comment, onReply, onDelete }) => {
               <IconButton
                 size="small"
                 color="error"
-                onClick={() => onDelete(comment.id)}
+                onClick={() => handleDeleteComment(comment.id)}
               >
                 <Close
                   sx={{ fontSize: (theme) => theme.typography.pxToRem(16) }}
@@ -80,10 +95,7 @@ const CommentItem: React.FC<Props> = ({ comment, onReply, onDelete }) => {
 
           <Collapse in={replyingTo}>
             <CommentInput
-              onSubmit={(content) => {
-                onReply(comment.id, content);
-                setReplyingTo(false);
-              }}
+              onSubmit={handleReply}
               sx={{
                 mt: (theme) => theme.spacing(2),
                 ml: (theme) => theme.spacing(2),
@@ -131,7 +143,7 @@ const CommentItem: React.FC<Props> = ({ comment, onReply, onDelete }) => {
                           <IconButton
                             size="small"
                             color="error"
-                            onClick={() => onDelete(reply.id)}
+                            onClick={() => handleDeleteComment(reply.id)}
                           >
                             <Close
                               sx={{

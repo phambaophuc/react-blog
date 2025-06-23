@@ -32,14 +32,6 @@ export const fetchArticleById = createAppAsyncThunk(
   }
 );
 
-export const fetchRelatedArticles = createAppAsyncThunk(
-  'articles/fetchRelatedArticles',
-  async (id: string) => {
-    const { articles } = useApiServices();
-    return await articles.findAllRelated(id);
-  }
-);
-
 export const createArticle = createAppAsyncThunk(
   'articles/createArticle',
   async (article: CreateArticleRequest) => {
@@ -51,11 +43,8 @@ export const createArticle = createAppAsyncThunk(
 interface ArticleState extends BaseState, PaginatedState {
   articles: Article[];
   currentArticle: Article | null;
-  relatedArticles: Article[];
   searchResults: Article[];
   filters: ArticleFilters;
-  isSearching: boolean;
-  lastQuery: ArticleFilters | null;
 }
 
 const initialState: ArticleState = {
@@ -72,11 +61,8 @@ const initialState: ArticleState = {
   // Article state
   articles: [],
   currentArticle: null,
-  relatedArticles: [],
   searchResults: [],
   filters: { page: 1, limit: 10 },
-  isSearching: false,
-  lastQuery: null,
 };
 
 const articleSlice = createSlice({
@@ -92,13 +78,6 @@ const articleSlice = createSlice({
 
     resetCurrentArticle: (state) => {
       state.currentArticle = null;
-      state.relatedArticles = [];
-      state.error = null;
-    },
-
-    resetSearchResults: (state) => {
-      state.searchResults = [];
-      state.isSearching = false;
       state.error = null;
     },
 
@@ -143,7 +122,6 @@ const articleSlice = createSlice({
         state.page = page;
         state.totalPages = totalPages;
         state.hasMore = page < totalPages;
-        state.lastQuery = action.meta.arg;
       })
       .addCase(fetchArticles.rejected, setRejected);
 
@@ -155,20 +133,6 @@ const articleSlice = createSlice({
         state.currentArticle = action.payload;
       })
       .addCase(fetchArticleById.rejected, setRejected);
-
-    // Fetch related articles
-    builder
-      .addCase(fetchRelatedArticles.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(fetchRelatedArticles.fulfilled, (state, action) => {
-        state.loading = false;
-        state.relatedArticles = action.payload;
-      })
-      .addCase(fetchRelatedArticles.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload || 'Failed to fetch related articles';
-      });
 
     // Create article
     builder
@@ -184,7 +148,6 @@ const articleSlice = createSlice({
 export const {
   resetArticles,
   resetCurrentArticle,
-  resetSearchResults,
   setFilters,
   clearFilters,
   updateArticleInList,
