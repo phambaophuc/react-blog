@@ -54,14 +54,18 @@ const publicRoutes: RouteConfig[] = [
     path: `${ROUTES.ARTICLES}/:id`,
     component: ArticleDetailPage,
   },
-];
-
-const protectedRoutes: ProtectedRouteConfig[] = [
   {
     path: ROUTES.WRITE_ARTICLE as string,
     component: WriteArticlePage,
-    requireAuth: true,
   },
+];
+
+const protectedRoutes: ProtectedRouteConfig[] = [
+  // {
+  //   path: ROUTES.WRITE_ARTICLE as string,
+  //   component: WriteArticlePage,
+  //   requireAuth: true,
+  // },
 ];
 
 const renderRoute = (route: RouteConfig, index: number) => {

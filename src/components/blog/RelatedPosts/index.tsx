@@ -6,7 +6,7 @@ import { Article } from '@/types';
 import { formatDate } from '@/utils/dateUtils';
 
 import { AccessTime } from '@mui/icons-material';
-import { Box, CardContent, CardMedia, Chip, Typography } from '@mui/material';
+import { Box, CardContent, CardMedia, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 
 import { StyledCard } from './index.styled';
@@ -52,7 +52,7 @@ const RelatedPosts: React.FC<Props> = ({ articleId }) => {
             <StyledCard>
               <CardMedia
                 component="img"
-                image={article.imageUrl ?? ''}
+                image={article.coverImageUrl ?? ''}
                 alt={article.title}
                 sx={{
                   height: (theme) => theme.spacing(25),
@@ -93,7 +93,7 @@ const RelatedPosts: React.FC<Props> = ({ articleId }) => {
                     textOverflow: 'ellipsis',
                   }}
                 >
-                  {article.description}
+                  {article.excerpt}
                 </Typography>
                 <Box
                   sx={{
@@ -102,7 +102,7 @@ const RelatedPosts: React.FC<Props> = ({ articleId }) => {
                     justifyContent: 'space-between',
                   }}
                 >
-                  <Chip label={article.tag.name} size="small" />
+                  {/* <Chip label={article.tag.name} size="small" /> */}
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <AccessTime sx={{ mr: (theme) => theme.spacing(2) }} />
                     <Typography variant="caption">

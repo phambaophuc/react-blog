@@ -5,7 +5,13 @@ import { Comment } from '@/types';
 import { timeAgo } from '@/utils/dateUtils';
 import { useSelector } from 'react-redux';
 
-import { Close, Reply } from '@mui/icons-material';
+import {
+  DeleteOutline,
+  Favorite,
+  FavoriteOutlined,
+  MoreHorizOutlined,
+  ReplyOutlined,
+} from '@mui/icons-material';
 import {
   Avatar,
   Box,
@@ -21,16 +27,18 @@ import CommentInput from '../CommentInput';
 
 interface Props {
   comment: Comment;
+  isReply?: boolean;
 }
 
-const CommentItem: React.FC<Props> = ({ comment }) => {
+const CommentItem: React.FC<Props> = ({ comment, isReply = false }) => {
   const { createComment, deleteComment } = useComments();
-
   const user = useSelector(selectCurrentUser);
   const currArticle = useSelector(selectCurrentArticle);
 
   const [showReplies, setShowReplies] = useState(false);
   const [replyingTo, setReplyingTo] = useState<boolean>(false);
+  const [isLiked, setIsLiked] = useState(false);
+  const [likes, setLikes] = useState(0);
 
   const handleReply = async (content: string) => {
     createComment({
@@ -44,125 +52,188 @@ const CommentItem: React.FC<Props> = ({ comment }) => {
   const handleDeleteComment = async (commentId: string) => {
     deleteComment(commentId);
   };
-  console.log(comment);
+
+  const handleLike = () => {
+    setIsLiked(!isLiked);
+    setLikes((prev) => (isLiked ? prev - 1 : prev + 1));
+  };
+
   return (
-    <Box sx={{ mb: (theme) => theme.spacing(2) }}>
-      <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+    <Box sx={{ mb: 3 }}>
+      <Box sx={{ display: 'flex', gap: 1.5 }}>
         <Avatar
           src={comment.user.avatarUrl ?? ''}
-          sx={{ mr: (theme) => theme.spacing(2) }}
-        />
-        <Box sx={{ flex: 1 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Typography variant="subtitle2">
+          sx={{
+            width: isReply ? 28 : 32,
+            height: isReply ? 28 : 32,
+            flexShrink: 0,
+          }}
+        >
+          {comment.user.displayName[0]}
+        </Avatar>
+
+        <Box sx={{ flex: 1, minWidth: 0 }}>
+          {/* User info */}
+          <Box
+            sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.5 }}
+          >
+            <Typography
+              variant="subtitle2"
+              sx={{
+                fontWeight: 500,
+                fontSize: '14px',
+                color: '#1a1a1a',
+              }}
+            >
               {comment.user.displayName}
+            </Typography>
+            <Typography sx={{ color: '#757575', fontSize: '12px' }}>
+              ·
+            </Typography>
+            <Typography
+              variant="caption"
+              sx={{
+                color: '#757575',
+                fontSize: '12px',
+              }}
+            >
+              {timeAgo(comment.createdAt)}
             </Typography>
             {user?.id === comment.user.id && (
               <IconButton
                 size="small"
-                color="error"
                 onClick={() => handleDeleteComment(comment.id)}
+                sx={{
+                  ml: 'auto',
+                  color: '#757575',
+                  '&:hover': { color: '#d32f2f' },
+                }}
               >
-                <Close
-                  sx={{ fontSize: (theme) => theme.typography.pxToRem(16) }}
-                />
+                <DeleteOutline sx={{ fontSize: 16 }} />
               </IconButton>
             )}
           </Box>
-          <Typography variant="body2" color="text.secondary">
-            {timeAgo(comment.createdAt)}
-          </Typography>
-          <Box
+
+          {/* Comment content */}
+          <Typography
+            variant="body1"
             sx={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: (theme) => theme.spacing(1),
-              mt: (theme) => theme.spacing(0.5),
+              fontFamily: 'Georgia, serif',
+              fontSize: '16px',
+              lineHeight: 1.6,
+              color: '#1a1a1a',
+              mb: 2,
+              wordBreak: 'break-word',
             }}
           >
-            <Typography variant="body1">{comment.content}</Typography>
-            {user && (
+            {comment.content}
+          </Typography>
+
+          {/* Action buttons */}
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+            <Button
+              startIcon={isLiked ? <Favorite /> : <FavoriteOutlined />}
+              onClick={handleLike}
+              size="small"
+              sx={{
+                minWidth: 'auto',
+                p: 0,
+                color: isLiked ? '#d32f2f' : '#757575',
+                fontSize: '12px',
+                textTransform: 'none',
+                '&:hover': {
+                  backgroundColor: 'transparent',
+                  color: isLiked ? '#b71c1c' : '#424242',
+                },
+                '& .MuiButton-startIcon': {
+                  marginRight: likes > 0 ? '4px' : 0,
+                  marginLeft: 0,
+                },
+              }}
+            >
+              {likes > 0 && likes}
+            </Button>
+
+            {!isReply && user && (
               <Button
-                startIcon={<Reply />}
-                size="small"
+                startIcon={<ReplyOutlined />}
                 onClick={() => setReplyingTo(!replyingTo)}
-                sx={{ display: 'flex', alignItems: 'flex-start' }}
+                size="small"
+                sx={{
+                  minWidth: 'auto',
+                  p: 0,
+                  color: '#757575',
+                  fontSize: '12px',
+                  textTransform: 'none',
+                  '&:hover': {
+                    backgroundColor: 'transparent',
+                    color: '#424242',
+                  },
+                }}
               >
                 Reply
               </Button>
             )}
-          </Box>
 
-          <Collapse in={replyingTo}>
-            <CommentInput
-              onSubmit={handleReply}
-              sx={{
-                mt: (theme) => theme.spacing(2),
-                ml: (theme) => theme.spacing(2),
-              }}
-            />
-          </Collapse>
+            {!isReply && comment.replies.length > 0 && (
+              <Button
+                onClick={() => setShowReplies(!showReplies)}
+                size="small"
+                sx={{
+                  minWidth: 'auto',
+                  p: 0,
+                  color: '#1a8917',
+                  fontSize: '12px',
+                  fontWeight: 500,
+                  textTransform: 'none',
+                  '&:hover': {
+                    backgroundColor: 'transparent',
+                    color: '#156b13',
+                  },
+                }}
+              >
+                {showReplies
+                  ? 'Hide replies'
+                  : `${comment.replies.length} ${comment.replies.length === 1 ? 'reply' : 'replies'}`}
+              </Button>
+            )}
 
-          {comment.replies.length > 0 && (
-            <Box
+            <IconButton
+              size="small"
               sx={{
-                mt: (theme) => theme.spacing(0.5),
-                ml: (theme) => theme.spacing(1),
+                color: '#757575',
+                '&:hover': { color: '#424242' },
               }}
             >
-              <Button onClick={() => setShowReplies(!showReplies)} size="small">
-                {showReplies
-                  ? 'Hide Replies'
-                  : `Show ${comment.replies.length} Replies`}
-              </Button>
+              <MoreHorizOutlined sx={{ fontSize: 16 }} />
+            </IconButton>
+          </Box>
 
-              <Collapse in={showReplies}>
-                {comment.replies.map((reply) => (
-                  <Box
-                    key={reply.id}
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'flex-start',
-                      mt: (theme) => theme.spacing(2),
-                    }}
-                  >
-                    <Avatar
-                      src={reply.user.avatarUrl ?? ''}
-                      sx={{
-                        width: (theme) => theme.spacing(4),
-                        height: (theme) => theme.spacing(4),
-                        mr: (theme) => theme.spacing(1),
-                      }}
-                    />
-                    <Box>
-                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Typography variant="subtitle2">
-                          {reply.user.displayName}
-                        </Typography>
-                        {user?.id === reply.user.id && (
-                          <IconButton
-                            size="small"
-                            color="error"
-                            onClick={() => handleDeleteComment(reply.id)}
-                          >
-                            <Close
-                              sx={{
-                                fontSize: (theme) =>
-                                  theme.typography.pxToRem(16),
-                              }}
-                            />
-                          </IconButton>
-                        )}
-                      </Box>
-                      <Typography variant="body2" color="text.secondary">
-                        {timeAgo(reply.createdAt)}
-                      </Typography>
-                      <Typography variant="body2">{reply.content}</Typography>
-                    </Box>
-                  </Box>
-                ))}
-              </Collapse>
+          {/* Reply input */}
+          <Collapse in={replyingTo}>
+            <Box sx={{ mt: 2 }}>
+              <CommentInput
+                onSubmit={handleReply}
+                placeholder={`Reply to ${comment.user.displayName}...`}
+                currentUser={user ?? undefined}
+                sx={{
+                  borderBottom: 'none',
+                  pb: 0,
+                  mb: 0,
+                }}
+              />
             </Box>
+          </Collapse>
+
+          {/* Replies */}
+          {!isReply && comment.replies.length > 0 && (
+            <Collapse in={showReplies}>
+              <Box sx={{ mt: 2, ml: 0 }}>
+                {comment.replies.map((reply) => (
+                  <CommentItem key={reply.id} comment={reply} isReply={true} />
+                ))}
+              </Box>
+            </Collapse>
           )}
         </Box>
       </Box>

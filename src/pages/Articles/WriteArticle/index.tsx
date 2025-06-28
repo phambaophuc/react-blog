@@ -1,201 +1,390 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { RichTextEditor } from '@/components/editor';
-import { Layout } from '@/components/layout';
 import { useAppNavigation } from '@/routes/navigation';
 import { useApiServices } from '@/services';
-import { CreateArticleRequest, Tag } from '@/types';
+import { CreateArticleRequest } from '@/types';
 
 import {
-  LocalOffer,
+  Check,
+  CheckCircle,
+  Close,
+  Error,
+  MoreHoriz,
   Publish,
   Save,
-  Title,
   Visibility,
 } from '@mui/icons-material';
-import {
-  Button,
-  CircularProgress,
-  FormControl,
-  InputAdornment,
-  InputLabel,
-  MenuItem,
-  OutlinedInput,
-  Select,
-  TextField,
-  Typography,
-} from '@mui/material';
-import Grid from '@mui/material/Grid2';
+import { CircularProgress } from '@mui/material';
 
-import { ActionButtons, StyledPaper } from './index.styled';
+import {
+  ActionSection,
+  EditorSection,
+  ErrorMessage,
+  FloatingActions,
+  FloatingButton,
+  HeaderBar,
+  HeaderContent,
+  LoadingContent,
+  LoadingOverlay,
+  LogoSection,
+  PublishButton,
+  SecondaryButton,
+  StatusIndicator,
+  SuccessMessage,
+  TitleInput,
+  WriteContainer,
+} from './index.styled';
 
 const WriteArticlePage = () => {
   const { goToArticles } = useAppNavigation();
+  const { articles: articleService } = useApiServices();
 
-  const [tags, setTags] = useState<Tag[]>([]);
+  // States
   const [article, setArticle] = useState<CreateArticleRequest>({
     title: '',
     content: '',
-    tagId: '',
   });
   const [isPublishing, setIsPublishing] = useState(false);
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [isSaving, setIsSaving] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [success, setSuccess] = useState('');
+  const [autoSaveStatus, setAutoSaveStatus] = useState<
+    'saved' | 'saving' | 'error'
+  >('saved');
 
-  const { tags: tagService, articles: articleService } = useApiServices();
+  const autoSaveTimeout = useRef<NodeJS.Timeout | null>(null);
+  const isUnmountingRef = useRef(false);
+  const editorContentRef = useRef<string>('');
 
   useEffect(() => {
-    const fetchTags = async () => {
-      const tagList = await tagService.findAll();
-      setTags(tagList);
+    return () => {
+      isUnmountingRef.current = true;
+      if (autoSaveTimeout.current) {
+        clearTimeout(autoSaveTimeout.current);
+        autoSaveTimeout.current = null;
+      }
     };
-
-    fetchTags();
   }, []);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setArticle({ ...article, [e.target.name]: e.target.value });
-    setErrors((prevErrors) => ({ ...prevErrors, [e.target.name]: '' }));
-  };
+  useEffect(() => {
+    if (isUnmountingRef.current) return;
 
-  const validateForm = () => {
-    const newErrors: { [key: string]: string } = {};
+    if (autoSaveTimeout.current) {
+      clearTimeout(autoSaveTimeout.current);
+      autoSaveTimeout.current = null;
+    }
 
-    if (!article.title) newErrors.title = 'Title is required';
-    if (!article.content) newErrors.content = 'Content is required';
-    if (!article.tagId) newErrors.tagId = 'Tag is required';
+    if (
+      (article.title.trim() || article.content.trim()) &&
+      !isSaving &&
+      !isPublishing &&
+      autoSaveStatus !== 'saving'
+    ) {
+      setAutoSaveStatus('saving');
+      autoSaveTimeout.current = setTimeout(() => {
+        if (!isUnmountingRef.current) {
+          handleAutoSave();
+        }
+      }, 2000);
+    }
+
+    // Cleanup function
+    return () => {
+      if (autoSaveTimeout.current) {
+        clearTimeout(autoSaveTimeout.current);
+        autoSaveTimeout.current = null;
+      }
+    };
+  }, [article.title, article.content, isSaving, isPublishing, autoSaveStatus]);
+
+  const handleAutoSave = useCallback(async () => {
+    if (isUnmountingRef.current) return;
+
+    try {
+      // Simulate auto-save
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
+      if (!isUnmountingRef.current) {
+        setAutoSaveStatus('saved');
+      }
+    } catch {
+      if (!isUnmountingRef.current) {
+        setAutoSaveStatus('error');
+      }
+    }
+  }, []);
+
+  const handleTitleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (isUnmountingRef.current) return;
+
+      const newTitle = e.target.value;
+      setArticle((prev) => ({ ...prev, title: newTitle }));
+
+      // Clear title error if exists
+      if (newTitle.trim() && errors.title) {
+        setErrors((prev) => {
+          const { ...rest } = prev;
+          return rest;
+        });
+      }
+    },
+    [errors.title]
+  );
+
+  const handleContentChange = useCallback(
+    (content: string) => {
+      if (isUnmountingRef.current) return;
+
+      if (editorContentRef.current !== content) {
+        editorContentRef.current = content;
+        setArticle((prev) => ({ ...prev, content }));
+
+        // Clear content error if exists
+        if (content.trim() && errors.content) {
+          setErrors((prev) => {
+            const { ...rest } = prev;
+            return rest;
+          });
+        }
+      }
+    },
+    [errors.content]
+  );
+
+  const validateForm = useCallback((): boolean => {
+    const newErrors: Record<string, string> = {};
+
+    if (!article.title?.trim()) {
+      newErrors.title = 'Title is required';
+    }
+    if (!article.content?.trim()) {
+      newErrors.content = 'Content is required';
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  };
+  }, [article.title, article.content]);
 
-  const handlePublish = async () => {
+  const handleSaveDraft = useCallback(async () => {
+    if (isUnmountingRef.current || isSaving) return;
+
+    setIsSaving(true);
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      if (!isUnmountingRef.current) {
+        setSuccess('Draft saved successfully');
+        setTimeout(() => {
+          if (!isUnmountingRef.current) {
+            setSuccess('');
+          }
+        }, 3000);
+      }
+    } catch {
+      if (!isUnmountingRef.current) {
+        setErrors({ save: 'Failed to save draft' });
+      }
+    } finally {
+      if (!isUnmountingRef.current) {
+        setIsSaving(false);
+      }
+    }
+  }, [isSaving]);
+
+  const handlePreview = useCallback(() => {
+    if (isUnmountingRef.current) return;
+    console.log('Preview article:', article);
+  }, [article]);
+
+  const handlePublish = useCallback(async () => {
+    if (isUnmountingRef.current || isPublishing) return;
+
+    setErrors({});
+
     if (!validateForm()) return;
 
     setIsPublishing(true);
     try {
       await articleService.create(article);
-      goToArticles();
+
+      if (!isUnmountingRef.current) {
+        setSuccess('Article published successfully!');
+        setTimeout(() => {
+          if (!isUnmountingRef.current) {
+            goToArticles();
+          }
+        }, 1500);
+      }
     } catch {
-      throw new Error('Something went wrong!');
+      if (!isUnmountingRef.current) {
+        setErrors({ publish: 'Failed to publish article. Please try again.' });
+      }
     } finally {
-      setIsPublishing(false);
+      if (!isUnmountingRef.current) {
+        setIsPublishing(false);
+      }
     }
-  };
+  }, [article, articleService, goToArticles, isPublishing, validateForm]);
+
+  const clearError = useCallback((field: string) => {
+    if (isUnmountingRef.current) return;
+
+    setErrors((prev) => {
+      const newErrors = { ...prev };
+      delete newErrors[field];
+      return newErrors;
+    });
+  }, []);
+
+  const clearSuccess = useCallback(() => {
+    if (isUnmountingRef.current) return;
+    setSuccess('');
+  }, []);
+
+  const getAutoSaveContent = useCallback(() => {
+    switch (autoSaveStatus) {
+      case 'saving':
+        return { icon: <CircularProgress size={8} />, text: 'Saving...' };
+      case 'saved':
+        return { icon: <Check sx={{ fontSize: 12 }} />, text: 'Saved' };
+      case 'error':
+        return { icon: <Error sx={{ fontSize: 12 }} />, text: 'Save failed' };
+      default:
+        return { icon: null, text: '' };
+    }
+  }, [autoSaveStatus]);
+
+  const autoSaveContent = getAutoSaveContent();
 
   return (
-    <Layout maxWidth="lg">
-      <StyledPaper>
-        <Typography
-          sx={{ mb: (theme) => theme.spacing(4) }}
-          variant="h4"
-          fontWeight="bold"
-          gutterBottom
-        >
-          📝 Write a Blog
-        </Typography>
+    <WriteContainer>
+      {/* Header */}
+      <HeaderBar>
+        <HeaderContent>
+          <LogoSection>
+            <a href="/" className="logo">
+              ThoughtSphere
+            </a>
+            <StatusIndicator>
+              <span className="status-dot" />
+              {autoSaveContent.icon}
+              <span>{autoSaveContent.text}</span>
+            </StatusIndicator>
+          </LogoSection>
 
-        <Grid container spacing={2}>
-          <Grid size={6}>
-            <TextField
-              label="Title"
-              name="title"
-              variant="outlined"
-              fullWidth
-              value={article.title}
-              onChange={handleChange}
-              error={!!errors.title}
-              helperText={errors.title}
-              slotProps={{
-                input: {
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Title />
-                    </InputAdornment>
-                  ),
-                },
-              }}
-            />
-          </Grid>
-          <Grid size={6}>
-            <FormControl fullWidth error={!!errors.tagId}>
-              <InputLabel>Tag</InputLabel>
-              <Select
-                value={article.tagId}
-                label="Tag"
-                onChange={(e) =>
-                  setArticle({ ...article, tagId: e.target.value })
-                }
-                input={
-                  <OutlinedInput
-                    startAdornment={
-                      <InputAdornment position="start">
-                        <LocalOffer color="action" />
-                      </InputAdornment>
-                    }
-                    label="Tag"
-                  />
-                }
-              >
-                {tags.map((tag) => (
-                  <MenuItem key={tag.id} value={tag.id}>
-                    {tag.name}
-                  </MenuItem>
-                ))}
-              </Select>
-              {errors.tagId && (
-                <Typography variant="caption" color="error">
-                  {errors.tagId}
-                </Typography>
+          <ActionSection>
+            <SecondaryButton onClick={handlePreview}>
+              <Visibility sx={{ fontSize: 16 }} />
+              Preview
+            </SecondaryButton>
+
+            <SecondaryButton onClick={handleSaveDraft} disabled={isSaving}>
+              {isSaving ? (
+                <CircularProgress size={16} />
+              ) : (
+                <Save sx={{ fontSize: 16 }} />
               )}
-            </FormControl>
-          </Grid>
-        </Grid>
+              {isSaving ? 'Saving...' : 'Save'}
+            </SecondaryButton>
 
-        <RichTextEditor
-          sx={{ mt: (theme) => theme.spacing(2) }}
-          content={article.content}
-          setContent={(c) => setArticle({ ...article, content: c })}
-        />
-        {errors.content && (
-          <Typography variant="caption" color="error">
-            {errors.content}
-          </Typography>
+            <PublishButton onClick={handlePublish} disabled={isPublishing}>
+              {isPublishing ? (
+                <CircularProgress size={16} color="inherit" />
+              ) : (
+                <Publish sx={{ fontSize: 16 }} />
+              )}
+              {isPublishing ? 'Publishing...' : 'Publish'}
+            </PublishButton>
+
+            <SecondaryButton>
+              <MoreHoriz sx={{ fontSize: 16 }} />
+            </SecondaryButton>
+          </ActionSection>
+        </HeaderContent>
+      </HeaderBar>
+
+      {/* Main Editor */}
+      <EditorSection>
+        {/* Error Messages */}
+        {Object.entries(errors).map(([field, message]) => (
+          <ErrorMessage key={field}>
+            <Error sx={{ fontSize: 16 }} />
+            <span>{message}</span>
+            <Close
+              sx={{ fontSize: 16, marginLeft: 'auto', cursor: 'pointer' }}
+              onClick={() => clearError(field)}
+            />
+          </ErrorMessage>
+        ))}
+
+        {/* Success Message */}
+        {success && (
+          <SuccessMessage>
+            <CheckCircle sx={{ fontSize: 16 }} />
+            <span>{success}</span>
+            <Close
+              sx={{ fontSize: 16, marginLeft: 'auto', cursor: 'pointer' }}
+              onClick={clearSuccess}
+            />
+          </SuccessMessage>
         )}
 
-        <ActionButtons>
-          <Button variant="contained" color="primary" startIcon={<Save />}>
-            Save Draft
-          </Button>
-          <Button
-            variant="contained"
-            color="secondary"
-            startIcon={<Visibility />}
-          >
-            Preview
-          </Button>
-          <Button
-            variant="contained"
-            color="success"
-            onClick={handlePublish}
-            startIcon={<Publish />}
-            disabled={isPublishing}
-          >
-            Publish
-            {isPublishing && (
-              <CircularProgress
-                size={24}
-                sx={{
-                  color: 'white',
-                  ml: (theme) => theme.spacing(1),
-                }}
-              />
-            )}
-          </Button>
-        </ActionButtons>
-      </StyledPaper>
-    </Layout>
+        {/* Title Input */}
+        <TitleInput
+          placeholder="Title"
+          value={article.title}
+          onChange={handleTitleChange}
+          maxLength={100}
+        />
+
+        <RichTextEditor
+          key="main-editor"
+          content={article.content}
+          setContent={handleContentChange}
+          placeholder="Tell your story..."
+        />
+      </EditorSection>
+
+      {/* Floating Actions */}
+      <FloatingActions>
+        <FloatingButton
+          onClick={handleSaveDraft}
+          disabled={isSaving}
+          title="Save Draft"
+        >
+          {isSaving ? <CircularProgress size={20} /> : <Save />}
+        </FloatingButton>
+
+        <FloatingButton onClick={handlePreview} title="Preview">
+          <Visibility />
+        </FloatingButton>
+
+        <FloatingButton
+          className="primary"
+          onClick={handlePublish}
+          disabled={isPublishing}
+          title="Publish"
+        >
+          {isPublishing ? (
+            <CircularProgress size={20} color="inherit" />
+          ) : (
+            <Publish />
+          )}
+        </FloatingButton>
+      </FloatingActions>
+
+      {/* Loading Overlay */}
+      {isPublishing && (
+        <LoadingOverlay>
+          <LoadingContent>
+            <CircularProgress size={32} sx={{ color: '#1a8917' }} />
+            <span className="loading-text">Publishing your story...</span>
+          </LoadingContent>
+        </LoadingOverlay>
+      )}
+    </WriteContainer>
   );
 };
 

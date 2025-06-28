@@ -19,7 +19,6 @@ export class ArticleService extends BaseService {
     const params = {
       page: query.page ?? DEFAULT_PAGE,
       limit: query.limit ?? DEFAULT_LIMIT,
-      tag: query.tag,
     };
 
     const queryString = this.buildQueryParams(params);

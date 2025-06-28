@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { PostContent, RelatedPosts } from '@/components/blog';
+import { PostContent } from '@/components/blog';
 import { CommentList } from '@/components/comments';
 import { Layout } from '@/components/layout';
 import { selectCurrentArticle } from '@/store';
@@ -42,7 +42,7 @@ const ArticleDetailPage = () => {
       {currArticle && (
         <>
           <Box component="article" sx={{ mb: (theme) => theme.spacing(6) }}>
-            <Typography variant="h3" gutterBottom>
+            <Typography variant="h4" gutterBottom>
               {currArticle.title}
             </Typography>
 
@@ -54,12 +54,12 @@ const ArticleDetailPage = () => {
               }}
             >
               <Avatar
-                src={currArticle.user.avatarUrl ?? ''}
+                src={currArticle.author.avatarUrl ?? ''}
                 sx={{ mr: (theme) => theme.spacing(2) }}
               />
               <Box>
                 <Typography variant="subtitle1">
-                  Written by {currArticle.user.displayName}
+                  Written by {currArticle.author.displayName}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   Published on {formatDate(currArticle.createdAt)}
@@ -85,7 +85,7 @@ const ArticleDetailPage = () => {
             </Box>
           </Box>
 
-          <RelatedPosts articleId={currArticle.id} />
+          {/* <RelatedPosts articleId={currArticle.id} /> */}
           <CommentList />
         </>
       )}

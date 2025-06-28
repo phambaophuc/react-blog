@@ -36,7 +36,7 @@ const ArticlesPage = () => {
   }, [selectedTag]);
 
   useEffect(() => {
-    fetchArticles({ page, tag: selectedTag });
+    fetchArticles({ page });
   }, [page, selectedTag]);
 
   useEffect(() => {

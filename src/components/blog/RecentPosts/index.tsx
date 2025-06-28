@@ -57,7 +57,7 @@ const RecentPosts: React.FC = () => {
               {article.title}
             </Typography>
             <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-              {article.user.displayName} · {formatDate(article.createdAt)}
+              {article.author.displayName} · {formatDate(article.createdAt)}
             </Typography>
           </Box>
         ))}

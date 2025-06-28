@@ -5,14 +5,7 @@ import { Article } from '@/types';
 import { formatDate } from '@/utils/dateUtils';
 
 import { Bookmark as BookmarkIcon } from '@mui/icons-material';
-import {
-  Avatar,
-  Box,
-  CardMedia,
-  Chip,
-  IconButton,
-  Typography,
-} from '@mui/material';
+import { Avatar, Box, CardMedia, IconButton, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 
 import { StyledCard, StyledExcerpt, StyledTitle } from './index.styled';
@@ -35,15 +28,15 @@ const PostCard: React.FC<Props> = ({ article }) => {
         }}
       >
         <Avatar
-          alt={article.user.displayName}
-          src={article.user.avatarUrl ?? ''}
+          alt={article.author.displayName}
+          src={article.author.avatarUrl ?? ''}
           sx={{
             width: (theme) => theme.spacing(4),
             height: (theme) => theme.spacing(4),
           }}
         />
         <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-          {article.user.displayName}
+          {article.author.displayName}
         </Typography>
         <Typography variant="caption" sx={{ color: 'text.secondary' }}>
           {formatDate(article.createdAt)}
@@ -56,7 +49,7 @@ const PostCard: React.FC<Props> = ({ article }) => {
             <StyledTitle onClick={() => goToArticleDetail(article.id)}>
               {article.title}
             </StyledTitle>
-            <StyledExcerpt>{article.description}</StyledExcerpt>
+            <StyledExcerpt>{article.excerpt}</StyledExcerpt>
           </Box>
 
           <Box
@@ -74,7 +67,7 @@ const PostCard: React.FC<Props> = ({ article }) => {
                 gap: (theme) => theme.spacing(1),
               }}
             >
-              <Chip
+              {/* <Chip
                 label={article.tag.name}
                 sx={{
                   backgroundColor: (theme) => theme.palette.grey[200],
@@ -82,22 +75,24 @@ const PostCard: React.FC<Props> = ({ article }) => {
                   borderRadius: (theme) => theme.shape.borderRadius,
                   height: (theme) => theme.spacing(3),
                 }}
-              />
+              /> */}
               <Typography variant="caption" sx={{ color: '#757575' }}>
                 {new Intl.NumberFormat('en', { notation: 'compact' }).format(
-                  article.views
+                  article.viewsCount
                 )}{' '}
                 views
               </Typography>
-              <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-                10 read
-              </Typography>
             </Box>
-            <IconButton size="small">
-              <BookmarkIcon
-                sx={{ fontSize: (theme) => theme.typography.pxToRem(16) }}
-              />
-            </IconButton>
+            <Box>
+              <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                {article.readingTime} min read
+              </Typography>
+              <IconButton size="small">
+                <BookmarkIcon
+                  sx={{ fontSize: (theme) => theme.typography.pxToRem(16) }}
+                />
+              </IconButton>
+            </Box>
           </Box>
         </Grid>
 
@@ -105,7 +100,7 @@ const PostCard: React.FC<Props> = ({ article }) => {
           <CardMedia
             component="img"
             height={120}
-            image={article.imageUrl ?? ''}
+            image={article.coverImageUrl ?? ''}
             alt={article.title}
             sx={{
               objectFit: 'cover',
