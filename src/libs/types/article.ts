@@ -1,27 +1,25 @@
 import { Comment } from './comment';
 import { BaseEntity, PaginationParams, PaginationResponse } from './common';
-import { Tag } from './tag';
 import { User } from './user';
 
 export interface Article extends BaseEntity {
   title: string;
-  description: string;
+  slug: string;
+  excerpt: string;
   content: string;
-  imageUrl: string | null;
-  views: number;
-  user: Pick<User, 'id' | 'displayName' | 'avatarUrl'>;
-  tag: Tag;
+  coverImageUrl: string | null;
+  viewsCount: number;
+  readingTime: number;
+  author: Pick<User, 'id' | 'displayName' | 'avatarUrl'>;
+  tags: string[];
   comments: Comment[];
 }
 
 export interface CreateArticleRequest {
   title: string;
   content: string;
-  tagId: string;
 }
 
-export interface ArticleFilters extends PaginationParams {
-  tag?: string | null;
-}
+export interface ArticleFilters extends PaginationParams {}
 
 export type ArticleResponse = PaginationResponse<Article>;

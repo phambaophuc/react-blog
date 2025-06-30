@@ -1,4 +1,4 @@
-import { Tag } from '@/types';
+import { Tag } from '@/libs/types';
 
 import { BaseApiClient, BaseService } from './base';
 
@@ -9,6 +9,10 @@ export class TagService extends BaseService {
 
   async findAll(): Promise<Tag[]> {
     return this.client.get<Tag[]>(this.baseUrl);
+  }
+
+  async findTrendingTags(): Promise<Tag[]> {
+    return this.client.get<Tag[]>(`${this.baseUrl}/trending`);
   }
 
   async findById(id: string): Promise<Tag> {

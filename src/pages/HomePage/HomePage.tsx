@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { useAppNavigation } from '@/routes/navigation';
+import { useAppNavigation } from '@/libs/hooks';
 
 import { Menu } from '@mui/icons-material';
 import {
@@ -25,9 +25,9 @@ import {
   NavButton,
   SignInButton,
   StyledAppBar,
-} from './index.styled';
+} from './HomePage.styled';
 
-const Landing = () => {
+const HomePage = () => {
   const { goToArticles } = useAppNavigation();
 
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -153,4 +153,4 @@ const Landing = () => {
   );
 };
 
-export default Landing;
+export default HomePage;

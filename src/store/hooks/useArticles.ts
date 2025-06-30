@@ -1,11 +1,11 @@
 import { useCallback } from 'react';
 
-import { ArticleFilters, CreateArticleRequest } from '@/types';
+import { ArticleFilters, CreateArticleRequest } from '@/libs/types';
 
 import { useAppDispatch, useAppSelector } from '..';
 import {
   createArticle,
-  fetchArticleById,
+  fetchArticleBySlug,
   fetchArticles,
   resetArticles,
   setFilters,
@@ -20,8 +20,8 @@ export const useArticles = () => {
     [dispatch]
   );
 
-  const handleFetchArticleById = useCallback(
-    (id: string) => dispatch(fetchArticleById(id)),
+  const handleFetchArticleBySlug = useCallback(
+    (id: string) => dispatch(fetchArticleBySlug(id)),
     [dispatch]
   );
 
@@ -43,7 +43,7 @@ export const useArticles = () => {
   return {
     ...articles,
     fetchArticles: handleFetchArticles,
-    fetchArticleById: handleFetchArticleById,
+    fetchArticleBySlug: handleFetchArticleBySlug,
     createArticle: handleCreateArticle,
     resetArticles: handleResetArticles,
     setFilters: handleSetFilters,

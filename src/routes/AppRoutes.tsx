@@ -6,7 +6,12 @@ import { Route, Routes } from 'react-router-dom';
 
 import { Box, CircularProgress } from '@mui/material';
 
-import ROUTES from './routes';
+import { ROUTES } from '.';
+
+const LandingPage = lazy(() => import('@/pages/HomePage'));
+const ArticleDetailPage = lazy(() => import('@/pages/ArticleDetailPage'));
+const ArticlesPage = lazy(() => import('@/pages/ArticlesPage'));
+const WriteArticlePage = lazy(() => import('@/pages/WriteArticlePage'));
 
 interface RouteConfig {
   path: string;
@@ -18,11 +23,6 @@ interface ProtectedRouteConfig extends RouteConfig {
   requireAuth?: boolean;
   roles?: string[];
 }
-
-const LandingPage = lazy(() => import('@/pages/Landing'));
-const ArticleDetailPage = lazy(() => import('@/pages/Articles/ArticleDetail'));
-const ArticlesPage = lazy(() => import('@/pages/Articles'));
-const WriteArticlePage = lazy(() => import('@/pages/Articles/WriteArticle'));
 
 const LoadingFallback: React.FC = () => (
   <Box
@@ -51,7 +51,7 @@ const publicRoutes: RouteConfig[] = [
     component: ArticlesPage,
   },
   {
-    path: `${ROUTES.ARTICLES}/:id`,
+    path: `${ROUTES.ARTICLES}/:slug`,
     component: ArticleDetailPage,
   },
 ];

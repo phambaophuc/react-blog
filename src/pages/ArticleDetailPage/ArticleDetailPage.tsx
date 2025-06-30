@@ -1,30 +1,29 @@
 import { useEffect } from 'react';
 
-import { PostContent, RelatedPosts } from '@/components/blog';
+import { PostContent } from '@/components/blog';
 import { CommentList } from '@/components/comments';
 import { Layout } from '@/components/layout';
+import { formatDate } from '@/libs/utils/dateUtils';
 import { selectCurrentArticle } from '@/store';
-import { formatDate } from '@/utils/dateUtils';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import { Bookmark, Share } from '@mui/icons-material';
 import { Avatar, Box, IconButton, Typography } from '@mui/material';
 
-import { useArticles } from '@/store/hooks';
-import { useComments } from '@/store/hooks/useComments';
+import { useArticles, useComments } from '@/store/hooks';
 
 const ArticleDetailPage = () => {
-  const { id } = useParams<{ id: string }>();
-  const { fetchArticleById } = useArticles();
+  const { slug } = useParams<{ slug: string }>();
+  const { fetchArticleBySlug } = useArticles();
   const { initComments } = useComments();
 
   const currArticle = useSelector(selectCurrentArticle);
 
   useEffect(() => {
-    if (!id) return;
-    fetchArticleById(id);
-  }, [id]);
+    if (!slug) return;
+    fetchArticleBySlug(slug);
+  }, [slug]);
 
   useEffect(() => {
     if (!currArticle) return;
@@ -42,7 +41,7 @@ const ArticleDetailPage = () => {
       {currArticle && (
         <>
           <Box component="article" sx={{ mb: (theme) => theme.spacing(6) }}>
-            <Typography variant="h3" gutterBottom>
+            <Typography variant="h4" gutterBottom>
               {currArticle.title}
             </Typography>
 
@@ -54,17 +53,29 @@ const ArticleDetailPage = () => {
               }}
             >
               <Avatar
-                src={currArticle.user.avatarUrl ?? ''}
+                src={currArticle.author.avatarUrl ?? ''}
                 sx={{ mr: (theme) => theme.spacing(2) }}
               />
               <Box>
                 <Typography variant="subtitle1">
-                  Written by {currArticle.user.displayName}
+                  Written by {currArticle.author.displayName}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   Published on {formatDate(currArticle.createdAt)}
                 </Typography>
               </Box>
+            </Box>
+
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+              {currArticle.tags.map((tag, index) => (
+                <Typography
+                  key={index}
+                  variant="body2"
+                  sx={{ color: 'text.secondary' }}
+                >
+                  #{tag}
+                </Typography>
+              ))}
             </Box>
 
             <PostContent content={currArticle.content} />
@@ -85,7 +96,7 @@ const ArticleDetailPage = () => {
             </Box>
           </Box>
 
-          <RelatedPosts articleId={currArticle.id} />
+          {/* <RelatedPosts articleId={currArticle.id} /> */}
           <CommentList />
         </>
       )}

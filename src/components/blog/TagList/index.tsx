@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
+import { Tag } from '@/libs/types';
 import { useApiServices } from '@/services';
-import { Tag } from '@/types';
 
 import { Box, Chip } from '@mui/material';
 

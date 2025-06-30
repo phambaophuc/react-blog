@@ -1,5 +1,5 @@
+import { Comment, CreateCommentRequest } from '@/libs/types';
 import { useApiServices } from '@/services';
-import { Comment, CreateCommentRequest } from '@/types';
 import { createSlice } from '@reduxjs/toolkit';
 
 import { BaseState } from '../types';

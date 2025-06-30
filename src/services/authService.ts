@@ -1,4 +1,4 @@
-import { AuthResponse, SignInRequest, SignUpRequest, User } from '@/types';
+import { AuthResponse, SignInRequest, SignUpRequest, User } from '@/libs/types';
 
 import { BaseApiClient, BaseService } from './base';
 

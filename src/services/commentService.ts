@@ -1,4 +1,4 @@
-import { Comment, CreateCommentRequest } from '@/types';
+import { Comment, CreateCommentRequest } from '@/libs/types';
 
 import { BaseApiClient, BaseService } from './base';
 

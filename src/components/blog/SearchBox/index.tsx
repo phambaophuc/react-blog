@@ -1,4 +1,4 @@
-import SearchIcon from '@mui/icons-material/Search';
+import { Search } from '@mui/icons-material';
 import { TextField } from '@mui/material';
 
 const SearchBox = () => {
@@ -11,7 +11,7 @@ const SearchBox = () => {
       slotProps={{
         input: {
           startAdornment: (
-            <SearchIcon
+            <Search
               sx={{
                 fontSize: (theme) => theme.typography.pxToRem(20),
                 mr: (theme) => theme.spacing(1),

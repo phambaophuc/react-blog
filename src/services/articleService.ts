@@ -3,12 +3,12 @@ import {
   ArticleFilters,
   ArticleResponse,
   CreateArticleRequest,
-} from '@/types';
+} from '@/libs/types';
 
 import { BaseApiClient, BaseService } from './base';
 
 const DEFAULT_PAGE = 1;
-const DEFAULT_LIMIT = 8;
+const DEFAULT_LIMIT = 5;
 
 export class ArticleService extends BaseService {
   constructor(client: BaseApiClient) {
@@ -19,11 +19,14 @@ export class ArticleService extends BaseService {
     const params = {
       page: query.page ?? DEFAULT_PAGE,
       limit: query.limit ?? DEFAULT_LIMIT,
-      tag: query.tag,
     };
 
     const queryString = this.buildQueryParams(params);
     return this.client.get<ArticleResponse>(`${this.baseUrl}?${queryString}`);
+  }
+
+  async findBySlug(slug: string): Promise<Article> {
+    return this.client.get<Article>(`${this.baseUrl}/slug/${slug}`);
   }
 
   async findAllRelated(id: string): Promise<Article[]> {

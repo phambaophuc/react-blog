@@ -1,5 +1,5 @@
+import { Article, ArticleFilters, CreateArticleRequest } from '@/libs/types';
 import { useApiServices } from '@/services';
-import { Article, ArticleFilters, CreateArticleRequest } from '@/types';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 import { BaseState, PaginatedState } from '../types';
@@ -24,11 +24,11 @@ export const fetchArticles = createAppAsyncThunk(
   }
 );
 
-export const fetchArticleById = createAppAsyncThunk(
-  'articles/fetchArticleById',
-  async (id: string) => {
+export const fetchArticleBySlug = createAppAsyncThunk(
+  'articles/fetchArticleBySlug',
+  async (slug: string) => {
     const { articles } = useApiServices();
-    return await articles.findById(id);
+    return await articles.findBySlug(slug);
   }
 );
 
@@ -125,14 +125,14 @@ const articleSlice = createSlice({
       })
       .addCase(fetchArticles.rejected, setRejected);
 
-    // Fetch article by ID
+    // Fetch article by Slug
     builder
-      .addCase(fetchArticleById.pending, setPending)
-      .addCase(fetchArticleById.fulfilled, (state, action) => {
+      .addCase(fetchArticleBySlug.pending, setPending)
+      .addCase(fetchArticleBySlug.fulfilled, (state, action) => {
         setFulfilled(state);
         state.currentArticle = action.payload;
       })
-      .addCase(fetchArticleById.rejected, setRejected);
+      .addCase(fetchArticleBySlug.rejected, setRejected);
 
     // Create article
     builder

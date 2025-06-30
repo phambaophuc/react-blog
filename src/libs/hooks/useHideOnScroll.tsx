@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-const useHideOnScroll = () => {
+export const useHideOnScroll = () => {
   const ref = useRef<HTMLDivElement | null>(null);
   const prevScrollY = useRef<number>(0);
 
@@ -22,5 +22,3 @@ const useHideOnScroll = () => {
 
   return ref;
 };
-
-export default useHideOnScroll;
