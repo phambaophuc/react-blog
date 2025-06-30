@@ -3,28 +3,27 @@ import { useEffect } from 'react';
 import { PostContent } from '@/components/blog';
 import { CommentList } from '@/components/comments';
 import { Layout } from '@/components/layout';
+import { formatDate } from '@/libs/utils/dateUtils';
 import { selectCurrentArticle } from '@/store';
-import { formatDate } from '@/utils/dateUtils';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import { Bookmark, Share } from '@mui/icons-material';
 import { Avatar, Box, IconButton, Typography } from '@mui/material';
 
-import { useArticles } from '@/store/hooks';
-import { useComments } from '@/store/hooks/useComments';
+import { useArticles, useComments } from '@/store/hooks';
 
 const ArticleDetailPage = () => {
-  const { id } = useParams<{ id: string }>();
-  const { fetchArticleById } = useArticles();
+  const { slug } = useParams<{ slug: string }>();
+  const { fetchArticleBySlug } = useArticles();
   const { initComments } = useComments();
 
   const currArticle = useSelector(selectCurrentArticle);
 
   useEffect(() => {
-    if (!id) return;
-    fetchArticleById(id);
-  }, [id]);
+    if (!slug) return;
+    fetchArticleBySlug(slug);
+  }, [slug]);
 
   useEffect(() => {
     if (!currArticle) return;
@@ -65,6 +64,18 @@ const ArticleDetailPage = () => {
                   Published on {formatDate(currArticle.createdAt)}
                 </Typography>
               </Box>
+            </Box>
+
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+              {currArticle.tags.map((tag, index) => (
+                <Typography
+                  key={index}
+                  variant="body2"
+                  sx={{ color: 'text.secondary' }}
+                >
+                  #{tag}
+                </Typography>
+              ))}
             </Box>
 
             <PostContent content={currArticle.content} />

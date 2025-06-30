@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { User } from '@/types';
+import { User } from '@/libs/types';
 
 import { Box, SxProps, Theme } from '@mui/material';
 

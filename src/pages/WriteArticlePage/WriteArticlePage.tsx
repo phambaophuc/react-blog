@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { RichTextEditor } from '@/components/editor';
-import { useAppNavigation } from '@/routes/navigation';
+import { useAppNavigation } from '@/libs/hooks';
+import { CreateArticleRequest } from '@/libs/types';
 import { useApiServices } from '@/services';
-import { CreateArticleRequest } from '@/types';
 
 import {
   Check,
@@ -34,7 +34,7 @@ import {
   SuccessMessage,
   TitleInput,
   WriteContainer,
-} from './index.styled';
+} from './WriteArticlePage.styled';
 
 const WriteArticlePage = () => {
   const { goToArticles } = useAppNavigation();

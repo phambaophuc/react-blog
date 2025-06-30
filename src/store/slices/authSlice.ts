@@ -1,5 +1,5 @@
+import { SignInRequest, SignUpRequest, User } from '@/libs/types';
 import { useApiServices } from '@/services';
-import { SignInRequest, SignUpRequest, User } from '@/types';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 import { BaseState } from '../types';

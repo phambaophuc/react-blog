@@ -1,14 +1,24 @@
 import React from 'react';
 
-import { useAppNavigation } from '@/routes/navigation';
-import { Article } from '@/types';
-import { formatDate } from '@/utils/dateUtils';
+import { useAppNavigation } from '@/libs/hooks';
+import { Article } from '@/libs/types';
+import { formatDate } from '@/libs/utils';
 
-import { Bookmark as BookmarkIcon } from '@mui/icons-material';
-import { Avatar, Box, CardMedia, IconButton, Typography } from '@mui/material';
-import Grid from '@mui/material/Grid2';
+import {
+  Bookmark,
+  ModeCommentRounded,
+  VisibilityOutlined,
+} from '@mui/icons-material';
+import {
+  Avatar,
+  Box,
+  CardMedia,
+  Grid2,
+  IconButton,
+  Typography,
+} from '@mui/material';
 
-import { StyledCard, StyledExcerpt, StyledTitle } from './index.styled';
+import { StyledExcerpt, StyledTitle } from './index.styled';
 
 interface Props {
   article: Article;
@@ -18,7 +28,7 @@ const PostCard: React.FC<Props> = ({ article }) => {
   const { goToArticleDetail } = useAppNavigation();
 
   return (
-    <StyledCard>
+    <Box>
       <Box
         sx={{
           display: 'flex',
@@ -43,10 +53,10 @@ const PostCard: React.FC<Props> = ({ article }) => {
         </Typography>
       </Box>
 
-      <Grid container spacing={3}>
-        <Grid size={{ xs: 12, md: 8 }}>
+      <Grid2 container spacing={3}>
+        <Grid2 size={{ xs: 12, md: article.coverImageUrl ? 8 : 12 }}>
           <Box sx={{ mb: (theme) => theme.spacing(2) }}>
-            <StyledTitle onClick={() => goToArticleDetail(article.id)}>
+            <StyledTitle onClick={() => goToArticleDetail(article.slug)}>
               {article.title}
             </StyledTitle>
             <StyledExcerpt>{article.excerpt}</StyledExcerpt>
@@ -67,49 +77,60 @@ const PostCard: React.FC<Props> = ({ article }) => {
                 gap: (theme) => theme.spacing(1),
               }}
             >
-              {/* <Chip
-                label={article.tag.name}
-                sx={{
-                  backgroundColor: (theme) => theme.palette.grey[200],
-                  color: 'text.primary',
-                  borderRadius: (theme) => theme.shape.borderRadius,
-                  height: (theme) => theme.spacing(3),
-                }}
-              /> */}
-              <Typography variant="caption" sx={{ color: '#757575' }}>
-                {new Intl.NumberFormat('en', { notation: 'compact' }).format(
-                  article.viewsCount
-                )}{' '}
-                views
-              </Typography>
+              <Box>
+                <IconButton size="small">
+                  <VisibilityOutlined
+                    sx={{ fontSize: (theme) => theme.typography.pxToRem(16) }}
+                  />
+                </IconButton>
+                <Typography variant="caption" sx={{ color: '#757575' }}>
+                  {new Intl.NumberFormat('en', { notation: 'compact' }).format(
+                    article.viewsCount
+                  )}{' '}
+                  views
+                </Typography>
+              </Box>
+
+              <Box>
+                <IconButton size="small">
+                  <ModeCommentRounded
+                    sx={{ fontSize: (theme) => theme.typography.pxToRem(16) }}
+                  />
+                </IconButton>
+                <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                  {article.comments ? article.comments.length : 0}
+                </Typography>
+              </Box>
             </Box>
             <Box>
               <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                 {article.readingTime} min read
               </Typography>
               <IconButton size="small">
-                <BookmarkIcon
+                <Bookmark
                   sx={{ fontSize: (theme) => theme.typography.pxToRem(16) }}
                 />
               </IconButton>
             </Box>
           </Box>
-        </Grid>
+        </Grid2>
 
-        <Grid size={{ xs: 12, md: 4 }}>
-          <CardMedia
-            component="img"
-            height={120}
-            image={article.coverImageUrl ?? ''}
-            alt={article.title}
-            sx={{
-              objectFit: 'cover',
-              borderRadius: (theme) => theme.shape.borderRadius,
-            }}
-          />
-        </Grid>
-      </Grid>
-    </StyledCard>
+        {article.coverImageUrl && (
+          <Grid2 size={{ xs: 12, md: 4 }}>
+            <CardMedia
+              component="img"
+              height={120}
+              image={article.coverImageUrl ?? ''}
+              alt={article.title}
+              sx={{
+                objectFit: 'cover',
+                borderRadius: (theme) => theme.shape.borderRadius,
+              }}
+            />
+          </Grid2>
+        )}
+      </Grid2>
+    </Box>
   );
 };
 

@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { SignInRequest, SignUpRequest } from '@/types';
+import { SignInRequest, SignUpRequest } from '@/libs/types';
 
 import { useAppDispatch, useAppSelector } from '..';
 import {

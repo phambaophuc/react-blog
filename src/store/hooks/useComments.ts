@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { Comment, CreateCommentRequest } from '@/types';
+import { Comment, CreateCommentRequest } from '@/libs/types';
 
 import { useAppDispatch, useAppSelector } from '..';
 import {

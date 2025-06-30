@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
+import { Comment } from '@/libs/types';
+import { timeAgo } from '@/libs/utils';
 import { selectCurrentArticle, selectCurrentUser } from '@/store';
-import { Comment } from '@/types';
-import { timeAgo } from '@/utils/dateUtils';
 import { useSelector } from 'react-redux';
 
 import {
@@ -21,7 +21,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { useComments } from '@/store/hooks/useComments';
+import { useComments } from '@/store/hooks';
 
 import CommentInput from '../CommentInput';
 

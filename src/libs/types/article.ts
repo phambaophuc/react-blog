@@ -4,13 +4,14 @@ import { User } from './user';
 
 export interface Article extends BaseEntity {
   title: string;
+  slug: string;
   excerpt: string;
   content: string;
   coverImageUrl: string | null;
   viewsCount: number;
   readingTime: number;
   author: Pick<User, 'id' | 'displayName' | 'avatarUrl'>;
-  // tag: Tag;
+  tags: string[];
   comments: Comment[];
 }
 

@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
-import { useAppNavigation } from '@/routes/navigation';
+import { useAppNavigation } from '@/libs/hooks';
+import { Article } from '@/libs/types';
+import { formatDate } from '@/libs/utils';
 import { useApiServices } from '@/services';
-import { Article } from '@/types';
-import { formatDate } from '@/utils/dateUtils';
 
 import { AccessTime } from '@mui/icons-material';
-import { Box, CardContent, CardMedia, Typography } from '@mui/material';
-import Grid from '@mui/material/Grid2';
+import { Box, CardContent, CardMedia, Grid2, Typography } from '@mui/material';
 
 import { StyledCard } from './index.styled';
 
@@ -40,9 +39,9 @@ const RelatedPosts: React.FC<Props> = ({ articleId }) => {
       <Typography variant="h4" sx={{ mb: (theme) => theme.spacing(4) }}>
         Related Articles
       </Typography>
-      <Grid container spacing={4} sx={{ mb: (theme) => theme.spacing(6) }}>
+      <Grid2 container spacing={4} sx={{ mb: (theme) => theme.spacing(6) }}>
         {relatedArticles.map((article) => (
-          <Grid
+          <Grid2
             component="div"
             size={{ xs: 12, sm: 12, md: 6 }}
             sx={{ cursor: 'pointer' }}
@@ -112,9 +111,9 @@ const RelatedPosts: React.FC<Props> = ({ articleId }) => {
                 </Box>
               </CardContent>
             </StyledCard>
-          </Grid>
+          </Grid2>
         ))}
-      </Grid>
+      </Grid2>
     </Box>
   );
 };

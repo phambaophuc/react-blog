@@ -28,15 +28,7 @@ const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({
           minHeight: '100vh',
         }}
       >
-        <Container
-          {...rest}
-          sx={{
-            flex: 1,
-            my: (theme) => theme.spacing(16),
-          }}
-        >
-          {children}
-        </Container>
+        <Container {...rest}>{children}</Container>
 
         {footer && <Footer />}
       </Box>

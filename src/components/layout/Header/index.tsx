@@ -1,14 +1,13 @@
 import { useState } from 'react';
 
-import UserAvatar from '@/components/ui/UserAvatar';
-import useHideOnScroll from '@/hooks/useHideOnScroll';
-import { useAppNavigation } from '@/routes/navigation';
+import UserAvatar from '@/components/ui';
+import { useAppNavigation, useHideOnScroll } from '@/libs/hooks';
 
 import {
-  Close as CloseIcon,
-  NotificationsOutlined as NotificationsIcon,
-  Search as SearchIcon,
-  EditNote as WriteIcon,
+  Close,
+  EditNote,
+  NotificationsOutlined,
+  Search,
 } from '@mui/icons-material';
 import {
   AppBar,
@@ -94,7 +93,7 @@ const Header = () => {
               },
             }}
           >
-            <SearchIcon
+            <Search
               sx={{
                 color: '#6b6b6b',
                 fontSize: 20,
@@ -135,7 +134,7 @@ const Header = () => {
                   },
                 }}
               >
-                <SearchIcon />
+                <Search />
               </IconButton>
             ) : (
               <ClickAwayListener onClickAway={handleSearchClose}>
@@ -162,14 +161,14 @@ const Header = () => {
                         py: 1,
                       }}
                     >
-                      <SearchIcon sx={{ color: '#6b6b6b', mr: 1 }} />
+                      <Search sx={{ color: '#6b6b6b', mr: 1 }} />
                       <InputBase
                         placeholder="Search stories..."
                         autoFocus
                         sx={{ flex: 1 }}
                       />
                       <IconButton onClick={handleSearchClose} size="small">
-                        <CloseIcon />
+                        <Close />
                       </IconButton>
                     </Box>
                   </Box>
@@ -197,7 +196,7 @@ const Header = () => {
             }}
             onClick={goToWriteArticle}
           >
-            <WriteIcon sx={{ fontSize: 20 }} />
+            <EditNote sx={{ fontSize: 20 }} />
             <Typography
               variant="body2"
               sx={{
@@ -230,7 +229,7 @@ const Header = () => {
                 },
               }}
             >
-              <NotificationsIcon sx={{ fontSize: 20 }} />
+              <NotificationsOutlined sx={{ fontSize: 20 }} />
             </Badge>
           </IconButton>
 

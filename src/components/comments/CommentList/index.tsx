@@ -1,6 +1,9 @@
-import { selectCommentList, selectCurrentUser } from '@/store';
+import {
+  selectCommentList,
+  selectCurrentArticle,
+  selectCurrentUser,
+} from '@/store';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
 
 import { Box, Button, Typography } from '@mui/material';
 
@@ -10,17 +13,19 @@ import CommentInput from '../CommentInput';
 import CommentItem from '../CommentItem';
 
 const CommentList = () => {
-  const { id } = useParams<{ id: string }>();
   const { createComment } = useComments();
 
   const user = useSelector(selectCurrentUser);
+  const article = useSelector(selectCurrentArticle);
   const comments = useSelector(selectCommentList);
 
   const handleArticleComment = async (content: string) => {
-    createComment({
-      content,
-      articleId: id ?? '',
-    });
+    if (article) {
+      createComment({
+        content,
+        articleId: article.id,
+      });
+    }
   };
 
   const totalResponses = comments.reduce((total, comment) => {
@@ -61,7 +66,7 @@ const CommentList = () => {
       </Box>
 
       {/* Load More Button */}
-      {comments.length > 0 && (
+      {comments.length > 4 && (
         <Box sx={{ textAlign: 'center', mt: 4 }}>
           <Button
             sx={{

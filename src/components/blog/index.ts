@@ -4,3 +4,4 @@ export { default as RecentPosts } from './RecentPosts';
 export { default as RelatedPosts } from './RelatedPosts';
 export { default as SearchBox } from './SearchBox';
 export { default as TagList } from './TagList';
+export { default as TrendingTags } from './TrendingTags';

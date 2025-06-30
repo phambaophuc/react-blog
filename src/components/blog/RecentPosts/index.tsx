@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
-import { useAppNavigation } from '@/routes/navigation';
+import { useAppNavigation } from '@/libs/hooks';
+import { Article } from '@/libs/types';
+import { formatDate } from '@/libs/utils';
 import { useApiServices } from '@/services';
-import { Article } from '@/types';
-import { formatDate } from '@/utils/dateUtils';
 
 import { Box, Typography } from '@mui/material';
 
@@ -15,7 +15,7 @@ const RecentPosts: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data } = await articleService.findAll({ limit: 3 });
+      const { data } = await articleService.findAll({ limit: 2 });
       setArticles(data);
     };
 
@@ -24,16 +24,6 @@ const RecentPosts: React.FC = () => {
 
   return (
     <Box>
-      <Typography
-        variant="h6"
-        sx={{
-          fontFamily: (theme) => theme.typography.fontFamily,
-          mb: (theme) => theme.spacing(2),
-        }}
-      >
-        Recent Stories
-      </Typography>
-
       {articles &&
         articles.map((article) => (
           <Box key={article.id} sx={{ mb: (theme) => theme.spacing(3) }}>
@@ -41,7 +31,6 @@ const RecentPosts: React.FC = () => {
               variant="subtitle1"
               sx={{
                 fontWeight: (theme) => theme.typography.fontWeightBold,
-                mb: (theme) => theme.spacing(1),
                 display: '-webkit-box',
                 WebkitLineClamp: 2,
                 WebkitBoxOrient: 'vertical',

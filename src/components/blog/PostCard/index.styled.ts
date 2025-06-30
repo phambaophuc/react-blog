@@ -1,10 +1,4 @@
-import { Box, Typography, styled } from '@mui/material';
-
-export const StyledCard = styled(Box)(({ theme }) => ({
-  borderBottom: `1px solid ${theme.palette.divider}`,
-  padding: theme.spacing(3, 0),
-  marginBottom: theme.spacing(2),
-}));
+import { Typography, styled } from '@mui/material';
 
 export const StyledTitle = styled(Typography)(({ theme }) => ({
   fontFamily: theme.typography.fontFamily,
