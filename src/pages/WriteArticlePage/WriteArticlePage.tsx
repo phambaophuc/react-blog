@@ -6,6 +6,7 @@ import { CreateArticleRequest } from '@/libs/types';
 import { useApiServices } from '@/services';
 
 import {
+  ArrowUpward,
   Check,
   CheckCircle,
   Close,
@@ -25,8 +26,6 @@ import {
   FloatingButton,
   HeaderBar,
   HeaderContent,
-  LoadingContent,
-  LoadingOverlay,
   LogoSection,
   PublishButton,
   SecondaryButton,
@@ -258,6 +257,13 @@ const WriteArticlePage = () => {
 
   const autoSaveContent = getAutoSaveContent();
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
+
   return (
     <WriteContainer>
       {/* Header */}
@@ -363,27 +369,12 @@ const WriteArticlePage = () => {
 
         <FloatingButton
           className="primary"
-          onClick={handlePublish}
-          disabled={isPublishing}
-          title="Publish"
+          onClick={scrollToTop}
+          title="Scroll to top"
         >
-          {isPublishing ? (
-            <CircularProgress size={20} color="inherit" />
-          ) : (
-            <Publish />
-          )}
+          <ArrowUpward />
         </FloatingButton>
       </FloatingActions>
-
-      {/* Loading Overlay */}
-      {isPublishing && (
-        <LoadingOverlay>
-          <LoadingContent>
-            <CircularProgress size={32} sx={{ color: '#1a8917' }} />
-            <span className="loading-text">Publishing your story...</span>
-          </LoadingContent>
-        </LoadingOverlay>
-      )}
     </WriteContainer>
   );
 };

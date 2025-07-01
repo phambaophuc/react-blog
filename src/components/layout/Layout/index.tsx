@@ -1,5 +1,7 @@
 import React, { PropsWithChildren } from 'react';
 
+import { ScrollToTopButton } from '@/components/ui';
+
 import { Box, Container, ContainerProps, CssBaseline } from '@mui/material';
 
 import Footer from '../Footer';
@@ -28,7 +30,10 @@ const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({
           minHeight: '100vh',
         }}
       >
-        <Container {...rest}>{children}</Container>
+        <Container {...rest}>
+          {children}
+          <ScrollToTopButton />
+        </Container>
 
         {footer && <Footer />}
       </Box>

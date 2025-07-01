@@ -5,7 +5,7 @@ import { Layout } from '@/components/layout';
 import { selectArticles } from '@/store';
 import { useSelector } from 'react-redux';
 
-import { AccessTime, ArrowUpward, BookmarkBorder } from '@mui/icons-material';
+import { AccessTime, BookmarkBorder } from '@mui/icons-material';
 import {
   Box,
   CircularProgress,
@@ -21,7 +21,6 @@ import { useArticles } from '@/store/hooks';
 import {
   EmptyStateWrapper,
   LoadingWrapper,
-  ScrollTopButton,
   SidebarTitle,
   StyledDivider,
 } from './ArticlesPage.styled';
@@ -30,15 +29,10 @@ const ArticlesPage = () => {
   const { articles, loading, hasMore } = useSelector(selectArticles);
 
   const [page, setPage] = useState(1);
-  const [showScrollTop, setShowScrollTop] = useState(false);
 
   const { resetArticles, fetchArticles } = useArticles();
 
   const handleScroll = useCallback(() => {
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-    setShowScrollTop(scrollTop > 400);
-
     if (loading || !hasMore) return;
 
     const scrollPosition =
@@ -63,13 +57,6 @@ const ArticlesPage = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-  };
 
   const ArticlesSkeleton = () => (
     <Box>
@@ -155,12 +142,6 @@ const ArticlesPage = () => {
           </Box>
         </Grid2>
       </Grid2>
-
-      <Fade in={showScrollTop}>
-        <ScrollTopButton onClick={scrollToTop}>
-          <ArrowUpward />
-        </ScrollTopButton>
-      </Fade>
     </Layout>
   );
 };

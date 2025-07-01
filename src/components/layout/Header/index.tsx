@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import UserAvatar from '@/components/ui';
+import { UserAvatar } from '@/components/ui';
 import { useAppNavigation, useHideOnScroll } from '@/libs/hooks';
 
 import {

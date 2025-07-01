@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { PostContent } from '@/components/blog';
 import { CommentList } from '@/components/comments';
 import { Layout } from '@/components/layout';
+import { useScrollToTopOnMount } from '@/libs/hooks';
 import { formatDate } from '@/libs/utils/dateUtils';
 import { selectCurrentArticle } from '@/store';
 import { useSelector } from 'react-redux';
@@ -14,6 +15,8 @@ import { Avatar, Box, IconButton, Typography } from '@mui/material';
 import { useArticles, useComments } from '@/store/hooks';
 
 const ArticleDetailPage = () => {
+  useScrollToTopOnMount();
+
   const { slug } = useParams<{ slug: string }>();
   const { fetchArticleBySlug } = useArticles();
   const { initComments } = useComments();
