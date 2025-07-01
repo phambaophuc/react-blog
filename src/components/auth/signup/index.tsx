@@ -3,16 +3,11 @@ import React, { useState } from 'react';
 import { useApiServices } from '@/services';
 
 import { Close, Email, Lock, Person } from '@mui/icons-material';
-import {
-  Alert,
-  Box,
-  IconButton,
-  InputAdornment,
-  Link,
-  Typography,
-} from '@mui/material';
+import { Box, IconButton, InputAdornment, Typography } from '@mui/material';
 
 import {
+  ErrorAlert,
+  SignUpLink,
   StyledButton,
   StyledDialog,
   StyledDialogContent,
@@ -93,20 +88,7 @@ export const SignUpModal: React.FC<Props> = ({
             Start your journey of sharing and discovering amazing stories
           </Typography>
 
-          {error && (
-            <Alert
-              severity="error"
-              sx={{
-                mb: 3,
-                borderRadius: 2,
-                '& .MuiAlert-icon': {
-                  color: 'error.main',
-                },
-              }}
-            >
-              {error}
-            </Alert>
-          )}
+          {error && <ErrorAlert severity="error">{error}</ErrorAlert>}
 
           <Box component="form" onSubmit={handleSubmit}>
             <StyledTextField
@@ -179,19 +161,7 @@ export const SignUpModal: React.FC<Props> = ({
 
           <Typography variant="body2" color="text.secondary">
             Already have an account?{' '}
-            <Link
-              component="button"
-              onClick={handleSignInClick}
-              sx={{
-                color: 'primary.main',
-                fontWeight: 600,
-                '&:hover': {
-                  textDecoration: 'underline',
-                },
-              }}
-            >
-              Sign in here
-            </Link>
+            <SignUpLink onClick={handleSignInClick}>Sign in here</SignUpLink>
           </Typography>
         </Box>
       </StyledDialogContent>

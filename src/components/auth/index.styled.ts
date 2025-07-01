@@ -1,8 +1,10 @@
 import {
+  Alert,
   Button,
   Dialog,
   DialogContent,
   DialogTitle,
+  Link,
   TextField,
   keyframes,
   styled,
@@ -106,5 +108,25 @@ export const StyledButton = styled(Button)(({ theme }) => ({
   '&.Mui-disabled': {
     backgroundColor: theme.palette.grey[400],
     color: 'white',
+  },
+}));
+
+export const ErrorAlert = styled(Alert)(({ theme }) => ({
+  marginBottom: theme.spacing(3),
+  borderRadius: theme.spacing(1),
+  '& .MuiAlert-icon': {
+    color: theme.palette.error.main,
+  },
+}));
+
+export const SignUpLink = styled(Link, {
+  shouldForwardProp: (prop) => prop !== 'component',
+})(({ theme }) => ({
+  cursor: 'pointer',
+  color: theme.palette.primary.main,
+  textDecoration: 'none',
+  fontWeight: 600,
+  '&:hover': {
+    textDecoration: 'underline',
   },
 }));

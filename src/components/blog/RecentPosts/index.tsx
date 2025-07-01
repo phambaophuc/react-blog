@@ -7,6 +7,8 @@ import { useApiServices } from '@/services';
 
 import { Box, Typography } from '@mui/material';
 
+import { StyledTitle } from './index.styled';
+
 const RecentPosts: React.FC = () => {
   const { goToArticleDetail } = useAppNavigation();
   const { articles: articleService } = useApiServices();
@@ -27,24 +29,12 @@ const RecentPosts: React.FC = () => {
       {articles &&
         articles.map((article) => (
           <Box key={article.id} sx={{ mb: (theme) => theme.spacing(3) }}>
-            <Typography
+            <StyledTitle
               variant="subtitle1"
-              sx={{
-                fontWeight: (theme) => theme.typography.fontWeightBold,
-                display: '-webkit-box',
-                WebkitLineClamp: 2,
-                WebkitBoxOrient: 'vertical',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                cursor: 'pointer',
-                '&:hover': {
-                  textDecoration: 'underline',
-                },
-              }}
-              onClick={() => goToArticleDetail(article.id)}
+              onClick={() => goToArticleDetail(article.slug)}
             >
               {article.title}
-            </Typography>
+            </StyledTitle>
             <Typography variant="caption" sx={{ color: 'text.secondary' }}>
               {article.author.displayName} · {formatDate(article.createdAt)}
             </Typography>

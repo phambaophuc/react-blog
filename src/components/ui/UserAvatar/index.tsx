@@ -14,25 +14,24 @@ import {
   Settings,
   TrendingUp,
 } from '@mui/icons-material';
-import {
-  Avatar,
-  Box,
-  Divider,
-  IconButton,
-  ListItemIcon,
-  Menu,
-  MenuItem,
-  Tooltip,
-  Typography,
-} from '@mui/material';
+import { Divider, Menu, Tooltip } from '@mui/material';
 
 import { useAuth } from '@/store/hooks';
 
 import {
+  AvatarWrapper,
   GetStartedButton,
+  GuestButtons,
+  MenuHeader,
+  ProfileIconButton,
   SignInButton,
+  StyledListIcon,
   StyledListItemText,
+  StyledMenuItem,
   StyledMenuPaper,
+  UserEmail,
+  UserName,
+  Wrapper,
 } from './index.styled';
 
 const UserAvatar: React.FC = () => {
@@ -122,127 +121,63 @@ const UserAvatar: React.FC = () => {
         component: StyledMenuPaper,
       }}
     >
-      {/* User Info Header */}
       {user && (
-        <Box sx={{ px: 2, py: 1.5, borderBottom: '1px solid #f0f0f0' }}>
-          <Typography
-            variant="subtitle2"
-            sx={{ fontWeight: 500, color: '#242424' }}
-          >
-            {user.displayName}
-          </Typography>
-          <Typography variant="caption" sx={{ color: '#6b6b6b' }}>
-            {user.email}
-          </Typography>
-        </Box>
+        <MenuHeader>
+          <UserName variant="subtitle2">{user.displayName}</UserName>
+          <UserEmail variant="caption">{user.email}</UserEmail>
+        </MenuHeader>
       )}
 
-      {/* Main Menu Items */}
       {menuItems.map((item, index) => (
-        <MenuItem
-          key={index}
-          onClick={item.action}
-          sx={{
-            py: 1,
-            px: 2,
-            '&:hover': {
-              backgroundColor: 'rgba(0,0,0,0.04)',
-            },
-          }}
-        >
-          <ListItemIcon sx={{ minWidth: 36, color: '#6b6b6b' }}>
-            {item.icon}
-          </ListItemIcon>
+        <StyledMenuItem key={index} onClick={item.action}>
+          <StyledListIcon>{item.icon}</StyledListIcon>
           <StyledListItemText primary={item.text} />
-        </MenuItem>
+        </StyledMenuItem>
       ))}
 
       <Divider sx={{ my: 0.5 }} />
 
-      {/* Settings Items */}
       {settingsItems.map((item, index) => (
-        <MenuItem
-          key={index}
-          onClick={item.action}
-          sx={{
-            py: 1,
-            px: 2,
-            '&:hover': {
-              backgroundColor: 'rgba(0,0,0,0.04)',
-            },
-          }}
-        >
-          <ListItemIcon sx={{ minWidth: 36, color: '#6b6b6b' }}>
-            {item.icon}
-          </ListItemIcon>
+        <StyledMenuItem key={index} onClick={item.action}>
+          <StyledListIcon>{item.icon}</StyledListIcon>
           <StyledListItemText primary={item.text} />
-        </MenuItem>
+        </StyledMenuItem>
       ))}
 
       <Divider sx={{ my: 0.5 }} />
 
-      {/* Sign Out */}
-      <MenuItem
-        onClick={handleLogout}
-        sx={{
-          py: 1,
-          px: 2,
-          '&:hover': {
-            backgroundColor: 'rgba(0,0,0,0.04)',
-          },
-        }}
-      >
-        <ListItemIcon sx={{ minWidth: 36, color: '#6b6b6b' }}>
+      <StyledMenuItem onClick={handleLogout}>
+        <StyledListIcon>
           <Logout />
-        </ListItemIcon>
+        </StyledListIcon>
         <StyledListItemText primary="Sign out" />
-      </MenuItem>
+      </StyledMenuItem>
     </Menu>
   );
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-      }}
-    >
+    <Wrapper>
       {user ? (
         <Tooltip title="Account settings">
-          <IconButton
+          <ProfileIconButton
             onClick={handleProfileMenuOpen}
             size="small"
             aria-label="account settings"
-            sx={{
-              ml: 1,
-              '&:hover': {
-                backgroundColor: 'rgba(0,0,0,0.04)',
-              },
-            }}
           >
-            <Avatar
-              alt={user.displayName}
-              src={user.avatarUrl ?? ''}
-              sx={{
-                width: 32,
-                height: 32,
-                border: '1px solid rgba(0,0,0,0.1)',
-                fontSize: '14px',
-              }}
-            >
+            <AvatarWrapper alt={user.displayName} src={user.avatarUrl ?? ''}>
               <AccountCircle />
-            </Avatar>
-          </IconButton>
+            </AvatarWrapper>
+          </ProfileIconButton>
         </Tooltip>
       ) : (
-        <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+        <GuestButtons>
           <SignInButton variant="text" onClick={openSignIn}>
             Sign in
           </SignInButton>
           <GetStartedButton variant="contained" onClick={openSignUp}>
             Get started
           </GetStartedButton>
-        </Box>
+        </GuestButtons>
       )}
 
       <SignInModal
@@ -257,7 +192,7 @@ const UserAvatar: React.FC = () => {
       />
 
       {renderProfileMenu}
-    </Box>
+    </Wrapper>
   );
 };
 

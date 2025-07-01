@@ -1,7 +1,13 @@
 import {
+  Avatar,
+  Box,
   Button,
+  IconButton,
+  ListItemIcon,
   ListItemText,
+  MenuItem,
   Paper,
+  Typography,
   listItemTextClasses,
   styled,
 } from '@mui/material';
@@ -64,3 +70,57 @@ export const SignInButton = styled(Button)(({ theme }) => ({
     color: '#242424',
   },
 }));
+
+export const MenuHeader = styled(Box)(({ theme }) => ({
+  padding: theme.spacing(1.5, 2),
+  borderBottom: '1px solid #f0f0f0',
+}));
+
+export const UserName = styled(Typography)({
+  fontWeight: 500,
+  color: '#242424',
+});
+
+export const UserEmail = styled(Typography)({
+  color: '#6b6b6b',
+});
+
+export const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
+  paddingTop: theme.spacing(1),
+  paddingBottom: theme.spacing(1),
+  paddingLeft: theme.spacing(2),
+  paddingRight: theme.spacing(2),
+  '&:hover': {
+    backgroundColor: 'rgba(0,0,0,0.04)',
+  },
+}));
+
+export const StyledListIcon = styled(ListItemIcon)({
+  minWidth: 36,
+  color: '#6b6b6b',
+});
+
+export const Wrapper = styled(Box)({
+  display: 'flex',
+  alignItems: 'center',
+});
+
+export const ProfileIconButton = styled(IconButton)({
+  marginLeft: 8,
+  '&:hover': {
+    backgroundColor: 'rgba(0,0,0,0.04)',
+  },
+});
+
+export const AvatarWrapper = styled(Avatar)({
+  width: 32,
+  height: 32,
+  border: '1px solid rgba(0,0,0,0.1)',
+  fontSize: '14px',
+});
+
+export const GuestButtons = styled(Box)({
+  display: 'flex',
+  gap: 8,
+  alignItems: 'center',
+});

@@ -5,12 +5,20 @@ import {
 } from '@/store';
 import { useSelector } from 'react-redux';
 
-import { Box, Button, Typography } from '@mui/material';
-
 import { useComments } from '@/store/hooks/useComments';
 
 import CommentInput from '../CommentInput';
 import CommentItem from '../CommentItem';
+import {
+  CommentsWrapper,
+  ContainerWrapper,
+  EmptyMessage,
+  EmptyState,
+  HeaderTitle,
+  HeaderWrapper,
+  LoadMoreButton,
+  LoadMoreWrapper,
+} from './index.styled';
 
 const CommentList = () => {
   const { createComment } = useComments();
@@ -33,21 +41,10 @@ const CommentList = () => {
   }, 0);
 
   return (
-    <Box sx={{ maxWidth: '680px', px: 3, py: 4 }}>
-      {/* Header */}
-      <Box sx={{ mb: 4 }}>
-        <Typography
-          variant="h4"
-          sx={{
-            fontSize: '24px',
-            fontWeight: 700,
-            color: '#1a1a1a',
-            mb: 1,
-          }}
-        >
-          Responses ({totalResponses})
-        </Typography>
-      </Box>
+    <ContainerWrapper>
+      <HeaderWrapper>
+        <HeaderTitle variant="h4">Responses ({totalResponses})</HeaderTitle>
+      </HeaderWrapper>
 
       {/* Comment Input */}
       {user && (
@@ -59,48 +56,26 @@ const CommentList = () => {
       )}
 
       {/* Comments List */}
-      <Box>
+      <CommentsWrapper>
         {comments.map((comment) => (
           <CommentItem key={comment.id} comment={comment} />
         ))}
-      </Box>
+      </CommentsWrapper>
 
       {/* Load More Button */}
       {comments.length > 4 && (
-        <Box sx={{ textAlign: 'center', mt: 4 }}>
-          <Button
-            sx={{
-              color: '#1a8917',
-              fontSize: '14px',
-              fontWeight: 500,
-              textTransform: 'none',
-              '&:hover': {
-                backgroundColor: 'transparent',
-                color: '#156b13',
-              },
-            }}
-          >
-            Show more responses
-          </Button>
-        </Box>
+        <LoadMoreWrapper>
+          <LoadMoreButton>Show more responses</LoadMoreButton>
+        </LoadMoreWrapper>
       )}
 
       {/* Empty state */}
       {comments.length === 0 && (
-        <Box sx={{ textAlign: 'center', py: 6 }}>
-          <Typography
-            variant="body1"
-            sx={{
-              color: '#757575',
-              fontFamily: 'Georgia, serif',
-              fontSize: '16px',
-            }}
-          >
-            Be the first to respond.
-          </Typography>
-        </Box>
+        <EmptyState>
+          <EmptyMessage>Be the first to respond.</EmptyMessage>
+        </EmptyState>
       )}
-    </Box>
+    </ContainerWrapper>
   );
 };
 

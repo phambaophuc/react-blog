@@ -11,27 +11,25 @@ import {
   VisibilityOff,
 } from '@mui/icons-material';
 import {
-  Alert,
   Box,
-  Divider,
   Fade,
   IconButton,
   InputAdornment,
-  Link,
   Typography,
-  useMediaQuery,
-  useTheme,
 } from '@mui/material';
 
 import { useAuth } from '@/store/hooks';
 
 import {
+  ErrorAlert,
+  SignUpLink,
   StyledButton,
   StyledDialog,
   StyledDialogContent,
   StyledDialogTitle,
   StyledTextField,
 } from '../index.styled';
+import { ForgotPasswordLink, StyledDivider, Subtitle } from './index.styled';
 
 interface Props {
   open: boolean;
@@ -45,9 +43,6 @@ const SignInModal: React.FC<Props> = ({ open, onClose, switchToSignUp }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const { loading, error } = useSelector(selectAuth);
-
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const { signIn } = useAuth();
 
@@ -73,13 +68,7 @@ const SignInModal: React.FC<Props> = ({ open, onClose, switchToSignUp }) => {
   };
 
   return (
-    <StyledDialog
-      open={open}
-      onClose={handleClose}
-      maxWidth="sm"
-      fullWidth
-      fullScreen={isMobile}
-    >
+    <StyledDialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
       <StyledDialogTitle>
         <Box />
         <IconButton onClick={handleClose} size="small">
@@ -93,28 +82,13 @@ const SignInModal: React.FC<Props> = ({ open, onClose, switchToSignUp }) => {
             Welcome Back
           </Typography>
 
-          <Typography
-            variant="body1"
-            color="text.secondary"
-            sx={{ mb: 3, lineHeight: 1.6 }}
-          >
+          <Subtitle variant="body1" color="text.secondary">
             Continue your journey of sharing thoughts and discovering stories
-          </Typography>
+          </Subtitle>
 
           {error && (
             <Fade in>
-              <Alert
-                severity="error"
-                sx={{
-                  mb: 3,
-                  borderRadius: 2,
-                  '& .MuiAlert-icon': {
-                    color: 'error.main',
-                  },
-                }}
-              >
-                {error}
-              </Alert>
+              <ErrorAlert severity="error">{error}</ErrorAlert>
             </Fade>
           )}
 
@@ -180,41 +154,15 @@ const SignInModal: React.FC<Props> = ({ open, onClose, switchToSignUp }) => {
           </Box>
 
           <Box textAlign="center">
-            <Link
-              component="button"
-              variant="body2"
-              sx={{
-                color: 'primary.main',
-                textDecoration: 'none',
-                fontWeight: 500,
-                mb: 2,
-                display: 'block',
-                '&:hover': {
-                  textDecoration: 'underline',
-                },
-              }}
-            >
+            <ForgotPasswordLink variant="body2">
               Forgot your password?
-            </Link>
+            </ForgotPasswordLink>
 
-            <Divider sx={{ my: 2, opacity: 0.6 }} />
+            <StyledDivider />
 
             <Typography variant="body2" color="text.secondary">
               Don't have an account?{' '}
-              <Link
-                component="button"
-                onClick={handleSignUpClick}
-                sx={{
-                  color: 'primary.main',
-                  textDecoration: 'none',
-                  fontWeight: 600,
-                  '&:hover': {
-                    textDecoration: 'underline',
-                  },
-                }}
-              >
-                Sign up here
-              </Link>
+              <SignUpLink onClick={handleSignUpClick}>Sign up here</SignUpLink>
             </Typography>
           </Box>
         </Box>

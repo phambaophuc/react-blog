@@ -12,18 +12,30 @@ import {
   MoreHorizOutlined,
   ReplyOutlined,
 } from '@mui/icons-material';
-import {
-  Avatar,
-  Box,
-  Button,
-  Collapse,
-  IconButton,
-  Typography,
-} from '@mui/material';
+import { Collapse } from '@mui/material';
 
 import { useComments } from '@/store/hooks';
 
 import CommentInput from '../CommentInput';
+import {
+  ActionRow,
+  CommentAvatar,
+  CommentBody,
+  CommentRow,
+  CommentText,
+  CommentWrapper,
+  DeleteButton,
+  DisplayName,
+  DotText,
+  LikeButton,
+  MoreButton,
+  RepliesWrapper,
+  ReplyButton,
+  ReplyInputWrapper,
+  Timestamp,
+  ToggleRepliesButton,
+  UserInfoRow,
+} from './index.styled';
 
 interface Props {
   comment: Comment;
@@ -59,185 +71,83 @@ const CommentItem: React.FC<Props> = ({ comment, isReply = false }) => {
   };
 
   return (
-    <Box sx={{ mb: 3 }}>
-      <Box sx={{ display: 'flex', gap: 1.5 }}>
-        <Avatar
-          src={comment.user.avatarUrl ?? ''}
-          sx={{
-            width: isReply ? 28 : 32,
-            height: isReply ? 28 : 32,
-            flexShrink: 0,
-          }}
-        >
+    <CommentWrapper>
+      <CommentRow>
+        <CommentAvatar src={comment.user.avatarUrl ?? ''} isReply={isReply}>
           {comment.user.displayName[0]}
-        </Avatar>
+        </CommentAvatar>
 
-        <Box sx={{ flex: 1, minWidth: 0 }}>
-          {/* User info */}
-          <Box
-            sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.5 }}
-          >
-            <Typography
-              variant="subtitle2"
-              sx={{
-                fontWeight: 500,
-                fontSize: '14px',
-                color: '#1a1a1a',
-              }}
-            >
-              {comment.user.displayName}
-            </Typography>
-            <Typography sx={{ color: '#757575', fontSize: '12px' }}>
-              ·
-            </Typography>
-            <Typography
-              variant="caption"
-              sx={{
-                color: '#757575',
-                fontSize: '12px',
-              }}
-            >
-              {timeAgo(comment.createdAt)}
-            </Typography>
+        <CommentBody>
+          <UserInfoRow>
+            <DisplayName>{comment.user.displayName}</DisplayName>
+            <DotText>·</DotText>
+            <Timestamp>{timeAgo(comment.createdAt)}</Timestamp>
             {user?.id === comment.user.id && (
-              <IconButton
+              <DeleteButton
                 size="small"
                 onClick={() => handleDeleteComment(comment.id)}
-                sx={{
-                  ml: 'auto',
-                  color: '#757575',
-                  '&:hover': { color: '#d32f2f' },
-                }}
               >
                 <DeleteOutline sx={{ fontSize: 16 }} />
-              </IconButton>
+              </DeleteButton>
             )}
-          </Box>
+          </UserInfoRow>
 
-          {/* Comment content */}
-          <Typography
-            variant="body1"
-            sx={{
-              fontFamily: 'Georgia, serif',
-              fontSize: '16px',
-              lineHeight: 1.6,
-              color: '#1a1a1a',
-              mb: 2,
-              wordBreak: 'break-word',
-            }}
-          >
-            {comment.content}
-          </Typography>
+          <CommentText>{comment.content}</CommentText>
 
-          {/* Action buttons */}
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-            <Button
-              startIcon={isLiked ? <Favorite /> : <FavoriteOutlined />}
+          <ActionRow>
+            <LikeButton
               onClick={handleLike}
-              size="small"
-              sx={{
-                minWidth: 'auto',
-                p: 0,
-                color: isLiked ? '#d32f2f' : '#757575',
-                fontSize: '12px',
-                textTransform: 'none',
-                '&:hover': {
-                  backgroundColor: 'transparent',
-                  color: isLiked ? '#b71c1c' : '#424242',
-                },
-                '& .MuiButton-startIcon': {
-                  marginRight: likes > 0 ? '4px' : 0,
-                  marginLeft: 0,
-                },
-              }}
+              startIcon={isLiked ? <Favorite /> : <FavoriteOutlined />}
+              isLiked={isLiked}
             >
               {likes > 0 && likes}
-            </Button>
+            </LikeButton>
 
             {!isReply && user && (
-              <Button
-                startIcon={<ReplyOutlined />}
+              <ReplyButton
                 onClick={() => setReplyingTo(!replyingTo)}
-                size="small"
-                sx={{
-                  minWidth: 'auto',
-                  p: 0,
-                  color: '#757575',
-                  fontSize: '12px',
-                  textTransform: 'none',
-                  '&:hover': {
-                    backgroundColor: 'transparent',
-                    color: '#424242',
-                  },
-                }}
+                startIcon={<ReplyOutlined />}
               >
                 Reply
-              </Button>
+              </ReplyButton>
             )}
 
             {!isReply && comment.replies.length > 0 && (
-              <Button
-                onClick={() => setShowReplies(!showReplies)}
-                size="small"
-                sx={{
-                  minWidth: 'auto',
-                  p: 0,
-                  color: '#1a8917',
-                  fontSize: '12px',
-                  fontWeight: 500,
-                  textTransform: 'none',
-                  '&:hover': {
-                    backgroundColor: 'transparent',
-                    color: '#156b13',
-                  },
-                }}
-              >
+              <ToggleRepliesButton onClick={() => setShowReplies(!showReplies)}>
                 {showReplies
                   ? 'Hide replies'
                   : `${comment.replies.length} ${comment.replies.length === 1 ? 'reply' : 'replies'}`}
-              </Button>
+              </ToggleRepliesButton>
             )}
 
-            <IconButton
-              size="small"
-              sx={{
-                color: '#757575',
-                '&:hover': { color: '#424242' },
-              }}
-            >
+            <MoreButton size="small">
               <MoreHorizOutlined sx={{ fontSize: 16 }} />
-            </IconButton>
-          </Box>
+            </MoreButton>
+          </ActionRow>
 
-          {/* Reply input */}
           <Collapse in={replyingTo}>
-            <Box sx={{ mt: 2 }}>
+            <ReplyInputWrapper>
               <CommentInput
                 onSubmit={handleReply}
                 placeholder={`Reply to ${comment.user.displayName}...`}
                 currentUser={user ?? undefined}
-                sx={{
-                  borderBottom: 'none',
-                  pb: 0,
-                  mb: 0,
-                }}
+                sx={{ borderBottom: 'none', pb: 0, mb: 0 }}
               />
-            </Box>
+            </ReplyInputWrapper>
           </Collapse>
 
-          {/* Replies */}
           {!isReply && comment.replies.length > 0 && (
             <Collapse in={showReplies}>
-              <Box sx={{ mt: 2, ml: 0 }}>
+              <RepliesWrapper>
                 {comment.replies.map((reply) => (
-                  <CommentItem key={reply.id} comment={reply} isReply={true} />
+                  <CommentItem key={reply.id} comment={reply} isReply />
                 ))}
-              </Box>
+              </RepliesWrapper>
             </Collapse>
           )}
-        </Box>
-      </Box>
-    </Box>
+        </CommentBody>
+      </CommentRow>
+    </CommentWrapper>
   );
 };
 

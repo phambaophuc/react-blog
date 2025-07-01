@@ -1,6 +1,7 @@
 import { AuthResponse, SignInRequest, SignUpRequest, User } from '@/libs/types';
 
 import { BaseApiClient, BaseService } from './base';
+import { TokenManager } from './base/TokenManager';
 
 export class AuthService extends BaseService {
   constructor(client: BaseApiClient) {
@@ -18,9 +19,7 @@ export class AuthService extends BaseService {
     );
 
     // Store tokens
-    const tokenManager = new (
-      await import('./base/TokenManager')
-    ).TokenManager();
+    const tokenManager = new TokenManager();
     await tokenManager.setToken(response.accessToken);
 
     return response;
@@ -31,23 +30,18 @@ export class AuthService extends BaseService {
   }
 
   async signOut(): Promise<void> {
-    const tokenManager = new (
-      await import('./base/TokenManager')
-    ).TokenManager();
-    await tokenManager.clearToken();
-
     try {
       await this.client.post<void>(`${this.baseUrl}/signout`);
     } catch (error) {
-      // Ignore errors during signout
       console.warn('Signout request failed:', error);
+    } finally {
+      const tokenManager = new TokenManager();
+      await tokenManager.clearToken();
     }
   }
 
   async refreshToken(): Promise<AuthResponse> {
-    const tokenManager = new (
-      await import('./base/TokenManager')
-    ).TokenManager();
+    const tokenManager = new TokenManager();
 
     const response = await this.client.post<AuthResponse>(
       `${this.baseUrl}/refresh`,
