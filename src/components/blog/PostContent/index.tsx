@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { createSlug } from '@/libs/utils';
 import parse, { DOMNode, Element, domToReact } from 'html-react-parser';
 
 import {
@@ -56,12 +57,27 @@ const PostContent: React.FC<Props> = ({ content }) => {
         );
       case 'p':
         return <StyledParagraph>{children}</StyledParagraph>;
-      case 'h1':
-        return <StyledHeading1>{children}</StyledHeading1>;
-      case 'h2':
-        return <StyledHeading2>{children}</StyledHeading2>;
-      case 'h3':
-        return <StyledHeading3>{children}</StyledHeading3>;
+      case 'h1': {
+        const rawText = el.children
+          .map((child: any) => child.data || '')
+          .join('');
+        const id = attribs?.id || createSlug(rawText);
+        return <StyledHeading1 id={id}>{children}</StyledHeading1>;
+      }
+      case 'h2': {
+        const rawText = el.children
+          .map((child: any) => child.data || '')
+          .join('');
+        const id = attribs?.id || createSlug(rawText);
+        return <StyledHeading2 id={id}>{children}</StyledHeading2>;
+      }
+      case 'h3': {
+        const rawText = el.children
+          .map((child: any) => child.data || '')
+          .join('');
+        const id = attribs?.id || createSlug(rawText);
+        return <StyledHeading3 id={id}>{children}</StyledHeading3>;
+      }
       case 'blockquote':
         return <StyledBlockquote>{children}</StyledBlockquote>;
       case 'ul':

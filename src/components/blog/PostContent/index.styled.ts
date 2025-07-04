@@ -7,6 +7,7 @@ export const PostContentContainer = styled('div')(({ theme }) => ({
   lineHeight: '1.58',
   color: '#292929',
   letterSpacing: '-0.003em',
+  textAlign: 'justify',
 
   // Responsive design
   [theme.breakpoints.down('md')]: {
@@ -60,10 +61,10 @@ export const StyledParagraph = styled('p')(({ theme }) => ({
 export const StyledHeading1 = styled('h1')(({ theme }) => ({
   fontSize: '34px',
   fontWeight: 600,
-  lineHeight: '1.15',
-  margin: '48px 0 16px 0',
+  lineHeight: 1.2,
+  margin: '48px 0 20px 0',
   color: '#292929',
-  letterSpacing: '-0.022em',
+  letterSpacing: '-0.02em',
   fontFamily: 'Georgia, "Times New Roman", serif',
 
   '&:first-of-type': {
@@ -72,52 +73,52 @@ export const StyledHeading1 = styled('h1')(({ theme }) => ({
 
   [theme.breakpoints.down('md')]: {
     fontSize: '30px',
-    margin: '40px 0 14px 0',
+    margin: '40px 0 16px 0',
   },
 
   [theme.breakpoints.down('sm')]: {
     fontSize: '26px',
-    margin: '32px 0 12px 0',
+    margin: '32px 0 14px 0',
   },
 }));
 
 export const StyledHeading2 = styled('h2')(({ theme }) => ({
   fontSize: '28px',
   fontWeight: 600,
-  lineHeight: '1.22',
-  margin: '40px 0 12px 0',
+  lineHeight: 1.3,
+  margin: '40px 0 18px 0',
   color: '#292929',
-  letterSpacing: '-0.018em',
+  letterSpacing: '-0.015em',
   fontFamily: 'Georgia, "Times New Roman", serif',
 
   [theme.breakpoints.down('md')]: {
     fontSize: '24px',
-    margin: '32px 0 10px 0',
+    margin: '32px 0 14px 0',
   },
 
   [theme.breakpoints.down('sm')]: {
     fontSize: '22px',
-    margin: '28px 0 8px 0',
+    margin: '28px 0 12px 0',
   },
 }));
 
 export const StyledHeading3 = styled('h3')(({ theme }) => ({
   fontSize: '24px',
   fontWeight: 600,
-  lineHeight: '1.25',
-  margin: '32px 0 8px 0',
+  lineHeight: 1.4,
+  margin: '32px 0 12px 0',
   color: '#292929',
-  letterSpacing: '-0.014em',
+  letterSpacing: '-0.01em',
   fontFamily: 'Georgia, "Times New Roman", serif',
 
   [theme.breakpoints.down('md')]: {
     fontSize: '21px',
-    margin: '28px 0 6px 0',
+    margin: '28px 0 10px 0',
   },
 
   [theme.breakpoints.down('sm')]: {
     fontSize: '19px',
-    margin: '24px 0 4px 0',
+    margin: '24px 0 8px 0',
   },
 }));
 

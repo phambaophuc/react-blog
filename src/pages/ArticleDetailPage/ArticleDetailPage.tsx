@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { PostContent } from '@/components/blog';
 import { CommentList } from '@/components/comments';
 import { Layout } from '@/components/layout';
+import { TableOfContents } from '@/components/ui';
 import { useScrollToTopOnMount } from '@/libs/hooks';
 import { formatDate } from '@/libs/utils/dateUtils';
 import { selectCurrentArticle } from '@/store';
@@ -35,7 +36,7 @@ const ArticleDetailPage = () => {
 
   return (
     <Layout
-      maxWidth="md"
+      maxWidth="lg"
       sx={{
         py: (theme) => theme.spacing(4),
         minHeight: '100vh',
@@ -81,7 +82,24 @@ const ArticleDetailPage = () => {
               ))}
             </Box>
 
-            <PostContent content={currArticle.content} />
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: { xs: 'column', md: 'row' },
+                gap: 4,
+              }}
+            >
+              <PostContent content={currArticle.content} />
+
+              <Box
+                sx={{
+                  width: '250px',
+                  flexShrink: 0,
+                }}
+              >
+                <TableOfContents htmlContent={currArticle.content} />
+              </Box>
+            </Box>
 
             <Box
               sx={{
