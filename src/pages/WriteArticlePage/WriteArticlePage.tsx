@@ -194,7 +194,6 @@ const WriteArticlePage = () => {
 
   const handlePreview = useCallback(() => {
     if (isUnmountingRef.current) return;
-    console.log('Preview article:', article);
   }, [article]);
 
   const handlePublish = useCallback(async () => {
@@ -271,7 +270,7 @@ const WriteArticlePage = () => {
         <HeaderContent>
           <LogoSection>
             <a href="/" className="logo">
-              ThoughtSphere
+              DEV BLOG
             </a>
             <StatusIndicator>
               <span className="status-dot" />
