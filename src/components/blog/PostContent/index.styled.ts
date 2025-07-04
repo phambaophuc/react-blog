@@ -248,3 +248,42 @@ export const StyledStrong = styled('strong')({
 export const StyledEm = styled('em')({
   fontStyle: 'italic',
 });
+
+export const StyledTable = styled('table')(({ theme }) => ({
+  width: '100%',
+  borderCollapse: 'collapse',
+  marginTop: theme.spacing(3),
+  marginBottom: theme.spacing(3),
+  fontSize: '0.95rem',
+  lineHeight: 1.5,
+  border: `1px solid ${theme.palette.divider}`,
+}));
+
+export const StyledThead = styled('thead')(({ theme }) => ({
+  backgroundColor: theme.palette.action.hover,
+}));
+
+export const StyledTbody = styled('tbody')({});
+
+export const StyledTr = styled('tr')(({ theme }) => ({
+  '&:nth-of-type(even)': {
+    backgroundColor: theme.palette.action.selected,
+  },
+  '&:hover': {
+    backgroundColor: theme.palette.action.hover,
+  },
+}));
+
+export const StyledTh = styled('th')(({ theme }) => ({
+  padding: theme.spacing(1.5),
+  border: `1px solid ${theme.palette.divider}`,
+  fontWeight: 600,
+  textAlign: 'left',
+  backgroundColor: theme.palette.grey[100],
+}));
+
+export const StyledTd = styled('td')(({ theme }) => ({
+  padding: theme.spacing(1.5),
+  border: `1px solid ${theme.palette.divider}`,
+  textAlign: 'left',
+}));

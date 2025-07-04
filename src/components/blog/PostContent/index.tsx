@@ -18,6 +18,12 @@ import {
   StyledParagraph,
   StyledPre,
   StyledStrong,
+  StyledTable,
+  StyledTbody,
+  StyledTd,
+  StyledTh,
+  StyledThead,
+  StyledTr,
 } from './index.styled';
 
 interface Props {
@@ -86,6 +92,18 @@ const PostContent: React.FC<Props> = ({ content }) => {
         return <StyledHr />;
       case 'br':
         return <br />;
+      case 'table':
+        return <StyledTable>{children}</StyledTable>;
+      case 'thead':
+        return <StyledThead>{children}</StyledThead>;
+      case 'tbody':
+        return <StyledTbody>{children}</StyledTbody>;
+      case 'tr':
+        return <StyledTr>{children}</StyledTr>;
+      case 'th':
+        return <StyledTh>{children}</StyledTh>;
+      case 'td':
+        return <StyledTd>{children}</StyledTd>;
       default:
         return;
     }
