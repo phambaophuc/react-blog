@@ -93,8 +93,8 @@ const ArticleDetailPage = () => {
 
               <Box
                 sx={{
-                  width: '250px',
-                  flexShrink: 0,
+                  maxWidth: '250px',
+                  display: { xs: 'none', md: 'block' },
                 }}
               >
                 <TableOfContents htmlContent={currArticle.content} />

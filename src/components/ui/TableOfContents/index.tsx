@@ -41,7 +41,7 @@ const TableOfContents: React.FC<Props> = ({ htmlContent }) => {
   if (headings.length === 0) return;
 
   return (
-    <TocWrapper sx={{ display: { xs: 'none', md: 'block' } }}>
+    <TocWrapper>
       <Typography variant="h6" gutterBottom>
         Mục lục
       </Typography>

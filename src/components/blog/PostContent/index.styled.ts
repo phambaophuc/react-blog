@@ -1,6 +1,7 @@
 import { styled } from '@mui/material';
 
 export const PostContentContainer = styled('div')(({ theme }) => ({
+  maxWidth: '1000px',
   margin: '18px 0',
   fontFamily: 'Georgia, "Times New Roman", serif',
   fontSize: '20px',
