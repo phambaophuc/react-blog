@@ -1,10 +1,12 @@
 import { ComponentType, Suspense, lazy } from 'react';
 
+import { useAuthModal } from '@/libs/context';
+import { useAppNavigation } from '@/libs/hooks';
 import { selectAuth } from '@/store';
 import { useSelector } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
 
-import { Box, CircularProgress } from '@mui/material';
+import { Box, Button, CircularProgress, Typography } from '@mui/material';
 
 import { ROUTES } from '.';
 
@@ -78,7 +80,9 @@ const renderRoute = (route: RouteConfig, index: number) => {
 const ProtectedRouteElement: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
+  const { goBack } = useAppNavigation();
   const { user, loading } = useSelector(selectAuth);
+  const { openSignIn } = useAuthModal();
 
   if (loading) {
     return <LoadingFallback />;
@@ -86,8 +90,30 @@ const ProtectedRouteElement: React.FC<{
 
   if (!user) {
     return (
-      <Box sx={{ textAlign: 'center', mt: 4 }}>
-        <p>Please sign in to access this page.</p>
+      <Box
+        sx={{
+          textAlign: 'center',
+          mt: 8,
+          p: 4,
+          maxWidth: 400,
+          mx: 'auto',
+        }}
+      >
+        <Typography variant="h5" gutterBottom>
+          Authentication Required
+        </Typography>
+        <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
+          Please sign in to access this page.
+        </Typography>
+
+        <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center' }}>
+          <Button variant="contained" onClick={openSignIn}>
+            Sign In
+          </Button>
+          <Button variant="outlined" onClick={goBack}>
+            Go Home
+          </Button>
+        </Box>
       </Box>
     );
   }

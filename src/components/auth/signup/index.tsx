@@ -21,11 +21,7 @@ interface Props {
   switchToSignIn: () => void;
 }
 
-export const SignUpModal: React.FC<Props> = ({
-  open,
-  onClose,
-  switchToSignIn,
-}) => {
+const SignUpModal: React.FC<Props> = ({ open, onClose, switchToSignIn }) => {
   const { auth: authService } = useApiServices();
 
   const [formData, setFormData] = useState({
@@ -61,7 +57,6 @@ export const SignUpModal: React.FC<Props> = ({
   };
 
   const handleSignInClick = () => {
-    onClose();
     switchToSignIn();
   };
 

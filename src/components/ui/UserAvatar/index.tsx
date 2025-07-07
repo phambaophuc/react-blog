@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 
-import { SignInModal, SignUpModal } from '@/components/auth';
+import { useAuthModal } from '@/libs/context';
 import { selectCurrentUser } from '@/store';
 import { useSelector } from 'react-redux';
 
@@ -35,12 +35,11 @@ import {
 } from './index.styled';
 
 const UserAvatar: React.FC = () => {
-  const [signInOpen, setSignInOpen] = useState(false);
-  const [signUpOpen, setSignUpOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
   const user = useSelector(selectCurrentUser);
   const { signOut } = useAuth();
+  const { openSignIn, openSignUp } = useAuthModal();
 
   const handleProfileMenuOpen = useCallback(
     (event: React.MouseEvent<HTMLElement>) => {
@@ -57,22 +56,6 @@ const UserAvatar: React.FC = () => {
     signOut();
     handleMenuClose();
   }, [handleMenuClose, signOut]);
-
-  // Modal handlers
-  const openSignIn = () => setSignInOpen(true);
-  const closeSignIn = () => setSignInOpen(false);
-  const openSignUp = () => setSignUpOpen(true);
-  const closeSignUp = () => setSignUpOpen(false);
-
-  const switchToSignUp = () => {
-    closeSignIn();
-    openSignUp();
-  };
-
-  const switchToSignIn = () => {
-    closeSignUp();
-    openSignIn();
-  };
 
   const menuItems = [
     {
@@ -179,17 +162,6 @@ const UserAvatar: React.FC = () => {
           </GetStartedButton>
         </GuestButtons>
       )}
-
-      <SignInModal
-        open={signInOpen}
-        onClose={closeSignIn}
-        switchToSignUp={switchToSignUp}
-      />
-      <SignUpModal
-        open={signUpOpen}
-        onClose={closeSignUp}
-        switchToSignIn={switchToSignIn}
-      />
 
       {renderProfileMenu}
     </Wrapper>

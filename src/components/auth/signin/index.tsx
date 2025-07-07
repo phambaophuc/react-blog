@@ -43,7 +43,6 @@ const SignInModal: React.FC<Props> = ({ open, onClose, switchToSignUp }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const { loading, error } = useSelector(selectAuth);
-
   const { signIn } = useAuth();
 
   const handleSignIn = async (event: React.FormEvent) => {
@@ -63,7 +62,6 @@ const SignInModal: React.FC<Props> = ({ open, onClose, switchToSignUp }) => {
   };
 
   const handleSignUpClick = () => {
-    handleClose();
     switchToSignUp();
   };
 
